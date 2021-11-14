@@ -1,37 +1,37 @@
 const Top5List = require('../models/top5list-model');
+const UserTop5List = require('../models/user-top5list-model');
 
-createTop5List = (req, res) => {
-    let body = req.body;
-    body.ownerId = req.userId
+const db = require('../db/manager') 
+const { listenerCount } = require('../models/top5list-model');
 
-    if (!body) {
-        return res.status(400).json({
-            success: false,
-            error: 'You must provide a Top 5 List',
-        });
+createUserTop5List = async (req, res) => {
+    let top5list = await db.createUserTop5List(req.body);
+
+    if (!top5list) {
+        return res.status(400).json({"error": "An error occured."});
     }
 
-    const top5List = new Top5List(body);
-    console.log("creating top5List: " + JSON.stringify(top5List));
-    if (!top5List) {
-        return res.status(400).json({ success: false, error: err })
+    return res.status(200).json({ 
+        success: true, 
+        top5List: top5list,
+    });
+    
+}
+
+createCommunityTop5List = async (req, res) => {
+    let top5list = await db.createCommunityTop5List(req.body);
+
+    if (!top5list) {
+        return res.status(400).json({success: false, message: "Bad request"});
     }
 
-    top5List
-        .save()
-        .then(() => {
-            return res.status(201).json({
-                success: true,
-                top5List: top5List,
-                message: 'Top 5 List Created!'
-            })
-        })
-        .catch(error => {
-            return res.status(400).json({
-                error,
-                message: 'Top 5 List Not Created!'
-            })
-        })
+    return res.status(200).json({
+        success: true, 
+        message: "Community Top 5 List Successfully Created!", 
+        top5List: top5list
+    });
+
+    
 }
 
 updateTop5List = async (req, res) => {
@@ -138,7 +138,8 @@ getTop5ListPairs = async (req, res) => {
 }
 
 module.exports = {
-    createTop5List,
+    createCommunityTop5List,
+    createUserTop5List,
     updateTop5List,
     deleteTop5List,
     getTop5Lists,

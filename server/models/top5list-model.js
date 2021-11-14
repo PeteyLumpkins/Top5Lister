@@ -3,10 +3,11 @@ const Schema = mongoose.Schema
 
 const Top5ListSchema = new Schema(
     {
-        name: { type: String, required: true },
-        items: { type: [String], required: true },
-        ownerEmail: { type: String, required: true},
-        ownerId: { type: String, required: true},
+        name: {type: String, required: true},
+        comments: { type: [String], required: true },
+        likes: {type: [String], required: true },
+        dislikes: {type: [String], required: true},
+        views: {type: Number, required: true},
     },
     { timestamps: true },
 )
