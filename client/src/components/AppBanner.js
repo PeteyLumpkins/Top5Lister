@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom'
 import AuthContext from '../auth';
 import { GlobalStoreContext } from '../store'
-import EditToolbar from './EditToolbar'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,6 +9,10 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+
+import HomeIcon from '@mui/icons-material/Home';
+import PersonIcon from '@mui/icons-material/Person';
+
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
 export default function AppBanner() {
@@ -29,6 +32,11 @@ export default function AppBanner() {
     const handleLogout = () => {
         handleMenuClose();
         auth.logoutUser();
+    }
+
+    // Loads the users lists
+    const handleUserLists = () => {
+        
     }
 
     const menuId = 'primary-search-account-menu';
@@ -71,13 +79,10 @@ export default function AppBanner() {
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>        
 
-    let editToolbar = "";
     let menu = loggedOutMenu;
     if (auth.loggedIn) {
         menu = loggedInMenu;
     }
-
-    editToolbar = <EditToolbar />;
     
     function getAccountMenu(loggedIn) {
         if (loggedIn) {
@@ -89,16 +94,16 @@ export default function AppBanner() {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar sx={{ background: "lightgray" }}>
                     <Typography                        
                         variant="h4"
                         noWrap
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}                        
                     >
-                        <Link style={{ textDecoration: 'none', color: 'white' }} to='/'>T<sup>5</sup>L</Link>
+                        <Link style={{ textDecoration: 'none', color: 'gold' }} to='/'>T<sup>5</sup>L</Link>
                     </Typography>
-                    <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
+                    <Box sx={{ flexGrow: 1, align: "center",}}></Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton
                             size="large"
@@ -113,14 +118,33 @@ export default function AppBanner() {
                         </IconButton>
                     </Box>
                 </Toolbar>
-            </AppBar>
-            
+                <Toolbar sx={{background: "gray"}}>
+                    <IconButton
+                        id="home-lists-button"
+                    >
+                        <HomeIcon
+                            color="white"
+                            fontSize="large"
+                        >
+                        </HomeIcon>
+                    </IconButton>
+
+                    <IconButton
+                        id="user-lists-button"
+                    >
+                        <PersonIcon
+                            background="white"
+                            fontSize="large"
+                        >
+
+                        </PersonIcon>
+                    </IconButton>
+
+                </Toolbar>
+            </AppBar>        
             {
                menu
             }
-            <Toolbar>
-                    <h1>HELLO THERE</h1>
-                </Toolbar>
         </Box>
     );
 }

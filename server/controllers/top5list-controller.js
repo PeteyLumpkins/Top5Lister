@@ -5,31 +5,23 @@ const db = require('../db/manager')
 const { listenerCount } = require('../models/top5list-model');
 
 createUserTop5List = async (req, res) => {
-    let top5list = await db.createUserTop5List(req.body);
+    let response = await db.createUserTop5List(req.body);
 
-    if (!top5list) {
-        return res.status(400).json({"error": "An error occured."});
+    if (!response || !response.success) {
+        return res.status(400).json(response);
     }
 
-    return res.status(200).json({ 
-        success: true, 
-        top5List: top5list,
-    });
-    
+    return res.status(200).json({response});
 }
 
 createCommunityTop5List = async (req, res) => {
-    let top5list = await db.createCommunityTop5List(req.body);
+    let response = await db.createCommunityTop5List(req.body);
 
-    if (!top5list) {
-        return res.status(400).json({success: false, message: "Bad request"});
+    if (!response || !response.success) {
+        return res.status(400).json(response);
     }
 
-    return res.status(200).json({
-        success: true, 
-        message: "Community Top 5 List Successfully Created!", 
-        top5List: top5list
-    });
+    return res.status(200).json(response);
 
     
 }

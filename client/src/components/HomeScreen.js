@@ -5,6 +5,7 @@ import { Fab, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
 import DeleteListModel from './DeleteListModel';
+import UserListCard from './cards/UserListCard';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -50,9 +51,8 @@ const HomeScreen = () => {
                 <Typography variant="h2">Your Lists</Typography>
             </div>
             <div id="list-selector-list">
-                {
-                    listCard
-                }
+                    <UserListCard></UserListCard>
+                    
             </div>
         <DeleteListModel 
             open={store.listMarkedForDeletion !== null}
