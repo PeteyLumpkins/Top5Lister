@@ -33,7 +33,7 @@ const ExpandMore = styled((props) => {
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
+//   marginLeft: 'auto',
   transition: theme.transitions.create('transform', {
     duration: theme.transitions.duration.shortest,
   }),
@@ -63,27 +63,12 @@ export default function UserListCard() {
         subheader="September 14, 2016"
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
+        <Typography color="text.secondary">
+            <h3>List Name Here</h3>
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
+        
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
@@ -101,9 +86,25 @@ export default function UserListCard() {
                         </Grid>
                 </Grid>
             </Box>
-            
         </CardContent>
       </Collapse>
+        <Box sx={{ display: 'flex'}}>
+            <Box sx={{ paddingLeft: '10px', display: 'flex', flexGrow: 1, justifyContent: 'left'}}>
+                <h3>Published: Date?</h3>
+            </Box>
+            <Box sx={{ display: 'flex', flexGrow: .1, justifyContent: 'space-between'}}>
+                <h3>Views: 1455</h3>
+                <ExpandMore
+                    size='large'
+                    expand={expanded}
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                    >
+                    <ExpandMoreIcon />
+                </ExpandMore>
+            </Box>
+        </Box>
     </Card>
   );
 }
