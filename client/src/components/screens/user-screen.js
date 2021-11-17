@@ -5,14 +5,14 @@ import Box from '@mui/material/Box';
 
 export default function UserScreen() {
 
-    
+
 
     return (
         
         <Box b={10}>
             <List sx={{ 
                     background: "lightgray", 
-                    overflow: 'auto',
+                    overflow: 'scroll',
                     padding: '10px',
                 }}
             >
