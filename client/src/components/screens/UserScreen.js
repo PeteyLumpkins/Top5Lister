@@ -5,22 +5,22 @@ import Box from '@mui/material/Box';
 
 export default function UserScreen() {
 
-
-
     return (
         
-        <Box b={10}>
-            <List sx={{ 
-                    background: "lightgray", 
-                    overflow: 'scroll',
-                    padding: '10px',
-                }}
+        <Box sx={{ overflow: 'auto',
+        padding: '10px', bgcolor: "lightgray", height: "100%"}}b={10}>
+            <List 
             >
-                <UserListCard bottomGutter={true}></UserListCard>
+                <UserListCard></UserListCard>
                 <br></br>
                 <UserListCard></UserListCard>
+                <br></br>
                 <UserListCard></UserListCard>
-                <Statusbar></Statusbar>
+                <br></br>
+                <UserListCard></UserListCard>
+                <br></br>
+                <UserListCard></UserListCard>
+                <br></br>
             </List>
         </Box>
     );

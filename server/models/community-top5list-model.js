@@ -6,7 +6,7 @@ const CommunityTop5ListSchema = new Schema(
         top5ListId: {type: String, required: true},
         community: {type: String, required: true, uppercase: true},
         lastUpdated: {type: Date},
-        itemCounts: {type: Map, of: Number, required: true},
+        itemCounts: {},
     }, 
     { timestamps: true },
 )

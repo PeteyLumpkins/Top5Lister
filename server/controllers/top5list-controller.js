@@ -26,6 +26,11 @@ createCommunityTop5List = async (req, res) => {
     
 }
 
+getCommunityTop5Lists = async (req, res) => {
+    return res.status(200).json({});
+    // return db.getCommunityTop5Lists(req.params.name);
+}
+
 updateTop5List = async (req, res) => {
     const body = req.body
     console.log("updateTop5List: " + JSON.stringify(body));
@@ -132,6 +137,8 @@ getTop5ListPairs = async (req, res) => {
 module.exports = {
     createCommunityTop5List,
     createUserTop5List,
+    getCommunityTop5Lists,
+
     updateTop5List,
     deleteTop5List,
     getTop5Lists,

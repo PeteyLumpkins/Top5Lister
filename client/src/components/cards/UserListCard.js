@@ -7,10 +7,6 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
@@ -47,49 +43,27 @@ export default function UserListCard() {
   };
 
   return (
-    <Card>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
-      <CardContent>
-        <Typography color="text.secondary">
-            <h3>List Name Here</h3>
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
+    <Card sx={{ paddingTop: 'none', paddingLeft: '10px', background: 'lightblue'}}>
+        <h3>List Name Here</h3>
+    <CardActions disableSpacing>
         
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ display: 'grid', flexGrow: 1 }}>
                 <Grid container spacing={2}>
                         <Grid item xs={6}>
-                            <Item>
-                                <ListDropDown></ListDropDown>
-                            </Item>
+                            <ListDropDown></ListDropDown>
                         </Grid>
                         <Grid item xs={6}>
-                            <Item>
-                                <CommentSection></CommentSection>
-                            </Item>
+                            <CommentSection></CommentSection>
                         </Grid>
                 </Grid>
             </Box>
         </CardContent>
       </Collapse>
         <Box sx={{ display: 'flex'}}>
-            <Box sx={{ paddingLeft: '10px', display: 'flex', flexGrow: 1, justifyContent: 'left'}}>
+            <Box sx={{ paddingLeft: '', display: 'flex', flexGrow: 1, justifyContent: 'left'}}>
                 <h3>Published: Date?</h3>
             </Box>
             <Box sx={{ display: 'flex', flexGrow: .1, justifyContent: 'space-between'}}>
