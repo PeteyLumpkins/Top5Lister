@@ -11,13 +11,14 @@ const router = express.Router()
 // router.get('/top5listpairs/:email', auth.verify, Top5ListController.getTop5ListPairs)
 
 // TODO need to auth.verify these routes
-router.put('/usertop5list', Top5ListController.updateUserTop5List);
+router.put('/usertop5list/:id', Top5ListController.updateUserTop5List);
 router.post('/usertop5list', Top5ListController.createUserTop5List);
-router.put('/post', Top5ListController.updatePost); 
-router.put('/publish', Top5ListController.publishTop5List);
+router.put('/post/:id', Top5ListController.updatePost); 
+router.put('/publish/:id', Top5ListController.publishTop5List);
+router.delete('/usertop5list/:id', Top5ListController.deleteUserTop5List);
 
 router.get('/top5lists', Top5ListController.getTop5Lists);
-router.get('/usertop5lists', auth.verify, Top5ListController.getUserTop5Lists);
+router.get('/usertop5lists/:id', Top5ListController.getUserTop5Lists);
 router.get('/communitytop5lists', Top5ListController.getCommunityTop5Lists);
 
 // router.get('/communitytop5lists', Top5ListController.getCommunityTop5Lists);

@@ -5,14 +5,14 @@ const Post = require('../models/post-model');
 
 /** Controller for publishing top5lists
  * 
- *  req.body = { id: lists id number}
+ *  req.params: { id: id of the list to publish }
  */
 publishTop5List = async (req, res) => {
     if (!req.body) {
         return res.status(400).json({success: false, error: "Requires a body."});
     }
 
-    let list = await UserTop5List.findById(req.body.id).catch((err) => { console.log(err) });
+    let list = await UserTop5List.findById(req.params.id).catch((err) => { console.log(err) });
         
     if (!list) {
         return res.status(404).json({success: false, error: "List not found!"});
@@ -65,8 +65,9 @@ createUserTop5List = async (req, res) => {
 /**
  * Controller method for handling updates to a UserTop5List
  * 
+ * req.params: { id: the id of the list to update }
+ * 
  * req.body: {
- *      id: the lists id number,
  *      name: the lists name,
  *      items: array of lists items,
  * }
@@ -76,7 +77,7 @@ updateUserTop5List = async (req, res) => {
         return res.status(400).json({ success: false, message: "Body required for update."});
     } 
 
-    let list = await UserTop5List.findById(req.body.id).catch((err) => { 
+    let list = await UserTop5List.findById(req.params.id).catch((err) => { 
         console.log(err);
     })
 
@@ -100,8 +101,9 @@ updateUserTop5List = async (req, res) => {
 /**
  * Controller method for handling updates to the post associated with a UserTop5List
  * 
+ * req.params: { id: postId }
+ * 
  * req.body: {
- *      id: the id of the post
  *      likes: list of users who have liked the post
  *      dislikes: list of users who have disliked the post
  *      views: count of number of views
@@ -112,7 +114,7 @@ updatePost = async (req, res) => {
     if (!req.body) {
         return res.status(400).json({ success: false, message: "Body required for update."});
     } 
-    let post = await Post.findById(req.body.id).catch((err) => { 
+    let post = await Post.findById(req.params.id).catch((err) => { 
         console.log(err);
     });
     if (!post) {
@@ -134,7 +136,7 @@ updatePost = async (req, res) => {
 
 // Gets the current users top5lists
 getUserTop5Lists = async (req, res) => {
-    await UserTop5List.find({userId: req.userId}, (err, lists) => {
+    await UserTop5List.find({userId: req.params.id}, (err, lists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err });
         }
@@ -174,109 +176,30 @@ getCommunityTop5Lists = async (req, res) => {
     }).catch((err) => { console.log(err); });
 }
 
-updateTop5List = async (req, res) => {
-    const body = req.body
-    console.log("updateTop5List: " + JSON.stringify(body));
-    if (!body) {
-        return res.status(400).json({
-            success: false,
-            error: 'You must provide a body to update',
-        })
-    }
+/**
+ * Deletes a users top5list by id
+ * 
+ * req.params: {id: the id of the list to delete}
+ */
+deleteUserTop5List = async (req, res) => {
 
-    Top5List.findOne({ _id: req.params.id }, (err, top5List) => {
-        console.log("top5List found: " + JSON.stringify(top5List));
-        if (err) {
-            return res.status(404).json({
-                err,
-                message: 'Top 5 List not found!',
-            })
+    UserTop5List.findById(req.params.id, async (err, list) => {
+        if (!list || err) {
+            return res.status(404).json({ success: false, error: "Top5List not found!" });
         }
 
-        top5List.name = body.name
-        top5List.items = body.items
-        top5List
-            .save()
-            .then(() => {
-                console.log("SUCCESS!!!");
-                return res.status(200).json({
-                    success: true,
-                    id: top5List._id,
-                    message: 'Top 5 List updated!',
-                })
-            })
-            .catch(error => {
-                console.log("FAILURE: " + JSON.stringify(error));
-                return res.status(404).json({
-                    error,
-                    message: 'Top 5 List not updated!',
-                })
-            })
-    })
+        Post.findOneAndDelete(list.postId).catch((err) => { 
+            return res.status(500).json({ success: false, error: err});
+        });
+        UserTop5List.findOneAndDelete(list.id).catch((err) => { 
+            return res.status(500).json({ success: false, error: err}); 
+        });
+
+        unUpdateCommunityTop5List(list.name, list.items);
+
+        return res.status(200).json({ success: true, message: "Top5List Deleted!"})
+    });
 }
-
-deleteTop5List = async (req, res) => {
-    Top5List.findById({ _id: req.params.id }, (err, top5List) => {
-        if (err) {
-            return res.status(404).json({
-                err,
-                message: 'Top 5 List not found!',
-            })
-        }
-        Top5List.findOneAndDelete({ _id: req.params.id }, () => {
-            return res.status(200).json({ success: true, data: top5List })
-        }).catch(err => console.log(err))
-    })
-}
-
-getTop5ListById = async (req, res) => {
-    await Top5List.findById({ _id: req.params.id }, (err, list) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err });
-        }
-
-        if (list.ownerId !== req.userId) {
-            return res.status(401).json({ success: false, error: "Unauthorized" });
-        }
-        
-        return res.status(200).json({ success: true, top5List: list })
-    }).catch(err => console.log(err))
-}
-
-getTop5List = async (req, res) => {
-    await Top5List.find({}, (err, top5Lists) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        }
-        if (!top5Lists.length) {
-            return res
-                .status(404)
-                .json({ success: false, error: `Top 5 Lists not found` })
-        }
-        return res.status(200).json({ success: true, data: top5Lists })
-    }).catch(err => console.log(err))
-}
-
-getTop5ListPairs = async (req, res) => {
-    await Top5List.find({ownerEmail: req.params.email }, (err, top5Lists) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        } else {
-            // PUT ALL THE LISTS INTO ID, NAME PAIRS
-            let pairs = [];
-            for (let key in top5Lists) {
-                let list = top5Lists[key];
-                let pair = {
-                    _id: list._id,
-                    name: list.name
-                };
-                pairs.push(pair);
-            }
-            return res.status(200).json({ success: true, idNamePairs: pairs })
-        }
-    }).catch(err => console.log(err))
-}
-
 
 // THE REST OF THE METHODS HERE ARE NOT ACTUAL CONTROLLER METHODS. THEY
 // ARE MORE OR LESS JUST HELPER METHODS
@@ -308,8 +231,22 @@ createNewPost = async () => {
 /**
  * Handles deleting a Top5CommunityList object 
  */
-deleteCommunityTop5List = async (name, items) => {
+deleteCommunityTop5List = async (name) => {
+    let list = await CommunityTop5List.findById({community: name.toUpperCase()}).catch((err) => {
+        return res.status(404).json({ success: false, error: "CommunityTop5List not found."})
+    });
 
+    if (!list) {
+        return res.status(404).json({ success: false, error: "CommunityTop5List not found."});
+    }
+    await Post.findOneAndDelete({id: list.postId}).catch((err) => { 
+        return res.status(404).json({ success: false, error: "CommunityTop5List post didn't delete."});
+    })
+    await CommunityTop5List.findOneAndDelete({id: list.id}).catch((err) => { 
+        return res.status(404).json({ success: false, error: "CommunityTop5List didn't delete."});
+    })
+
+    return res.status(200).json({ success: true, message: "CommunityTop5List deleted successfully"});
 }
 
 /**
@@ -353,7 +290,7 @@ createCommunityTop5List = async (name, items) => {
  *         creates and new Top5CommunityList with the given name and items
  */
 updateCommunityTop5List = async (name, items) => {
-    let communityList = await CommunityTop5List.findOne({"community": name.toUpperCase()});
+    let communityList = await CommunityTop5List.findOne({community: name.toUpperCase()});
 
     if (!communityList) {
         let newCommunityList = await createCommunityTop5List(name, items);
@@ -394,7 +331,33 @@ updateCommunityTop5List = async (name, items) => {
  * If the the items count hits zero, the item is removed from the community list item counts
  */
 unUpdateCommunityTop5List = async (name, items) => {
+    let list = await CommunityTop5List.findOne({community: name.toUpperCase()}).catch((err) => { console.log(err); });
 
+    if (!list) {
+        return {success: false, error: "No communityTop5List found"}
+    }
+
+    let itemCounts = {...list.itemCounts};
+
+    for (let i = 0; i < items.length;  i++) {
+        if (items[i] in itemCounts) {
+            itemCounts[items[i]] -= 5 - i
+            if (itemCounts[items[i]] <= 0) {
+                delete itemCounts[items[i]];
+            }
+        }  
+    }
+
+    if (Object.keys(itemCounts).length === 0) {
+        deleteCommunityTop5List(name).then(() => {
+            return {success: true, message: "Community List Updated and Deleted!"}
+        }).catch((err) => { console.log(err) })
+    }
+
+    list.itemCounts = itemCounts;
+    list.save().then(() => {
+        return {success: true, message: "Community List Updated!", list: list}
+    }).catch((err) => {console.log(err);});
 }
 
 
@@ -406,10 +369,5 @@ module.exports = {
     getCommunityTop5Lists,
     updatePost,
     publishTop5List,
-
-    // updateTop5List,
-    // deleteTop5List,
-    // getTop5Lists,
-    // getTop5ListPairs,
-    // getTop5ListById
+    deleteUserTop5List
 }
