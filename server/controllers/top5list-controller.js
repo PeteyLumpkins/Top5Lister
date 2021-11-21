@@ -8,24 +8,18 @@ const Post = require('../models/post-model');
  *  req.params: { id: id of the list to publish }
  */
 publishTop5List = async (req, res) => {
-    if (!req.body) {
-        return res.status(400).json({success: false, error: "Requires a body."});
-    }
+    UserTop5List.findById(req.params.id, (err, list) => {
+        if (err || !list) {
+            return res.status(404).json({success: false, error: "Top5List not found!"});
+        }
 
-    let list = await UserTop5List.findById(req.params.id).catch((err) => { console.log(err) });
-        
-    if (!list) {
-        return res.status(404).json({success: false, error: "List not found!"});
-    }
-
-    list.published = Date.now();
-    list.save().catch((err) => { console.log(err) })
-
-    await updateCommunityTop5List(list.name, list.items).catch((err) => { 
-        return res.status(404).json({success: false, error: err});
-    })
-            
-    return res.status(200).json({success: true, message: "Top5List Published!", list: list});
+        list.published = Date.now();
+        list.save().then(() => {
+            return res.status(200).json({success: true, message: "Top5List published!", top5list: list});
+        }).catch((err) => {
+            return res.status(500).json({success: false, error: err.message});
+        })
+    });
 }
 
 /**
@@ -42,17 +36,17 @@ createUserTop5List = async (req, res) => {
     
     // Next, create the top5 list with the associated post
     let userTop5List = new UserTop5List({
-        postId: null, 
         userId: req.body.userId,
-        published: null,
         author: req.body.author,
         items: req.body.items,
-        name: req.body.name
+        name: req.body.name,
+        postId: null, 
+        published: ""
     });
     userTop5List.save().then(() => {
-        return res.status(200).json({success: true, message: "Top5List Created!", top5list: top5list});
+        return res.status(200).json({success: true, message: "Top5List Created!", top5list: userTop5List});
     }).catch((err) => { 
-        return res.status(404).json({success: false, error: "Top5List creation failed."});
+        return res.status(404).json({success: false, error: err.message});
     });
 }
 
@@ -93,8 +87,9 @@ updateUserTop5List = async (req, res) => {
 }
 
 // Gets the current users top5lists
+// TODO should be for current users lists -> req.userId
 getUserTop5Lists = async (req, res) => {
-    await UserTop5List.find({userId: req.params.id}, (err, lists) => {
+    UserTop5List.find({userId: req.params.id}, (err, lists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err });
         }
@@ -108,48 +103,17 @@ getUserTop5Lists = async (req, res) => {
 }
 
 // Gets all the top5lists
+// Should it only return published lists? I guess it's fine for now...
 getTop5Lists = async (req, res) => {
-
-    await UserTop5List.find({published: {$not : {$eq : null}}}, async (err, lists) => {
+    UserTop5List.find({published: {$not : {$eq : null}}}, (err, lists) => {
         if (err) {
-            return res.status(404).json({success: false, error: err});
+            return res.status(500).json({success: false, error: err.message});
+        } else if (lists.length === 0) {
+            return res.status(404).json({success: false, error: "Top5Lists not found!"});
         }
         
-        let post;
-        let top5lists = [];
-        for (let i = 0; i < lists.length; i++) {
-
-            post = await Post.findById(lists[i].postId).catch((err) => { console.log(err); })
-            top5lists.push({
-                id: lists[i].id, 
-                postId: lists[i].postId,
-                author: lists[i].author,
-                name: lists[i].name, 
-                items: lists[i].items,
-                likes: post.likes,
-                dislikes: post.dislikes,
-                views: post.views,
-                comments: post.comments
-            })
-        }
-        return res.status(200).json({success: true, message: "Successfully got Top5Lists", top5lists: top5lists});
-    }).catch((err) => { console.log(err) });
-
-}
-
-// Gets all of the community top5lists
-getCommunityTop5Lists = async (req, res) => {
-    await CommunityTop5List.find({}, (err, lists) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err });
-        }
-
-        if (!lists.length) {
-            return res.status(404).json({ success: false, error: "Top5Lists not found!"});
-        }
-
-        return res.status(200).json({ success: true, lists: lists});
-    }).catch((err) => { console.log(err); });
+        return res.status(200).json({success: true, message: "Top5Lists found!", top5lists: lists});
+    }).catch((err) => { return res.status(500).json({success: false, error: err.message}); });
 }
 
 /**
@@ -158,102 +122,22 @@ getCommunityTop5Lists = async (req, res) => {
  * req.params: {id: the id of the list to delete}
  */
 deleteUserTop5List = async (req, res) => {
-
     UserTop5List.findById(req.params.id, async (err, list) => {
         if (!list || err) {
             return res.status(404).json({ success: false, error: "Top5List not found!" });
         }
-
-        Post.findOneAndDelete(list.postId).catch((err) => { 
-            return res.status(500).json({ success: false, error: err});
-        });
         UserTop5List.findOneAndDelete(list.id).catch((err) => { 
             return res.status(500).json({ success: false, error: err}); 
         });
-
-        unUpdateCommunityTop5List(list.name, list.items);
-
         return res.status(200).json({ success: true, message: "Top5List Deleted!"})
     });
 }
-
-// THE REST OF THE METHODS HERE ARE NOT ACTUAL CONTROLLER METHODS. THEY
-// ARE MORE OR LESS JUST HELPER METHODS
-
-/**
- * Handles deleting a Top5CommunityList object 
- */
-deleteCommunityTop5List = async (name) => {
-    let list = await CommunityTop5List.findById({community: name.toUpperCase()}).catch((err) => {
-        return res.status(404).json({ success: false, error: "CommunityTop5List not found."})
-    });
-
-    if (!list) {
-        return res.status(404).json({ success: false, error: "CommunityTop5List not found."});
-    }
-    await Post.findOneAndDelete({id: list.postId}).catch((err) => { 
-        return res.status(404).json({ success: false, error: "CommunityTop5List post didn't delete."});
-    })
-    await CommunityTop5List.findOneAndDelete({id: list.id}).catch((err) => { 
-        return res.status(404).json({ success: false, error: "CommunityTop5List didn't delete."});
-    })
-
-    return res.status(200).json({ success: true, message: "CommunityTop5List deleted successfully"});
-}
-
-
-/**
- * Handles updating a Top5CommunityList. 
- * 
- * Case 1: A community list with the given name EXISTS. In this case, we add the items
- *         and their respective values to the community list with the given names
- * 
- * Case 2: A community list with the given name DOES NOT EXIST. In this case, the function
- *         creates and new Top5CommunityList with the given name and items
- */
-updateCommunityTop5List = async (name, items) => {
-    let communityList = await CommunityTop5List.findOne({community: name.toUpperCase()});
-
-    if (!communityList) {
-        let newCommunityList = await createCommunityTop5List(name, items);
-        return {
-            success: true,
-            msg: "Community List Created!", 
-            list: newCommunityList
-        };
-    } else {
-        
-        let itemCounts = {...communityList.itemCounts};
-
-        for (let i = 0; i < items.length; i++) {
-            if (items[i] in communityList.itemCounts) {
-                itemCounts[items[i]] += 5 - i
-            } else {
-                itemCounts[items[i]] = 5 - i
-            }
-        }
-
-        communityList.itemCounts = itemCounts;
-        let savedList = await communityList.save().catch((err) => { return {success: false, error: err} });
-
-        return {
-            success: true,
-            msg: "Community List Updated!", 
-            list: savedList
-        };
-    }
-}
-
-
-
-
 
 module.exports = {
     createUserTop5List,
     updateUserTop5List,
     getTop5Lists,
     getUserTop5Lists,
-    getCommunityTop5Lists,
     publishTop5List,
     deleteUserTop5List
 }

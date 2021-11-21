@@ -4,11 +4,11 @@ const Schema = mongoose.Schema
 const UserTop5ListSchema = new Schema(
     { 
         name: {type: String, required: true},
-        postId: {type: String, required: true},
-        userId: {type: String, required: true},
-        published: {type: Date},
         author: {type: String, required: true},
+        userId: {type: String, required: true},
         items: {type: [String], required: true},
+        published: {type: Date},
+        postId: {type: String}
     }, 
     { timestamps: true },
 )
