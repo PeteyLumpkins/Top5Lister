@@ -1,4 +1,4 @@
-const Top5List = require('../models/top5list-model');
+const Top5List = require('../models/post-model');
 const UserTop5List = require('../models/user-top5list-model');
 const CommunityTop5List = require('../models/community-top5list-model');
 
@@ -6,14 +6,15 @@ function DBManager() {
 
     const db = {};
 
-    // Gets user lists by 
+    // Gets community lists by name of the community
     db.getCommunityTop5Lists = async (name) => {
-        let lists = CommunityTop5List.find({"community": new RegExp("^" + name, "i")});
+        let lists = await CommunityTop5List.find({"community": new RegExp("^" + name, "i")});
 
-        if (!lists) {
+        if (lists.length === 0) {
             return {success: false, message: "No Community Lists Found starting with " + name}
         }
-        return lists;
+
+        return {success: true, message: "Successfully got top 5 community lists!", top5lists: lists};
     }
 
     // Creates a new community-list
@@ -47,6 +48,11 @@ function DBManager() {
         };
     }
 
+    // Gets user lists by the provided username
+    db.getUserTop5Lists = async (name) => {
+
+    }
+
     // Creates a new user-list
     db.createUserTop5List = async (listBody) => {
         let top5list = await this.createTop5List(listBody.top5List);
@@ -72,10 +78,10 @@ function DBManager() {
 
     }
 
+    // Creates the top5list portion of a user or community top5list
     createTop5List = async (listBody) => {
         const newlist = new Top5List(listBody)
         const savedList = await newlist.save();
-
         return savedList;   
     }
 

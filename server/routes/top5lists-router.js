@@ -10,9 +10,11 @@ router.get('/top5list/:id', auth.verify, Top5ListController.getTop5ListById)
 router.get('/top5lists', auth.verify, Top5ListController.getTop5Lists)
 router.get('/top5listpairs/:email', auth.verify, Top5ListController.getTop5ListPairs)
 
-router.post('/usertop5list', auth.verify, Top5ListController.createUserTop5List)
-router.post('/communitytop5list', auth.verify, Top5ListController.createCommunityTop5List)
-router.get('/communitytop5list/:name', auth.verify, Top5ListController.getCommunityTop5Lists)
+router.post('/test', Top5ListController.createUserTop5List)
+
+router.put('/usertop5list', Top5ListController.updateUserTop5List);
+router.post('/usertop5list', Top5ListController.createUserTop5List);
+router.put('/post', Top5ListController.updatePost);
 
 router.post('/register', UserController.registerUser)
 router.get('/loggedIn', UserController.getLoggedIn)
