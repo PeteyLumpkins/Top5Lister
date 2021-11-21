@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const Top5ListSchema = new Schema(
+const Post = new Schema(
     {
         comments: { type: [Object], required: true },
         likes: {type: [String], required: true },
@@ -11,4 +11,4 @@ const Top5ListSchema = new Schema(
     { timestamps: true },
 )
 
-module.exports = mongoose.model('Top5List', Top5ListSchema)
+module.exports = mongoose.model('Post', Post)

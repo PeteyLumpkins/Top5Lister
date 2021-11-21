@@ -39,27 +39,21 @@ publishTop5List = async (req, res) => {
  * }
  */
 createUserTop5List = async (req, res) => {
-    // First creat the post associated with the new top5 list
-    let post = await createNewPost();
     
     // Next, create the top5 list with the associated post
     let userTop5List = new UserTop5List({
-        postId: post._id, 
+        postId: null, 
         userId: req.body.userId,
         published: null,
         author: req.body.author,
         items: req.body.items,
         name: req.body.name
     });
-    let savedList = await userTop5List.save()
-                                      .catch((err) => { 
-                                          return res.status(400).json({success: false, error: "Error occured while saving user top5list"})
-                                        });
-    if (!savedList) {
-        return res.status(500).json({success: false, error: "Unknown error occured on the server"})
-    }
-
-    return res.status(200).json(savedList);
+    userTop5List.save().then(() => {
+        return res.status(200).json({success: true, message: "Top5List Created!", top5list: top5list});
+    }).catch((err) => { 
+        return res.status(404).json({success: false, error: "Top5List creation failed."});
+    });
 }
 
 /**
@@ -98,42 +92,6 @@ updateUserTop5List = async (req, res) => {
     })
 }
 
-/**
- * Controller method for handling updates to the post associated with a UserTop5List
- * 
- * req.params: { id: postId }
- * 
- * req.body: {
- *      likes: list of users who have liked the post
- *      dislikes: list of users who have disliked the post
- *      views: count of number of views
- *      comments: list of comments 
- * }
- */
-updatePost = async (req, res) => {
-    if (!req.body) {
-        return res.status(400).json({ success: false, message: "Body required for update."});
-    } 
-    let post = await Post.findById(req.params.id).catch((err) => { 
-        console.log(err);
-    });
-    if (!post) {
-        return res.status(404).json({ success: false, message: "Post failed to update."});
-    }
-
-    post.likes = req.body.likes;
-    post.dislikes = req.body.dislikes;
-    post.views = req.body.views;
-    post.comments = req.body.comments;
-    post.save().then(() => {
-        return res.status(200).json({
-            success: true,
-            message: "Post Updated!",
-            post: post
-        });
-    }).catch((err) => { console.log(err)});
-}
-
 // Gets the current users top5lists
 getUserTop5Lists = async (req, res) => {
     await UserTop5List.find({userId: req.params.id}, (err, lists) => {
@@ -152,11 +110,29 @@ getUserTop5Lists = async (req, res) => {
 // Gets all the top5lists
 getTop5Lists = async (req, res) => {
 
-    await UserTop5List.find({published: {$not : {$eq : null}}}, (err, lists) => {
+    await UserTop5List.find({published: {$not : {$eq : null}}}, async (err, lists) => {
         if (err) {
             return res.status(404).json({success: false, error: err});
         }
-        return res.status(200).json({success: true, message: "Successfully got Top5Lists", top5lists: lists});
+        
+        let post;
+        let top5lists = [];
+        for (let i = 0; i < lists.length; i++) {
+
+            post = await Post.findById(lists[i].postId).catch((err) => { console.log(err); })
+            top5lists.push({
+                id: lists[i].id, 
+                postId: lists[i].postId,
+                author: lists[i].author,
+                name: lists[i].name, 
+                items: lists[i].items,
+                likes: post.likes,
+                dislikes: post.dislikes,
+                views: post.views,
+                comments: post.comments
+            })
+        }
+        return res.status(200).json({success: true, message: "Successfully got Top5Lists", top5lists: top5lists});
     }).catch((err) => { console.log(err) });
 
 }
@@ -205,30 +181,6 @@ deleteUserTop5List = async (req, res) => {
 // ARE MORE OR LESS JUST HELPER METHODS
 
 /**
- * Handles creating a new Post object in the database
- */
-createNewPost = async () => {
-    let post = new Post({
-        likes: [],
-        dislikes: [],
-        comments: [],
-        views: 0
-    });
-    let savedPost = await post.save().catch((err) => { return {success: false, error: err}; });
-    if (!savedPost) {
-        return {success: false}
-    }
-    return {
-        success: true,
-        _id: savedPost._id,
-        likes: savedPost.likes,
-        dislikes: savedPost.dislikes,
-        comments: savedPost.comments,
-        views: savedPost.views
-    };
-}
-
-/**
  * Handles deleting a Top5CommunityList object 
  */
 deleteCommunityTop5List = async (name) => {
@@ -249,36 +201,6 @@ deleteCommunityTop5List = async (name) => {
     return res.status(200).json({ success: true, message: "CommunityTop5List deleted successfully"});
 }
 
-/**
- * Handles creating a new Top5CommunityList object in the database
- */
-createCommunityTop5List = async (name, items) => {
-    let post = await createNewPost().catch((err) => { return res.status(400).json({error: err})});
-    // return res.status(200).json({messagee: "Hello world"});
-
-    let itemCounts = {}
-    for (let i = 0; i < items.length; i++) {
-        itemCounts[items[i]] = 5 - i
-    }
-
-    let commTop5List = new CommunityTop5List({
-        postId: post._id, 
-        community: name,
-        lastUpdated: Date.now(),
-        itemCounts: itemCounts
-    });
-
-    let savedList = await commTop5List.save().catch((err) => { return {success: false, error: err}});
-    if (!savedList) {
-        return {success: false, error: "Top5CommunityList didnt't save to the database..."}
-    }
-
-    return {
-        success: true,
-        message: "Community Top5List was successfully created!",
-        communityList: savedList
-    };
-}
 
 /**
  * Handles updating a Top5CommunityList. 
@@ -322,43 +244,8 @@ updateCommunityTop5List = async (name, items) => {
     }
 }
 
-/**
- * Handles deleting and removing items from a Top5CommunityList.
- * 
- * A community list with the given name EXISTS. In this case, the function
- * SUBTRACTS the items respective values from the community list with the given name.
- * 
- * If the the items count hits zero, the item is removed from the community list item counts
- */
-unUpdateCommunityTop5List = async (name, items) => {
-    let list = await CommunityTop5List.findOne({community: name.toUpperCase()}).catch((err) => { console.log(err); });
 
-    if (!list) {
-        return {success: false, error: "No communityTop5List found"}
-    }
 
-    let itemCounts = {...list.itemCounts};
-
-    for (let i = 0; i < items.length;  i++) {
-        if (items[i] in itemCounts) {
-            itemCounts[items[i]] -= 5 - i
-            if (itemCounts[items[i]] <= 0) {
-                delete itemCounts[items[i]];
-            }
-        }  
-    }
-
-    if (Object.keys(itemCounts).length === 0) {
-        deleteCommunityTop5List(name).then(() => {
-            return {success: true, message: "Community List Updated and Deleted!"}
-        }).catch((err) => { console.log(err) })
-    }
-
-    list.itemCounts = itemCounts;
-    list.save().then(() => {
-        return {success: true, message: "Community List Updated!", list: list}
-    }).catch((err) => {console.log(err);});
-}
 
 
 module.exports = {
@@ -367,7 +254,6 @@ module.exports = {
     getTop5Lists,
     getUserTop5Lists,
     getCommunityTop5Lists,
-    updatePost,
     publishTop5List,
     deleteUserTop5List
 }
