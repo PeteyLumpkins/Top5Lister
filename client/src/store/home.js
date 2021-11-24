@@ -29,10 +29,9 @@ export const HomeStoreActionType = {
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
 // AVAILABLE TO THE REST OF THE APPLICATION
-function GlobalStoreContextProvider(props) {
+function HomeStoreContextProvider(props) {
     // THESE ARE ALL THE THINGS OUR DATA STORE WILL MANAGE
     const [store, setStore] = useState({
-        top5lists: [],
         currentList: null,
         isListNameEditActive: false,
         isItemEditActive: false,
@@ -43,21 +42,14 @@ function GlobalStoreContextProvider(props) {
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
     const { auth } = useContext(AuthContext);
 
-    useEffect(() => {
-        if (history.location.pathname.startsWith("/top5list/")) {
-            store.setCurrentList(history.location.pathname.substring("/top5list/".length));
-        }
-    }, []);
-
     // HERE'S THE DATA STORE'S REDUCER, IT MUST
     // HANDLE EVERY TYPE OF STATE CHANGE
     const storeReducer = (action) => {
         const { type, payload } = action;
         switch (type) {
-            // LIST UPDATE OF ITS NAME
+            // TODO changing list name happens through updating currentlist
             case GlobalStoreActionType.CHANGE_LIST_NAME: {
                 return setStore({
-                    top5lists: payload.top5lists,
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -67,27 +59,24 @@ function GlobalStoreContextProvider(props) {
             // STOP EDITING THE CURRENT LIST
             case GlobalStoreActionType.CLOSE_CURRENT_LIST: {
                 return setStore({
-                    top5lists: store.top5lists,
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
                     listMarkedForDeletion: null
                 })
             }
-            // CREATE A NEW LIST
+            // TODO current list in the payload
             case GlobalStoreActionType.CREATE_NEW_LIST: {
                 return setStore({
-                    top5lists: store.top5lists,
                     currentList: payload,
                     isListNameEditActive: false,
                     isItemEditActive: false,
                     listMarkedForDeletion: null
                 })
             }
-            // GET ALL THE LISTS SO WE CAN PRESENT THEM
+            // TODO handled by the view store
             case GlobalStoreActionType.LOAD_ID_NAME_PAIRS: {
                 return setStore({
-                    top5lists: payload,
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -97,7 +86,6 @@ function GlobalStoreContextProvider(props) {
             // PREPARE TO DELETE A LIST
             case GlobalStoreActionType.MARK_LIST_FOR_DELETION: {
                 return setStore({
-                    top5lists: store.top5lists,
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -107,7 +95,6 @@ function GlobalStoreContextProvider(props) {
             // PREPARE TO DELETE A LIST
             case GlobalStoreActionType.UNMARK_LIST_FOR_DELETION: {
                 return setStore({
-                    top5lists: store.top5lists,
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -117,7 +104,6 @@ function GlobalStoreContextProvider(props) {
             // UPDATE A LIST
             case GlobalStoreActionType.SET_CURRENT_LIST: {
                 return setStore({
-                    top5lists: store.top5lists,
                     currentList: payload,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -127,7 +113,6 @@ function GlobalStoreContextProvider(props) {
             // START EDITING A LIST ITEM
             case GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE: {
                 return setStore({
-                    top5lists: store.top5lists,
                     currentList: store.currentList,
                     isListNameEditActive: false,
                     isItemEditActive: payload.isEditActive,
@@ -137,7 +122,6 @@ function GlobalStoreContextProvider(props) {
             // START EDITING A LIST NAME
             case GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
                 return setStore({
-                    top5lists: store.top5lists,
                     currentList: payload,
                     isListNameEditActive: true,
                     isItemEditActive: false,
@@ -181,7 +165,7 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
+    // TODO will save the current list
     store.closeCurrentList = function () {
         storeReducer({
             type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
@@ -215,21 +199,6 @@ function GlobalStoreContextProvider(props) {
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
-        }
-    }
-
-    // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
-    store.loadIdNamePairs = async function () {
-        const response = await api.getTop5Lists(auth.user.email);
-        if (response.data.success) {
-            let pairsArray = response.data.idNamePairs;
-            storeReducer({
-                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                payload: pairsArray
-            });
-        }
-        else {
-            console.log("API FAILED TO GET THE LIST PAIRS");
         }
     }
 
@@ -268,10 +237,7 @@ function GlobalStoreContextProvider(props) {
         });
     }
 
-    // THE FOLLOWING 8 FUNCTIONS ARE FOR COORDINATING THE UPDATING
-    // OF A LIST, WHICH INCLUDES DEALING WITH THE TRANSACTION STACK. THE
-    // FUNCTIONS ARE setCurrentList, addMoveItemTransaction, addUpdateItemTransaction,
-    // moveItem, updateItem, updateCurrentList, undo, and redo
+    // Setting the current list
     store.setCurrentList = async function (id) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
@@ -287,11 +253,13 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    // Updating an item
     store.updateItem = function (index, newItem) {
         store.currentList.items[index] = newItem;
         store.updateCurrentList();
     }
 
+    // TODO probably something like saving it. Not sure yet
     store.updateCurrentList = async function () {
         const response = await api.updateTop5ListById(store.currentList._id, store.currentList);
         if (response.data.success) {

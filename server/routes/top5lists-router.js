@@ -8,7 +8,6 @@ const CommunityTop5ListController = require('../controllers/community-top5list-c
 
 const router = express.Router()
 
-
 // Top5List routes
 router.put('/usertop5list/:id', Top5ListController.updateUserTop5List);
 router.post('/usertop5list', Top5ListController.createUserTop5List);

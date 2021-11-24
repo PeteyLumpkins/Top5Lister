@@ -22,13 +22,37 @@ const api = axios.create({
 // WORK, AND SOME REQUIRE DATA, WHICH WE CALL THE payload, FOR WHEN
 // WE NEED TO PUT THINGS INTO THE DATABASE OR IF WE HAVE SOME
 // CUSTOM FILTERS FOR QUERIES
-export const createTop5List = (payload) => api.post(`/top5list/`, payload)
-export const getAllTop5Lists = () => api.get(`/top5lists/`)
-export const getTop5ListPairs = (email) => api.get(`/top5listpairs/${email}`)
-export const updateTop5ListById = (id, payload) => api.put(`/top5list/${id}`, payload)
-export const deleteTop5ListById = (id) => api.delete(`/top5list/${id}`)
-export const getTop5ListById = (id) => api.get(`/top5list/${id}`)
+// export const createTop5List = (payload) => api.post(`/top5list/`, payload)
+// export const getAllTop5Lists = () => api.get(`/top5lists/`)
+// export const getTop5ListPairs = (email) => api.get(`/top5listpairs/${email}`)
+// export const updateTop5ListById = (id, payload) => api.put(`/top5list/${id}`, payload)
+// export const deleteTop5ListById = (id) => api.delete(`/top5list/${id}`)
+// export const getTop5ListById = (id) => api.get(`/top5list/${id}`)
 
+
+// Top5List routes
+export const updateUserTop5List = (payload) => api.put(`/updateUserTop5List/${id}`, payload);
+export const createUserTop5List = (payload) => api.post(`/usertop5list/`, payload);
+export const publishTop5List = () => api.put(`/publish/${id}`);
+export const deleteUserTop5List = () => api.delete(`/usertop5list/${id}`);
+export const getTop5Lists = () => api.get(`/top5lists/`);
+export const getUserTop5Lists = () => api.get(`/usertoplists/`);
+
+// CommunityTop5List routes
+export const createCommunityTop5List = () => api.post(`/communitytop5list/`);
+export const getAllCommunityTop5Lists = () => api.post(`/communitytop5list/`);
+export const addToCommunityTop5List = (payload) => api.post(`/communitytop5list/${community}`, payload);
+export const removeFromCommunityTop5List = (payload) => api.post(`/communitytop5list/${community}`, payload);
+export const deleteCommunityTop5List = () => api.delete(`/communitytop5list/${community}`);
+
+// Post routes 
+export const createPost = () => api.post(`/post/`);
+export const getAllPosts = () => api.get(`/posts/`);
+export const getPostById = () => api.get(`/post/${id}`);
+export const updatePost = (payload) => api.put(`/post/${id}`, payload);
+export const deletePost = () => api.delete(`/post/${id}`);
+
+// Auth routes
 export const getLoggedIn = () => api.get(`/loggedIn/`);
 export const registerUser = (payload) => api.post(`/register/`, payload);
 export const loginUser = (payload) => api.post(`/login/`, payload);
