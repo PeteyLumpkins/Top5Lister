@@ -22,6 +22,7 @@ const api = axios.create({
 // WORK, AND SOME REQUIRE DATA, WHICH WE CALL THE payload, FOR WHEN
 // WE NEED TO PUT THINGS INTO THE DATABASE OR IF WE HAVE SOME
 // CUSTOM FILTERS FOR QUERIES
+
 // export const createTop5List = (payload) => api.post(`/top5list/`, payload)
 // export const getAllTop5Lists = () => api.get(`/top5lists/`)
 // export const getTop5ListPairs = (email) => api.get(`/top5listpairs/${email}`)
@@ -31,26 +32,27 @@ const api = axios.create({
 
 
 // Top5List routes
-export const updateUserTop5List = (payload) => api.put(`/updateUserTop5List/${id}`, payload);
+export const updateUserTop5List = (id, payload) => api.put(`/updateUserTop5List/${id}`, payload);
 export const createUserTop5List = (payload) => api.post(`/usertop5list/`, payload);
-export const publishTop5List = () => api.put(`/publish/${id}`);
-export const deleteUserTop5List = () => api.delete(`/usertop5list/${id}`);
+export const publishTop5List = (id) => api.put(`/publish/${id}`);
+export const deleteUserTop5List = (id) => api.delete(`/usertop5list/${id}`);
 export const getTop5Lists = () => api.get(`/top5lists/`);
-export const getUserTop5Lists = () => api.get(`/usertoplists/`);
+// TODO shouldn't be taking an id param, just for testing purposes
+export const getUserTop5Lists = (id) => api.get(`/usertop5lists/${id}`);
 
 // CommunityTop5List routes
 export const createCommunityTop5List = () => api.post(`/communitytop5list/`);
 export const getAllCommunityTop5Lists = () => api.post(`/communitytop5list/`);
-export const addToCommunityTop5List = (payload) => api.post(`/communitytop5list/${community}`, payload);
-export const removeFromCommunityTop5List = (payload) => api.post(`/communitytop5list/${community}`, payload);
-export const deleteCommunityTop5List = () => api.delete(`/communitytop5list/${community}`);
+export const addToCommunityTop5List = (community, payload) => api.post(`/communitytop5list/${community}`, payload);
+export const removeFromCommunityTop5List = (community, payload) => api.post(`/communitytop5list/${community}`, payload);
+export const deleteCommunityTop5List = (community) => api.delete(`/communitytop5list/${community}`);
 
 // Post routes 
 export const createPost = () => api.post(`/post/`);
 export const getAllPosts = () => api.get(`/posts/`);
-export const getPostById = () => api.get(`/post/${id}`);
-export const updatePost = (payload) => api.put(`/post/${id}`, payload);
-export const deletePost = () => api.delete(`/post/${id}`);
+export const getPostById = (id) => api.get(`/post/${id}`);
+export const updatePost = (id, payload) => api.put(`/post/${id}`, payload);
+export const deletePost = (id) => api.delete(`/post/${id}`);
 
 // Auth routes
 export const getLoggedIn = () => api.get(`/loggedIn/`);
@@ -59,12 +61,24 @@ export const loginUser = (payload) => api.post(`/login/`, payload);
 export const logoutUser = () => api.get(`/logout/`);
 
 const apis = {
-    createTop5List,
-    getAllTop5Lists,
-    getTop5ListPairs,
-    updateTop5ListById,
-    deleteTop5ListById,
-    getTop5ListById,
+    updateUserTop5List,
+    createUserTop5List, 
+    publishTop5List,
+    deleteUserTop5List,
+    getTop5Lists,
+    getUserTop5Lists,
+
+    createCommunityTop5List,
+    getAllCommunityTop5Lists,
+    addToCommunityTop5List,
+    removeFromCommunityTop5List,
+    deleteCommunityTop5List,
+
+    createPost,
+    getAllPosts,
+    getPostById,
+    updatePost,
+    deletePost,
 
     getLoggedIn,
     registerUser,

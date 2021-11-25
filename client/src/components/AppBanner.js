@@ -86,22 +86,23 @@ export default function AppBanner() {
     
     function getAccountMenu(loggedIn) {
         if (loggedIn) {
-            return auth.user.firstName[0] + auth.user.lastName[0];
+            return auth.user.firstName[0] + auth.user.lastName[0]
+                
         }
         return <AccountCircle />;
     }
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ height: "10%", flexGrow: 1, border: "none"}}>
             <AppBar position="static">
-                <Toolbar sx={{ background: "lightgray" }}>
+                <Toolbar sx={{ background: "primary" }}>
                     <Typography                        
                         variant="h4"
                         noWrap
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}                        
                     >
-                        <Link style={{ textDecoration: 'none', color: 'gold' }} to='/'>T<sup>5</sup>L</Link>
+                        <Link style={{ textDecoration: 'none', color: 'white' }} to='/'>T<sup>5</sup>L</Link>
                     </Typography>
                     <Box sx={{ flexGrow: 1, align: "center",}}></Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -117,29 +118,6 @@ export default function AppBanner() {
                             { getAccountMenu(auth.loggedIn) }
                         </IconButton>
                     </Box>
-                </Toolbar>
-                <Toolbar sx={{background: "gray"}}>
-                    <IconButton
-                        id="home-lists-button"
-                    >
-                        <HomeIcon
-                            color="white"
-                            fontSize="large"
-                        >
-                        </HomeIcon>
-                    </IconButton>
-
-                    <IconButton
-                        id="user-lists-button"
-                    >
-                        <PersonIcon
-                            background="white"
-                            fontSize="large"
-                        >
-
-                        </PersonIcon>
-                    </IconButton>
-
                 </Toolbar>
             </AppBar>        
             {

@@ -1,15 +1,16 @@
-import { useContext } from 'react'
-import HomeScreen from './HomeScreen'
-import SplashScreen from './SplashScreen'
+import { useContext, useEffect } from 'react'
+import {ViewStoreContext} from '../store/view'
+import {ViewStorePageType} from '../store/view'
+
+import HomeScreen from './screens/HomeScreen'
+import SplashScreen from './screens/SplashScreen'
 import AuthContext from '../auth'
-import UserScreen from './screens/UserScreen'
 
 export default function HomeWrapper() {
     const { auth } = useContext(AuthContext);
-    console.log("HomeWrapper auth.loggedIn: " + auth.loggedIn);
 
     if (auth.loggedIn)
         return <HomeScreen />
     else
-        return <UserScreen />
+        return <SplashScreen />
 }

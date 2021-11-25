@@ -47,7 +47,7 @@ getAllCommunityTop5Lists = async (req, res) => {
             return res.status(404).json({ success: false, error: "Top5Lists not found!"});
         }
 
-        return res.status(200).json({ success: true, lists: lists});
+        return res.status(200).json({ success: true, message: "Top5lists found", top5lists: lists});
     }).catch((err) => { console.log(err); });
 }
 

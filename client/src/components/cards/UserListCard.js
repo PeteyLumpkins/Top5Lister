@@ -35,7 +35,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function UserListCard() {
+export default function UserListCard(props) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -43,8 +43,8 @@ export default function UserListCard() {
   };
 
   return (
-    <Card sx={{ paddingTop: 'none', paddingLeft: '10px', background: 'lightblue'}}>
-        <h3>List Name Here</h3>
+    <Card sx={{ paddingTop: 'none', paddingLeft: '2%', background: 'lightblue'}}>
+        <h3>{props.name}</h3>
     <CardActions disableSpacing>
         
       </CardActions>
