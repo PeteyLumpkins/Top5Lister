@@ -31,32 +31,6 @@ body {
   bottom: 2%;
 }
 
-#app-root {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0%;
-  left: 0%;
-}
-
-#top5-banner {
-  left: 0%;
-  top: 0%;
-  width: 100%;
-  height: 5%;
-  float: left;
-  color: white;
-  font-size: 48pt;
-  border-color: black;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 10px;
-}
-
-#top5-navbar {
-  
-}
-
 #splash-screen {
   background-image: linear-gradient(to bottom, #868c8f, #e2f10f);
   color: white;
@@ -99,6 +73,7 @@ body {
 }
 
 #top5-list-selector {
+  margin-top: 0px;
   width: 100%;
   height: 80%;
   background-color: var(--swatch-primary);
@@ -141,7 +116,8 @@ body {
 
 #list-selector-list {
   width: 100%;
-  height: 90%;
+  height: 86%;
+  padding-top: 2%;
   display: flex;
   flex-direction: column;
   overflow: scroll;

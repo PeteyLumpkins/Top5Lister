@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react'
 import {ViewStoreContext} from '../store/view'
 import {ViewStorePageType} from '../store/view'
 
-import HomeScreen from './screens/HomeScreen'
+import HomeScreen from './screens/HomeListsScreen'
 import SplashScreen from './screens/SplashScreen'
 import AuthContext from '../auth'
 

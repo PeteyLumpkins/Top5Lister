@@ -43,7 +43,13 @@ export default function UserListCard(props) {
   };
 
   return (
-    <Card sx={{ paddingTop: 'none', paddingLeft: '2%', background: 'lightblue'}}>
+    <Card sx={{ 
+      paddingTop: 'none', 
+      paddingLeft: '2%', 
+      background: 'lightblue',
+      marginBottom: '2%'
+      }}
+    >
         <h3>{props.name}</h3>
     <CardActions disableSpacing>
         

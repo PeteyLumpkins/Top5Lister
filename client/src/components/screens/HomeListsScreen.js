@@ -5,6 +5,8 @@ import React, { useContext, useEffect } from 'react';
 import { Fab, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
+
+import NavBar from "../nav/NavBar"
 import UserListCard from '../cards/UserListCard';
 
 export default function HomeScreen(props) {
@@ -13,6 +15,11 @@ export default function HomeScreen(props) {
     useEffect(() => {
         viewStore.loadPage(ViewStorePageType.HOME);
     }, []);
+
+    // Handles creating a new list
+    function handleAddNewList() {
+        console.log("Creating new list!")
+    };
 
     let listCard = "";
     if (viewStore && viewStore.top5lists) {
@@ -23,7 +30,7 @@ export default function HomeScreen(props) {
                 right: '5%',
                 maxHeight: '100%', 
                 height: '100%', 
-                overflow: 'scroll'
+                overflow: 'scroll',
                 }}
             >
             {
@@ -39,20 +46,23 @@ export default function HomeScreen(props) {
     }
 
     return (
-        <div id="top5-list-selector">
-            <div id="list-selector-list">
-                    {listCard}
+            <div id="top5-list-selector">
+                <NavBar></NavBar>
+                <div id="list-selector-list">
+                        {listCard}
+                </div>
+                <div id="list-selector-heading">
+                <Fab 
+                    color="primary" 
+                    aria-label="add"
+                    size='small'
+                    onClick={handleAddNewList}
+                    id="add-list-button"
+                >
+                    <AddIcon />
+                </Fab>
+                    <Typography variant="h5">Your Lists</Typography>
+                </div>
             </div>
-            <div id="list-selector-heading">
-            <Fab 
-                color="primary" 
-                aria-label="add"
-                size='small'
-                id="add-list-button"
-            >
-                <AddIcon />
-            </Fab>
-                <Typography variant="h5">Your Lists</Typography>
-            </div>
-        </div>)
+        )
 }

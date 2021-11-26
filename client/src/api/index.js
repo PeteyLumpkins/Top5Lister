@@ -42,7 +42,7 @@ export const getUserTop5Lists = (id) => api.get(`/usertop5lists/${id}`);
 
 // CommunityTop5List routes
 export const createCommunityTop5List = () => api.post(`/communitytop5list/`);
-export const getAllCommunityTop5Lists = () => api.post(`/communitytop5list/`);
+export const getAllCommunityTop5Lists = () => api.get(`/communitytop5lists/`);
 export const addToCommunityTop5List = (community, payload) => api.post(`/communitytop5list/${community}`, payload);
 export const removeFromCommunityTop5List = (community, payload) => api.post(`/communitytop5list/${community}`, payload);
 export const deleteCommunityTop5List = (community) => api.delete(`/communitytop5list/${community}`);

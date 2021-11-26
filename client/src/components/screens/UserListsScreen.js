@@ -1,17 +1,16 @@
-import UserListCard from '../cards/UserListCard';
-import List from '@mui/material/List';
-
 import { Fab, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
-import UserListCard from '../cards/UserListCard';
 
 import {ViewStoreContext} from '../../store/view'
 import {ViewStorePageType} from '../../store/view'
 
+import NavBar from "../nav/NavBar"
+import UserListCard from '../cards/UserListCard';
+
 import React, { useContext, useEffect } from 'react';
 
-export default function UserScreen() {
+export default function UserListsScreen() {
 
     const { viewStore } = useContext(ViewStoreContext);
 
@@ -22,7 +21,7 @@ export default function UserScreen() {
     let listCard = "";
     if (viewStore && viewStore.top5lists) {
         listCard = 
-            <List sx={{ width: '90%', left: '5%', bgcolor: 'background.paper' }}>
+            <List sx={{ width: '90%', left: '5%' }}>
             {
                 viewStore.top5lists.map((top5list) => (
                     <UserListCard
@@ -37,16 +36,7 @@ export default function UserScreen() {
 
     return (
         <div id="top5-list-selector">
-            <div id="list-selector-heading">
-            <Fab 
-                color="primary" 
-                aria-label="add"
-                id="add-list-button"
-            >
-                <AddIcon />
-            </Fab>
-                <Typography variant="h2">Your Lists</Typography>
-            </div>
+            <NavBar />
             <div id="list-selector-list">
                     {listCard}
             </div>

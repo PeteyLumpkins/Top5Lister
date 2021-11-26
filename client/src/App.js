@@ -5,12 +5,15 @@ import { AuthContextProvider } from './auth';
 import { GlobalStoreContextProvider } from './store'
 import { ViewStoreContextProvider } from './store/view'
 
+import UserListsScreen from './components/screens/UserListsScreen';
+import CommunityListsScreen from './components/screens/CommunityListsScreen';
+import AllListsScreen from './components/screens/AllListsScreen';
+
 import {
     AppBanner,
     HomeWrapper,
     RegisterScreen,
-    Statusbar,
-    WorkspaceScreen,
+    
     LoginScreen,
     NavBar,
 } from './components'
@@ -32,9 +35,11 @@ const App = () => {
                 <GlobalStoreContextProvider> 
                     <ViewStoreContextProvider>             
                         <AppBanner />
-                        <NavBar></NavBar>
                         <Switch>
                             <Route path="/" exact component={HomeWrapper} />
+                            <Route path="/alllists" exact component={AllListsScreen} />
+                            <Route path="/userlists" exact component={UserListsScreen} />
+                            <Route path="/communitylists" exact component={CommunityListsScreen} />
                             <Route path="/login/" exact component={LoginScreen} />
                             <Route path="/register/" exact component={RegisterScreen} />
                         </Switch>
