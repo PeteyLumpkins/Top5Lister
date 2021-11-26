@@ -9,12 +9,12 @@ const CommunityTop5ListController = require('../controllers/community-top5list-c
 const router = express.Router()
 
 // Top5List routes
-router.put('/usertop5list/:id', Top5ListController.updateUserTop5List);
-router.post('/usertop5list', Top5ListController.createUserTop5List);
-router.put('/publish/:id', Top5ListController.publishTop5List);
-router.delete('/usertop5list/:id', Top5ListController.deleteUserTop5List);
+router.put('/usertop5list/:id', auth.verify, Top5ListController.updateUserTop5List);
+router.post('/usertop5list', auth.verify, Top5ListController.createUserTop5List);
+router.put('/publish/:id', auth.verify, Top5ListController.publishTop5List);
+router.delete('/usertop5list/:id', auth.verify, Top5ListController.deleteUserTop5List);
 router.get('/top5lists', Top5ListController.getTop5Lists);
-router.get('/usertop5lists/:id', Top5ListController.getUserTop5Lists);
+router.get('/usertop5lists/', auth.verify, Top5ListController.getUserTop5Lists);
 
 // CommunityTop5List routes
 router.post('/communitytop5list', CommunityTop5ListController.createCommunityTop5List);

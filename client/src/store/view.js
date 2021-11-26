@@ -55,11 +55,11 @@ function ViewStoreContextProvider(props) {
         }
     }
      
-
     viewStore.loadPage = async function (pageType) {
         switch(pageType) {
             case ViewStorePageType.HOME: {
-                let response = await api.getUserTop5Lists("123456789")
+                console.log("Getting users lists");
+                let response = await api.getUserTop5Lists();
                 console.log(response)
                 if (response.data.success) {
                     viewStoreReducer({

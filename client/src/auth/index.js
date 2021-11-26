@@ -92,7 +92,7 @@ function AuthContextProvider(props) {
         });
     }
 
-    auth.loginUser = async function(userData, store) {
+    auth.loginUser = async function(userData) {
         try {
             const response = await api.loginUser(userData)
             if (response.status === 200) {
@@ -103,7 +103,6 @@ function AuthContextProvider(props) {
                     }
                 });
                 history.push("/");
-                store.loadIdNamePairs();
             } 
         } catch(err) {
             authReducer({
@@ -139,7 +138,7 @@ function AuthContextProvider(props) {
         }
     }
 
-    auth.registerUser = async function(userData, store) {
+    auth.registerUser = async function(userData) {
         try {
             const response = await api.registerUser(userData);      
             if (response.status === 200) {
@@ -150,7 +149,6 @@ function AuthContextProvider(props) {
                     }
                 })
                 history.push("/");
-                store.loadIdNamePairs();
             }
         } catch (err) {
             authReducer({

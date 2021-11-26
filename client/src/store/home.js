@@ -1,8 +1,9 @@
 import { createContext, useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useEffect } from 'react';
 import api from '../api'
+
 import AuthContext from '../auth'
+import { ViewStoreContext } from './view'
 /*
     This is our global data store. Note that it uses the Flux design pattern,
     which makes use of things like actions and reducers. 
@@ -30,7 +31,7 @@ export const HomeStoreActionType = {
 // AVAILABLE TO THE REST OF THE APPLICATION
 function HomeStoreContextProvider(props) {
     // THESE ARE ALL THE THINGS OUR DATA STORE WILL MANAGE
-    const [store, setStore] = useState({
+    const [homeStore, setHomeStore] = useState({
         currentList: null,
         isListNameEditActive: false,
         isItemEditActive: false,
@@ -40,6 +41,7 @@ function HomeStoreContextProvider(props) {
 
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
     const { auth } = useContext(AuthContext);
+    const { viewStore } = useContext(ViewStoreContext);
 
     // HERE'S THE DATA STORE'S REDUCER, IT MUST
     // HANDLE EVERY TYPE OF STATE CHANGE
@@ -47,8 +49,8 @@ function HomeStoreContextProvider(props) {
         const { type, payload } = action;
         switch (type) {
             // TODO changing list name happens through updating currentlist
-            case GlobalStoreActionType.CHANGE_LIST_NAME: {
-                return setStore({
+            case HomeStoreActionType.CHANGE_LIST_NAME: {
+                return setHomeStore({
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -56,8 +58,8 @@ function HomeStoreContextProvider(props) {
                 });
             }
             // STOP EDITING THE CURRENT LIST
-            case GlobalStoreActionType.CLOSE_CURRENT_LIST: {
-                return setStore({
+            case HomeStoreActionType.CLOSE_CURRENT_LIST: {
+                return setHomeStore({
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -65,17 +67,17 @@ function HomeStoreContextProvider(props) {
                 })
             }
             // TODO current list in the payload
-            case GlobalStoreActionType.CREATE_NEW_LIST: {
-                return setStore({
-                    currentList: payload,
+            case HomeStoreActionType.CREATE_NEW_LIST: {
+                return setHomeStore({
+                    currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
                     listMarkedForDeletion: null
                 })
             }
             // TODO handled by the view store
-            case GlobalStoreActionType.LOAD_ID_NAME_PAIRS: {
-                return setStore({
+            case HomeStoreActionType.LOAD_ID_NAME_PAIRS: {
+                return setHomeStore({
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -83,8 +85,8 @@ function HomeStoreContextProvider(props) {
                 });
             }
             // PREPARE TO DELETE A LIST
-            case GlobalStoreActionType.MARK_LIST_FOR_DELETION: {
-                return setStore({
+            case HomeStoreActionType.MARK_LIST_FOR_DELETION: {
+                return setHomeStore({
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -92,8 +94,8 @@ function HomeStoreContextProvider(props) {
                 });
             }
             // PREPARE TO DELETE A LIST
-            case GlobalStoreActionType.UNMARK_LIST_FOR_DELETION: {
-                return setStore({
+            case HomeStoreActionType.UNMARK_LIST_FOR_DELETION: {
+                return setHomeStore({
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -101,8 +103,8 @@ function HomeStoreContextProvider(props) {
                 });
             }
             // UPDATE A LIST
-            case GlobalStoreActionType.SET_CURRENT_LIST: {
-                return setStore({
+            case HomeStoreActionType.SET_CURRENT_LIST: {
+                return setHomeStore({
                     currentList: payload,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -110,17 +112,17 @@ function HomeStoreContextProvider(props) {
                 });
             }
             // START EDITING A LIST ITEM
-            case GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE: {
-                return setStore({
-                    currentList: store.currentList,
+            case HomeStoreActionType.SET_ITEM_EDIT_ACTIVE: {
+                return setHomeStore({
+                    currentList: homeStore.currentList,
                     isListNameEditActive: false,
                     isItemEditActive: payload.isEditActive,
                     listMarkedForDeletion: null
                 });
             }
             // START EDITING A LIST NAME
-            case GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
-                return setStore({
+            case HomeStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
+                return setHomeStore({
                     currentList: payload,
                     isListNameEditActive: true,
                     isItemEditActive: false,
@@ -128,7 +130,7 @@ function HomeStoreContextProvider(props) {
                 });
             }
             default:
-                return store;
+                return homeStore;
         }
     }
 
@@ -137,7 +139,7 @@ function HomeStoreContextProvider(props) {
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
 
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
-    store.changeListName = async function (id, newName) {
+    homeStore.changeListName = async function (id, newName) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let top5List = response.data.top5List;
@@ -150,7 +152,7 @@ function HomeStoreContextProvider(props) {
                         if (response.data.success) {
                             let pairsArray = response.data.idNamePairs;
                             storeReducer({
-                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                type: HomeStoreActionType.CHANGE_LIST_NAME,
                                 payload: {
                                     idNamePairs: pairsArray,
                                 }
@@ -165,36 +167,30 @@ function HomeStoreContextProvider(props) {
     }
 
     // TODO will save the current list
-    store.closeCurrentList = function () {
+    homeStore.closeCurrentList = function () {
         storeReducer({
-            type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
+            type: HomeStoreActionType.CLOSE_CURRENT_LIST,
             payload: {}
         });
-        
-        tps.clearAllTransactions();
         history.push("/");
     }
 
     // THIS FUNCTION CREATES A NEW LIST
-    store.createNewList = async function () {
-        let newListName = "Untitled" + store.newListCounter;
+    homeStore.createNewList = async function () {
+        console.log("Creating new list");
+        console.log(auth.user)
         let payload = {
-            name: newListName,
+            userId: auth.user.id,
+            author: (auth.user.firstName + " " + auth.user.lastName),
+            name: "Untitled",
             items: ["?", "?", "?", "?", "?"],
-            // HAHA FOUND IT
-            ownerEmail: auth.user.email
         };
-        const response = await api.createTop5List(payload);
+        console.log(payload)
+        const response = await api.createUserTop5List(payload);
         if (response.data.success) {
-            let newList = response.data.top5List;
-            storeReducer({
-                type: GlobalStoreActionType.CREATE_NEW_LIST,
-                payload: newList
-            }
-            );
-
-            // IF IT'S A VALID LIST THEN LET'S START EDITING IT
-            history.push("/top5list/" + newList._id);
+            // Basically just refresh the page
+            console.log("Refreshing the page");
+            viewStore.loadPage(viewStore.page);
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
@@ -205,46 +201,46 @@ function HomeStoreContextProvider(props) {
     // OF A LIST, WHICH INCLUDES USING A VERIFICATION MODAL. THE
     // FUNCTIONS ARE markListForDeletion, deleteList, deleteMarkedList,
     // showDeleteListModal, and hideDeleteListModal
-    store.markListForDeletion = async function (id) {
+    homeStore.markListForDeletion = async function (id) {
         // GET THE LIST
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let top5List = response.data.top5List;
             storeReducer({
-                type: GlobalStoreActionType.MARK_LIST_FOR_DELETION,
+                type: HomeStoreActionType.MARK_LIST_FOR_DELETION,
                 payload: top5List
             });
         }
     }
 
-    store.deleteList = async function (listToDelete) {
+    homeStore.deleteList = async function (listToDelete) {
         let response = await api.deleteTop5ListById(listToDelete._id);
         if (response.data.success) {
-            store.loadIdNamePairs();
+            homeStore.loadIdNamePairs();
             history.push("/");
         }
     }
 
-    store.deleteMarkedList = function () {
-        store.deleteList(store.listMarkedForDeletion);
+    homeStore.deleteMarkedList = function () {
+        homeStore.deleteList(homeStore.listMarkedForDeletion);
     }
 
-    store.unmarkListForDeletion = function () {
+    homeStore.unmarkListForDeletion = function () {
         storeReducer({
-            type: GlobalStoreActionType.UNMARK_LIST_FOR_DELETION,
+            type: HomeStoreActionType.UNMARK_LIST_FOR_DELETION,
             payload: null
         });
     }
 
     // Setting the current list
-    store.setCurrentList = async function (id) {
+    homeStore.setCurrentList = async function (id) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let top5List = response.data.top5List;
             response = await api.updateTop5ListById(top5List._id, top5List);
             if (response.data.success) {
                 storeReducer({
-                    type: GlobalStoreActionType.SET_CURRENT_LIST,
+                    type: HomeStoreActionType.SET_CURRENT_LIST,
                     payload: top5List
                 });
                 history.push("/top5list/" + top5List._id);
@@ -253,34 +249,34 @@ function HomeStoreContextProvider(props) {
     }
 
     // Updating an item
-    store.updateItem = function (index, newItem) {
-        store.currentList.items[index] = newItem;
-        store.updateCurrentList();
+    homeStore.updateItem = function (index, newItem) {
+        homeStore.currentList.items[index] = newItem;
+        homeStore.updateCurrentList();
     }
 
     // TODO probably something like saving it. Not sure yet
-    store.updateCurrentList = async function () {
-        const response = await api.updateTop5ListById(store.currentList._id, store.currentList);
+    homeStore.updateCurrentList = async function () {
+        const response = await api.updateTop5ListById(homeStore.currentList._id, homeStore.currentList);
         if (response.data.success) {
             storeReducer({
-                type: GlobalStoreActionType.SET_CURRENT_LIST,
-                payload: store.currentList
+                type: HomeStoreActionType.SET_CURRENT_LIST,
+                payload: homeStore.currentList
             });
         }
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME
-    store.setIsListNameEditActive = function () {
+    homeStore.setIsListNameEditActive = function () {
         storeReducer({
-            type: GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE,
+            type: HomeStoreActionType.SET_LIST_NAME_EDIT_ACTIVE,
             payload: null
         });
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING AN ITEM
-    store.setIsItemEditActive = function (isEditActive) {
+    homeStore.setIsItemEditActive = function (isEditActive) {
         storeReducer({
-            type: GlobalStoreActionType.SET_ITEM_EDIT_ACTIVE,
+            type: HomeStoreActionType.SET_ITEM_EDIT_ACTIVE,
             payload: { 
                 isEditActive: isEditActive,
             }
@@ -288,13 +284,13 @@ function HomeStoreContextProvider(props) {
     }
 
     return (
-        <GlobalStoreContext.Provider value={{
-            store
+        <HomeStoreContext.Provider value={{
+            homeStore
         }}>
             {props.children}
-        </GlobalStoreContext.Provider>
+        </HomeStoreContext.Provider>
     );
 }
 
-// export default GlobalStoreContext;
-// export { GlobalStoreContextProvider };
+export default HomeStoreContext;
+export { HomeStoreContextProvider };

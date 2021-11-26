@@ -1,6 +1,5 @@
-import { useContext, useEffect } from 'react'
-import {ViewStoreContext} from '../store/view'
-import {ViewStorePageType} from '../store/view'
+import { useContext } from 'react'
+import { HomeStoreContextProvider } from '../store/home'
 
 import HomeScreen from './screens/HomeListsScreen'
 import SplashScreen from './screens/SplashScreen'
@@ -10,7 +9,11 @@ export default function HomeWrapper() {
     const { auth } = useContext(AuthContext);
 
     if (auth.loggedIn)
-        return <HomeScreen />
+        return (
+            <HomeStoreContextProvider>
+                <HomeScreen />
+            </HomeStoreContextProvider>
+        );
     else
         return <SplashScreen />
 }

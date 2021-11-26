@@ -1,5 +1,7 @@
 import {ViewStoreContext} from '../../store/view'
 import {ViewStorePageType} from '../../store/view'
+import {HomeStoreContext} from '../../store/home'
+
 import React, { useContext, useEffect } from 'react';
 
 import { Fab, Typography } from '@mui/material'
@@ -11,14 +13,16 @@ import UserListCard from '../cards/UserListCard';
 
 export default function HomeScreen(props) {
     const { viewStore } = useContext(ViewStoreContext);
+    const { homeStore } = useContext(HomeStoreContext);
 
     useEffect(() => {
         viewStore.loadPage(ViewStorePageType.HOME);
     }, []);
 
     // Handles creating a new list
-    function handleAddNewList() {
-        console.log("Creating new list!")
+    function handleCreateList() {
+        console.log("Creating new list!");
+        homeStore.createNewList();
     };
 
     let listCard = "";
@@ -56,7 +60,7 @@ export default function HomeScreen(props) {
                     color="primary" 
                     aria-label="add"
                     size='small'
-                    onClick={handleAddNewList}
+                    onClick={handleCreateList}
                     id="add-list-button"
                 >
                     <AddIcon />

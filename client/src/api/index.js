@@ -38,7 +38,7 @@ export const publishTop5List = (id) => api.put(`/publish/${id}`);
 export const deleteUserTop5List = (id) => api.delete(`/usertop5list/${id}`);
 export const getTop5Lists = () => api.get(`/top5lists/`);
 // TODO shouldn't be taking an id param, just for testing purposes
-export const getUserTop5Lists = (id) => api.get(`/usertop5lists/${id}`);
+export const getUserTop5Lists = () => api.get(`/usertop5lists/`);
 
 // CommunityTop5List routes
 export const createCommunityTop5List = () => api.post(`/communitytop5list/`);

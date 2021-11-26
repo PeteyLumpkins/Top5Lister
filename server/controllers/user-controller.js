@@ -37,6 +37,7 @@ loginUser = async (req, res) => {
         }).status(200).json({
             success: true,
             user: {
+                id: user._id,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email
@@ -62,6 +63,7 @@ getLoggedIn = async (req, res) => {
         return res.status(200).json({
             loggedIn: true,
             user: {
+                id: loggedInUser._id,
                 firstName: loggedInUser.firstName,
                 lastName: loggedInUser.lastName,
                 email: loggedInUser.email
@@ -121,6 +123,7 @@ registerUser = async (req, res) => {
         }).status(200).json({
             success: true,
             user: {
+                id: savedUser._id,
                 firstName: savedUser.firstName,
                 lastName: savedUser.lastName,
                 email: savedUser.email
