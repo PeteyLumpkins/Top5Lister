@@ -1,5 +1,4 @@
 import SortIcon from '@mui/icons-material/Sort';
-
 import Button from '@mui/material/Button';
 
 export default function SortButton(props) {

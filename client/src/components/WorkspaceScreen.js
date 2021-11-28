@@ -3,7 +3,7 @@ import Top5Item from './Top5Item.js'
 import List from '@mui/material/List';
 import { Typography } from '@mui/material'
 import { GlobalStoreContext } from '../store/index.js'
-import ErrorModal from './ErrorModal'
+import ErrorModal from './models/ErrorModal'
 
 /*
     This React component lets us edit a loaded list, which only

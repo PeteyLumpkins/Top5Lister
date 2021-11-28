@@ -110,9 +110,7 @@ getTop5Lists = async (req, res) => {
     UserTop5List.find({published: {$not : {$eq : null}}}, (err, lists) => {
         if (err) {
             return res.status(500).json({success: false, error: err.message});
-        } else if (lists.length === 0) {
-            return res.status(404).json({success: false, error: "Top5Lists not found!"});
-        }
+        } 
         
         return res.status(200).json({success: true, message: "Top5Lists found!", top5lists: lists});
     }).catch((err) => { return res.status(500).json({success: false, error: err.message}); });

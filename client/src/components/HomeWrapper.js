@@ -10,9 +10,7 @@ export default function HomeWrapper() {
 
     if (auth.loggedIn)
         return (
-            <HomeStoreContextProvider>
                 <HomeScreen />
-            </HomeStoreContextProvider>
         );
     else
         return <SplashScreen />

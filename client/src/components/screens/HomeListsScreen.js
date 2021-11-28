@@ -4,12 +4,14 @@ import {HomeStoreContext} from '../../store/home'
 
 import React, { useContext, useEffect } from 'react';
 
-import { Fab, Typography } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add';
+import { Typography } from '@mui/material'
 import List from '@mui/material/List';
 
 import NavBar from "../nav/NavBar"
 import UserListCard from '../cards/UserListCard';
+import WorkSpace from '../workspace/WorkSpace';
+
+import AddListButton from '../buttons/AddListButton';
 
 export default function HomeScreen(props) {
     const { viewStore } = useContext(ViewStoreContext);
@@ -21,13 +23,14 @@ export default function HomeScreen(props) {
 
     // Handles creating a new list
     function handleCreateList() {
-        console.log("Creating new list!");
         homeStore.createNewList();
     };
 
-    let listCard = "";
-    if (viewStore && viewStore.top5lists) {
-        listCard = 
+    let homeBody = "";
+    if (homeStore.currentList !== null) {
+        homeBody = <WorkSpace></WorkSpace>
+    } else if (viewStore && viewStore.top5lists) {
+        homeBody = 
             <List sx={{ 
                 width: '90%', 
                 left: '5%', 
@@ -41,8 +44,7 @@ export default function HomeScreen(props) {
                 viewStore.top5lists.map((top5list) => (
                     <UserListCard
                         key={top5list._id}
-                        name={top5list.name}
-                        published={top5list.published}
+                        top5list={top5list}
                     />
                 ))
             }
@@ -53,18 +55,10 @@ export default function HomeScreen(props) {
             <div id="top5-list-selector">
                 <NavBar></NavBar>
                 <div id="list-selector-list">
-                        {listCard}
+                        {homeBody}
                 </div>
                 <div id="list-selector-heading">
-                <Fab 
-                    color="primary" 
-                    aria-label="add"
-                    size='small'
-                    onClick={handleCreateList}
-                    id="add-list-button"
-                >
-                    <AddIcon />
-                </Fab>
+                    <AddListButton></AddListButton>
                     <Typography variant="h5">Your Lists</Typography>
                 </div>
             </div>

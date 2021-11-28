@@ -1,9 +1,11 @@
 import './App.css';
 import { React } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+
 import { AuthContextProvider } from './auth';
 import { GlobalStoreContextProvider } from './store'
 import { ViewStoreContextProvider } from './store/view'
+import { HomeStoreContextProvider } from './store/home'
 
 import UserListsScreen from './components/screens/UserListsScreen';
 import CommunityListsScreen from './components/screens/CommunityListsScreen';
@@ -33,7 +35,8 @@ const App = () => {
         <BrowserRouter>
             <AuthContextProvider>
                 <GlobalStoreContextProvider> 
-                    <ViewStoreContextProvider>             
+                    <ViewStoreContextProvider>  
+                        <HomeStoreContextProvider>           
                         <AppBanner />
                         <Switch>
                             <Route path="/" exact component={HomeWrapper} />
@@ -43,6 +46,7 @@ const App = () => {
                             <Route path="/login/" exact component={LoginScreen} />
                             <Route path="/register/" exact component={RegisterScreen} />
                         </Switch>
+                        </HomeStoreContextProvider>
                     </ViewStoreContextProvider>
                 </GlobalStoreContextProvider>
             </AuthContextProvider>

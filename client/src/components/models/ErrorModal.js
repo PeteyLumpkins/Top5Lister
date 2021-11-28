@@ -4,7 +4,7 @@ import Alert from '@mui/material/Alert';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 
-import AuthContext from '../auth';
+import AuthContext from '../../auth';
 import {useContext} from 'react';
 
 export default function ErrorModal(props) {

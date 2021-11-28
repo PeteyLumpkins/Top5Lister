@@ -19,7 +19,7 @@ export default function UserListsScreen() {
     })
 
     let listCard = "";
-    if (viewStore && viewStore.top5lists) {
+    if (viewStore && viewStore.page === ViewStorePageType.USERS && viewStore.top5lists) {
         listCard = 
             <List sx={{ width: '90%', left: '5%' }}>
             {

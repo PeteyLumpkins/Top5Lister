@@ -32,8 +32,7 @@ export default function CommunityListsScreen() {
                 viewStore.top5lists.map((top5list) => (
                     <UserListCard
                         key={top5list._id}
-                        name={top5list.name}
-                        published={top5list.published}
+                        top5list={top5list}
                     />
                 ))
             }

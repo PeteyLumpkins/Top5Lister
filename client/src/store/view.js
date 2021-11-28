@@ -91,7 +91,7 @@ function ViewStoreContextProvider(props) {
                     viewStoreReducer({
                         type: ViewStoreActionType.SET_PAGE,
                         payload: {
-                            page: ViewStorePageType.ALL,
+                            page: ViewStorePageType.USERS,
                             top5lists: response.data.top5lists
                         }
                     });

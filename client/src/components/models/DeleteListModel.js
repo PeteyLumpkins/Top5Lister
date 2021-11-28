@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../../store'
 import { useContext } from 'react'
 
 export default function DeleteListModel(props) {

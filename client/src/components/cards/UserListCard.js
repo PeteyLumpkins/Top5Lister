@@ -1,4 +1,6 @@
-import * as React from 'react';
+import { useState, useContext } from 'react';
+import {HomeStoreContext} from '../../store/home'
+
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -12,17 +14,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import ListDropDown from './ListDropDown'
 import CommentSection from './CommentSection'
+import EditButton from '../buttons/EditButton'
 
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -36,7 +32,13 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function UserListCard(props) {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const { homeStore } = useContext(HomeStoreContext);
+ 
+  let published = "Published"
+  if (props.top5list.published === null) {
+    published = <EditButton top5list={props.top5list}></EditButton>
+  } 
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -50,7 +52,7 @@ export default function UserListCard(props) {
       marginBottom: '2%'
       }}
     >
-        <h3>{props.name}</h3>
+        <h3>{props.top5list.name}</h3>
     <CardActions disableSpacing>
         
       </CardActions>
@@ -70,7 +72,7 @@ export default function UserListCard(props) {
       </Collapse>
         <Box sx={{ display: 'flex'}}>
             <Box sx={{ paddingLeft: '', display: 'flex', flexGrow: 1, justifyContent: 'left'}}>
-                <h3>Published: Date?</h3>
+                <Box sx={{color: 'green'}}>{published}</Box>
             </Box>
             <Box sx={{ display: 'flex', flexGrow: .1, justifyContent: 'space-between'}}>
                 <h3>Views: 1455</h3>

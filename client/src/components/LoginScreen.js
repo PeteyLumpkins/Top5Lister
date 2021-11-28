@@ -17,7 +17,7 @@ import { useContext } from 'react';
 import { GlobalStoreContext } from '../store';
 import AuthContext from '../auth';
 
-import ErrorModal from './ErrorModal';
+import ErrorModal from './models/ErrorModal';
 
 export default function LoginScreen(props) {
     const { auth } = useContext(AuthContext);

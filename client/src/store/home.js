@@ -19,6 +19,7 @@ export const HomeStoreContext = createContext({});
 export const HomeStoreActionType = {
     CHANGE_LIST_NAME: "CHANGE_LIST_NAME",
     SAVE_CURRENT_LIST: "CLOSE_CURRENT_LIST",
+    PUBLISH_CURRENT_LIST: "PUBLISH_CURRENT_LIST",
     CREATE_NEW_LIST: "CREATE_NEW_LIST",
     MARK_LIST_FOR_DELETION: "MARK_LIST_FOR_DELETION",
     UNMARK_LIST_FOR_DELETION: "UNMARK_LIST_FOR_DELETION",
@@ -51,20 +52,11 @@ function HomeStoreContextProvider(props) {
             // TODO changing list name happens through updating currentlist
             case HomeStoreActionType.CHANGE_LIST_NAME: {
                 return setHomeStore({
-                    currentList: null,
+                    currentList: homeStore.currentList,
                     isListNameEditActive: false,
                     isItemEditActive: false,
                     listMarkedForDeletion: null
                 });
-            }
-            // STOP EDITING THE CURRENT LIST
-            case HomeStoreActionType.CLOSE_CURRENT_LIST: {
-                return setHomeStore({
-                    currentList: null,
-                    isListNameEditActive: false,
-                    isItemEditActive: false,
-                    listMarkedForDeletion: null
-                })
             }
             // TODO current list in the payload
             case HomeStoreActionType.CREATE_NEW_LIST: {
@@ -74,15 +66,6 @@ function HomeStoreContextProvider(props) {
                     isItemEditActive: false,
                     listMarkedForDeletion: null
                 })
-            }
-            // TODO handled by the view store
-            case HomeStoreActionType.LOAD_ID_NAME_PAIRS: {
-                return setHomeStore({
-                    currentList: null,
-                    isListNameEditActive: false,
-                    isItemEditActive: false,
-                    listMarkedForDeletion: null
-                });
             }
             // PREPARE TO DELETE A LIST
             case HomeStoreActionType.MARK_LIST_FOR_DELETION: {
@@ -104,8 +87,10 @@ function HomeStoreContextProvider(props) {
             }
             // UPDATE A LIST
             case HomeStoreActionType.SET_CURRENT_LIST: {
+                console.log("Setting in reducer?")
+                console.log(payload.top5list);
                 return setHomeStore({
-                    currentList: payload,
+                    currentList: payload.top5list,
                     isListNameEditActive: false,
                     isItemEditActive: false,
                     listMarkedForDeletion: null
@@ -116,53 +101,21 @@ function HomeStoreContextProvider(props) {
                 return setHomeStore({
                     currentList: homeStore.currentList,
                     isListNameEditActive: false,
-                    isItemEditActive: payload.isEditActive,
+                    isItemEditActive: payload.isEditing,
                     listMarkedForDeletion: null
                 });
             }
             // START EDITING A LIST NAME
             case HomeStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
                 return setHomeStore({
-                    currentList: payload,
-                    isListNameEditActive: true,
+                    currentList: homeStore.currentList,
+                    isListNameEditActive: payload.isEditing,
                     isItemEditActive: false,
                     listMarkedForDeletion: null
                 });
             }
             default:
                 return homeStore;
-        }
-    }
-
-    // THESE ARE THE FUNCTIONS THAT WILL UPDATE OUR STORE AND
-    // DRIVE THE STATE OF THE APPLICATION. WE'LL CALL THESE IN 
-    // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
-
-    // THIS FUNCTION PROCESSES CHANGING A LIST NAME
-    homeStore.changeListName = async function (id, newName) {
-        let response = await api.getTop5ListById(id);
-        if (response.data.success) {
-            let top5List = response.data.top5List;
-            top5List.name = newName;
-            async function updateList(top5List) {
-                response = await api.updateTop5ListById(top5List._id, top5List);
-                if (response.data.success) {
-                    async function getListPairs(top5List) {
-                        response = await api.getTop5ListPairs(auth.user.email);
-                        if (response.data.success) {
-                            let pairsArray = response.data.idNamePairs;
-                            storeReducer({
-                                type: HomeStoreActionType.CHANGE_LIST_NAME,
-                                payload: {
-                                    idNamePairs: pairsArray,
-                                }
-                            });
-                        }
-                    }
-                    getListPairs(top5List);
-                }
-            }
-            updateList(top5List);
         }
     }
 
@@ -233,52 +186,61 @@ function HomeStoreContextProvider(props) {
     }
 
     // Setting the current list
-    homeStore.setCurrentList = async function (id) {
-        let response = await api.getTop5ListById(id);
-        if (response.data.success) {
-            let top5List = response.data.top5List;
-            response = await api.updateTop5ListById(top5List._id, top5List);
-            if (response.data.success) {
-                storeReducer({
-                    type: HomeStoreActionType.SET_CURRENT_LIST,
-                    payload: top5List
-                });
-                history.push("/top5list/" + top5List._id);
+    homeStore.setCurrentList = function (top5list) {
+        console.log("Settiing current lsit");
+        console.log(top5list)
+        storeReducer({
+            type: HomeStoreActionType.SET_CURRENT_LIST,
+            payload: {
+                top5list: top5list
             }
-        }
+        });
+        console.log(homeStore.currentList);
     }
 
-    // Updating an item
-    homeStore.updateItem = function (index, newItem) {
+    // Function handles updating the current lists items
+    homeStore.updateCurrentListItem = function (index, newItem) {
         homeStore.currentList.items[index] = newItem;
-        homeStore.updateCurrentList();
     }
 
-    // TODO probably something like saving it. Not sure yet
-    homeStore.updateCurrentList = async function () {
-        const response = await api.updateTop5ListById(homeStore.currentList._id, homeStore.currentList);
+    // Function handles updating the current lists name
+    homeStore.updateCurrentListName = async function (newName) {
+        homeStore.currentList.name = newName;
+    }
+
+    // Function handles saving the current top5list
+    homeStore.saveCurrentList = async function () {
+        console.log(homeStore.currentList);
+        const response = await api.updateUserTop5List(homeStore.currentList._id, {
+            name: homeStore.currentList.name,
+            items: homeStore.currentList.items
+        });
         if (response.data.success) {
             storeReducer({
                 type: HomeStoreActionType.SET_CURRENT_LIST,
-                payload: homeStore.currentList
+                payload: {
+                    top5list: null
+                }
             });
         }
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING A LIST NAME
-    homeStore.setIsListNameEditActive = function () {
+    homeStore.setIsListNameEditActive = function (isEditing) {
         storeReducer({
             type: HomeStoreActionType.SET_LIST_NAME_EDIT_ACTIVE,
-            payload: null
+            payload: {
+                isEditing: isEditing
+            }
         });
     }
 
     // THIS FUNCTION ENABLES THE PROCESS OF EDITING AN ITEM
-    homeStore.setIsItemEditActive = function (isEditActive) {
+    homeStore.setIsItemEditActive = function (isEditing) {
         storeReducer({
             type: HomeStoreActionType.SET_ITEM_EDIT_ACTIVE,
-            payload: { 
-                isEditActive: isEditActive,
+            payload: {
+                isEditing: isEditing
             }
         });
     }
