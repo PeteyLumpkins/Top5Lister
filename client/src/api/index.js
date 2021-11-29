@@ -40,14 +40,15 @@ export const getTop5Lists = () => api.get(`/top5lists/`);
 export const getUserTop5Lists = () => api.get(`/usertop5lists/`);
 
 // CommunityTop5List routes
-export const createCommunityTop5List = () => api.post(`/communitytop5list/`);
+export const createCommunityTop5List = (payload) => api.post(`/communitytop5list/`, payload);
 export const getAllCommunityTop5Lists = () => api.get(`/communitytop5lists/`);
-export const addToCommunityTop5List = (community, payload) => api.post(`/communitytop5list/${community}`, payload);
-export const removeFromCommunityTop5List = (community, payload) => api.post(`/communitytop5list/${community}`, payload);
+export const getCommunityTop5List = (community) => api.get(`/communitytop5list/${community}`);
+export const addToCommunityTop5List = (community, payload) => api.put(`/communitytop5lists/addto/${community}`, payload);
+export const removeFromCommunityTop5List = (community, payload) => api.put(`/communitytop5lists/removefrom/${community}`, payload);
 export const deleteCommunityTop5List = (community) => api.delete(`/communitytop5list/${community}`);
 
 // Post routes 
-export const createPost = () => api.post(`/post/`);
+export const createPost = (payload) => api.post(`/post/`, payload);
 export const getAllPosts = () => api.get(`/posts/`);
 export const getPostById = (id) => api.get(`/post/${id}`);
 export const updatePost = (id, payload) => api.put(`/post/${id}`, payload);
@@ -69,6 +70,7 @@ const apis = {
 
     createCommunityTop5List,
     getAllCommunityTop5Lists,
+    getCommunityTop5List,
     addToCommunityTop5List,
     removeFromCommunityTop5List,
     deleteCommunityTop5List,

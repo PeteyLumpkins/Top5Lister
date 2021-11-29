@@ -6,6 +6,8 @@ const Post = require('../models/post-model');
 /** Controller for publishing top5lists
  * 
  *  req.params: { id: id of the list to publish }
+ * 
+ *  req.body: { postId: id of the post associated with the list }
  */
 publishTop5List = async (req, res) => {
     UserTop5List.findById(req.params.id, (err, list) => {
@@ -14,6 +16,7 @@ publishTop5List = async (req, res) => {
         }
 
         list.published = Date.now();
+        list.postId = req.body.postId;
         list.save().then(() => {
             return res.status(200).json({success: true, message: "Top5List published!", top5list: list});
         }).catch((err) => {

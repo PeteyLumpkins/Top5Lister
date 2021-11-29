@@ -7,13 +7,14 @@ export default function PublishButton(props) {
 
     const { homeStore } = useContext(HomeStoreContext);
 
-    const handlePress = () => {
-        // Published the current list to the database
+    const handleClick = () => {
+        homeStore.publishCurrentList();
     }
 
     return (
         <Button
             color="primary"
+            onClick={handleClick}
         >
             Publish
         </Button>

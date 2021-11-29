@@ -87,8 +87,6 @@ function HomeStoreContextProvider(props) {
             }
             // UPDATE A LIST
             case HomeStoreActionType.SET_CURRENT_LIST: {
-                console.log("Setting in reducer?")
-                console.log(payload.top5list);
                 return setHomeStore({
                     currentList: payload.top5list,
                     isListNameEditActive: false,
@@ -130,19 +128,15 @@ function HomeStoreContextProvider(props) {
 
     // THIS FUNCTION CREATES A NEW LIST
     homeStore.createNewList = async function () {
-        console.log("Creating new list");
-        console.log(auth.user)
         let payload = {
             userId: auth.user.id,
             author: (auth.user.firstName + " " + auth.user.lastName),
             name: "Untitled",
             items: ["?", "?", "?", "?", "?"],
         };
-        console.log(payload)
         const response = await api.createUserTop5List(payload);
         if (response.data.success) {
             // Basically just refresh the page
-            console.log("Refreshing the page");
             viewStore.loadPage(viewStore.page);
         }
         else {
@@ -222,6 +216,70 @@ function HomeStoreContextProvider(props) {
                     top5list: null
                 }
             });
+        }
+    }
+
+    // Function handles publishing the current top5list
+    homeStore.publishCurrentList = async function () {
+        let response = await api.createPost({
+            likes: [],
+            dislikes: [],
+            views: 0,
+            comments: []
+        });
+        console.log("List post created");
+        if (response.data.success) {
+            async function publishList (postId) {
+                let response = await api.publishTop5List(homeStore.currentList._id, {
+                    postId: postId
+                });
+                if (response.data.success) {
+                    console.log('List published successfully I think');
+                    async function updateCommunityList (communityName) {
+                        console.log(communityName);
+                        let response = await api.getCommunityTop5List(communityName);
+                        if (response.data.success && !response.data.list) {
+                            // Create Community List
+                            console.log("Creating community list and post")
+                            async function createCommunityList (name, items) {
+                                let response = await api.createPost({
+                                    likes: [],
+                                    dislikes: [],
+                                    views: 0,
+                                    comments: []
+                                });
+                                if (response.data.success) {
+                                    console.log("Creating community list")
+                                    response = await api.createCommunityTop5List({
+                                        community: name,
+                                        postId: response.data.post._id,
+                                        items: items
+                                    });
+                                    if (response.data.success) {
+                                        homeStore.saveCurrentList();
+                                    }
+                                }
+                            }
+                            createCommunityList(communityName, homeStore.currentList.items);
+
+                        } else if (response.data.success) {
+                            // Add to community list
+                            async function updateCommunityList (name, items) {
+                                let response = await api.addToCommunityTop5List(
+                                    name, {items: items}
+                                );
+                                if (response.data.success) {
+                                    homeStore.saveCurrentList();
+                                }
+                            }
+                            updateCommunityList(communityName, homeStore.currentList.items);
+                        }
+                    }
+                    updateCommunityList(homeStore.currentList.name);
+                }
+            }
+            console.log("Publishing list");
+            publishList(response.data.post._id);
         }
     }
 

@@ -19,6 +19,7 @@ router.get('/usertop5lists/', auth.verify, Top5ListController.getUserTop5Lists);
 // CommunityTop5List routes
 router.post('/communitytop5list', CommunityTop5ListController.createCommunityTop5List);
 router.get('/communitytop5lists', CommunityTop5ListController.getAllCommunityTop5Lists);
+router.get('/communitytop5list/:community', CommunityTop5ListController.getCommunityTop5List);
 router.put('/communitytop5lists/addto/:community', CommunityTop5ListController.addToCommunityTop5List);
 router.put('/communitytop5lists/removefrom/:community', CommunityTop5ListController.removeFromCommunityTop5List);
 router.delete('/communitytop5list/:community', CommunityTop5ListController.deleteCommunityTop5List);

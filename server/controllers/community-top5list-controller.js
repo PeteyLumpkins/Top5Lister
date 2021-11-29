@@ -52,6 +52,24 @@ getAllCommunityTop5Lists = async (req, res) => {
 }
 
 /**
+ * Gets a communtiy top5list by name
+ */
+getCommunityTop5List = async (req, res) => {
+    if (!req.params || !req.params.community) {
+        return res.status(400).json({success: false, error: "Bad Request. Param 'name' required."});
+    }
+    await CommunityTop5List.findOne({community: req.params.community}, (err, list) => {
+        if (err) {
+            return res.status(404).json({ success: false, error: err });
+        }
+        // if (!list) {
+        //     return res.status(404).json({ success: true, message: "Community List Not Found!", list: null});
+        // }
+        return res.status(200).json({success: true, message: "Community List Found!", list: list}) 
+    })
+}
+
+/**
  * Adds items and respective scores to an existing community top5list
  * 
  * req.params: { community: community lists name}
@@ -143,6 +161,7 @@ removeFromCommunityTop5List = async (req, res) => {
 module.exports = {
     createCommunityTop5List,
     getAllCommunityTop5Lists,
+    getCommunityTop5List,
     addToCommunityTop5List,
     removeFromCommunityTop5List,
     deleteCommunityTop5List
