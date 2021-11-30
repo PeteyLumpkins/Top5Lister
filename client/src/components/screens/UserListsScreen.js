@@ -1,5 +1,3 @@
-import { Fab, Typography } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
 
 import {ViewStoreContext} from '../../store/view'
@@ -19,15 +17,14 @@ export default function UserListsScreen() {
     })
 
     let listCard = "";
-    if (viewStore && viewStore.page === ViewStorePageType.USERS && viewStore.top5lists) {
+    if (viewStore && viewStore.top5lists) {
         listCard = 
             <List sx={{ width: '90%', left: '5%' }}>
             {
                 viewStore.top5lists.map((top5list) => (
                     <UserListCard
                         key={top5list._id}
-                        name={top5list.name}
-                        published={top5list.published}
+                        top5list={top5list}
                     />
                 ))
             }

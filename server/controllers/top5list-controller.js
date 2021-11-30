@@ -10,11 +10,14 @@ const Post = require('../models/post-model');
  *  req.body: { postId: id of the post associated with the list }
  */
 publishTop5List = async (req, res) => {
+    if (!req.body || !req.body.postId) {
+        return res.status(400).json({success: false, message: "Body and PostId required"});
+    }
     UserTop5List.findById(req.params.id, (err, list) => {
         if (err || !list) {
             return res.status(404).json({success: false, error: "Top5List not found!"});
         }
-
+        console.log(req.body.postId);
         list.published = Date.now();
         list.postId = req.body.postId;
         list.save().then(() => {

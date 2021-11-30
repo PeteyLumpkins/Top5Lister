@@ -227,59 +227,52 @@ function HomeStoreContextProvider(props) {
             views: 0,
             comments: []
         });
-        console.log("List post created");
         if (response.data.success) {
-            async function publishList (postId) {
-                let response = await api.publishTop5List(homeStore.currentList._id, {
-                    postId: postId
-                });
-                if (response.data.success) {
-                    console.log('List published successfully I think');
-                    async function updateCommunityList (communityName) {
-                        console.log(communityName);
-                        let response = await api.getCommunityTop5List(communityName);
-                        if (response.data.success && !response.data.list) {
-                            // Create Community List
-                            console.log("Creating community list and post")
-                            async function createCommunityList (name, items) {
-                                let response = await api.createPost({
-                                    likes: [],
-                                    dislikes: [],
-                                    views: 0,
-                                    comments: []
+            response = await api.publishTop5List(homeStore.currentList._id, {
+                postId: response.data.post._id
+            });
+            if (response.data.success) {
+                async function updateCommunityList (communityName) {
+                    let response = await api.getCommunityTop5List(communityName);
+                    if (response.data.success && !response.data.list) {
+                        // Create Community List
+                        console.log("Creating community list and post")
+                        async function createCommunityList (name, items) {
+                            let response = await api.createPost({
+                                likes: [],
+                                dislikes: [],
+                                views: 0,
+                                comments: []
+                            });
+                            if (response.data.success) {
+                                console.log("Creating community list")
+                                response = await api.createCommunityTop5List({
+                                    community: name,
+                                    postId: response.data.post._id,
+                                    items: items
                                 });
-                                if (response.data.success) {
-                                    console.log("Creating community list")
-                                    response = await api.createCommunityTop5List({
-                                        community: name,
-                                        postId: response.data.post._id,
-                                        items: items
-                                    });
-                                    if (response.data.success) {
-                                        homeStore.saveCurrentList();
-                                    }
-                                }
-                            }
-                            createCommunityList(communityName, homeStore.currentList.items);
-
-                        } else if (response.data.success) {
-                            // Add to community list
-                            async function updateCommunityList (name, items) {
-                                let response = await api.addToCommunityTop5List(
-                                    name, {items: items}
-                                );
                                 if (response.data.success) {
                                     homeStore.saveCurrentList();
                                 }
                             }
-                            updateCommunityList(communityName, homeStore.currentList.items);
                         }
+                        createCommunityList(communityName, homeStore.currentList.items);
+
+                    } else if (response.data.success) {
+                        // Add to community list
+                        async function updateCommunityList (name, items) {
+                            let response = await api.addToCommunityTop5List(
+                                name, {items: items}
+                            );
+                            if (response.data.success) {
+                                homeStore.saveCurrentList();
+                            }
+                        }
+                        updateCommunityList(communityName, homeStore.currentList.items);
                     }
-                    updateCommunityList(homeStore.currentList.name);
                 }
+                updateCommunityList(homeStore.currentList.name);
             }
-            console.log("Publishing list");
-            publishList(response.data.post._id);
         }
     }
 

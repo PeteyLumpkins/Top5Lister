@@ -13,7 +13,7 @@ import WorkSpace from '../workspace/WorkSpace';
 
 import AddListButton from '../buttons/AddListButton';
 
-export default function HomeScreen(props) {
+export default function HomeScreen() {
     const { viewStore } = useContext(ViewStoreContext);
     const { homeStore } = useContext(HomeStoreContext);
 
@@ -51,6 +51,7 @@ export default function HomeScreen(props) {
             </List>;
     }
 
+    console.log(viewStore.top5lists)
     return (
             <div id="top5-list-selector">
                 <NavBar></NavBar>

@@ -34,7 +34,7 @@ const api = axios.create({
 // Top5List routes
 export const updateUserTop5List = (id, payload) => api.put(`/userTop5List/${id}`, payload);
 export const createUserTop5List = (payload) => api.post(`/usertop5list/`, payload);
-export const publishTop5List = (id) => api.put(`/publish/${id}`);
+export const publishTop5List = (id, payload) => api.put(`/publish/${id}`, payload);
 export const deleteUserTop5List = (id) => api.delete(`/usertop5list/${id}`);
 export const getTop5Lists = () => api.get(`/top5lists/`);
 export const getUserTop5Lists = () => api.get(`/usertop5lists/`);

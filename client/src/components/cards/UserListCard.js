@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import {HomeStoreContext} from '../../store/home'
+import AuthContext from '../../auth'
 
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -15,6 +16,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ListDropDown from './ListDropDown'
 import CommentSection from './CommentSection'
 import EditButton from '../buttons/EditButton'
+import LikeButton from '../buttons/LikeButton'
+import DislikeButton from '../buttons/DislikeButton'
 
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -34,11 +37,34 @@ const ExpandMore = styled((props) => {
 export default function UserListCard(props) {
   const [expanded, setExpanded] = useState(false);
   const { homeStore } = useContext(HomeStoreContext);
+  const { auth } = useContext(AuthContext);
  
   let published = "Published"
   if (props.top5list.published === null) {
     published = <EditButton top5list={props.top5list}></EditButton>
   } 
+
+  let likes = ""
+  let dislikes = ""
+  let views = ""
+
+  if (props.top5list.post !== null) {
+    likes = <Box>
+      <LikeButton 
+        postId={props.top5list.post._id}
+        disabled={auth.user === null || props.top5list.post.likes.includes(auth.user.id)}
+      /> {props.top5list.post.likes.length}
+    </Box>
+    dislikes = <Box>
+      <DislikeButton 
+        postId={props.top5list.post._id}
+        disabled={auth.user === null || props.top5list.post.dislikes.includes(auth.user.id)}
+      /> {props.top5list.post.dislikes.length}
+    </Box>
+    views = <Box>
+      {"Views: " + props.top5list.post.views}
+    </Box>
+  }
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -47,12 +73,17 @@ export default function UserListCard(props) {
   return (
     <Card sx={{ 
       paddingTop: 'none', 
-      paddingLeft: '2%', 
+      padding: '2%', 
       background: 'lightblue',
       marginBottom: '2%'
       }}
     >
-        <h3>{props.top5list.name}</h3>
+      <Box sx={{display: 'flex'}}>
+        {props.top5list.name}
+        <Box sx={{display: 'flex', flexGrow: 1, justifyContent: 'right'}}>
+          {likes} {dislikes}
+        </Box>
+      </Box>
     <CardActions disableSpacing>
         
       </CardActions>
@@ -75,7 +106,7 @@ export default function UserListCard(props) {
                 <Box sx={{color: 'green'}}>{published}</Box>
             </Box>
             <Box sx={{ display: 'flex', flexGrow: .1, justifyContent: 'space-between'}}>
-                <h3>Views: 1455</h3>
+                {views}
                 <ExpandMore
                     size='large'
                     expand={expanded}

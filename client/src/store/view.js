@@ -29,6 +29,7 @@ function ViewStoreContextProvider(props) {
         page: null
     })
     const history = useHistory();
+    const { auth } = useContext(AuthContext);
 
     const viewStoreReducer = (action) => {
         const {type, payload} = action;
@@ -56,59 +57,22 @@ function ViewStoreContextProvider(props) {
     }
      
     viewStore.loadPage = async function (pageType) {
+        let response;
         switch(pageType) {
             case ViewStorePageType.HOME: {
-                console.log("Getting users lists");
-                let response = await api.getUserTop5Lists();
-                console.log(response)
-                if (response.data.success) {
-                    viewStoreReducer({
-                        type: ViewStoreActionType.SET_PAGE,
-                        payload: {
-                            page: ViewStorePageType.HOME,
-                            top5lists: response.data.top5lists,
-                        }
-                    });
-                }
+                response = await api.getUserTop5Lists();
                 break;
             }
             case ViewStorePageType.COMMUNITY: {
-                let response = await api.getAllCommunityTop5Lists();
-                if (response.data.success) {
-                    viewStoreReducer({
-                        type: ViewStoreActionType.SET_PAGE,
-                        payload: {
-                            page: ViewStorePageType.COMMUNITY,
-                            top5lists: response.data.top5lists
-                        }
-                    });
-                }
+                response = await api.getAllCommunityTop5Lists();
                 break;
             }
             case ViewStorePageType.USERS: {
-                let response = await api.getTop5Lists();
-                if (response.data.success) {
-                    viewStoreReducer({
-                        type: ViewStoreActionType.SET_PAGE,
-                        payload: {
-                            page: ViewStorePageType.USERS,
-                            top5lists: response.data.top5lists
-                        }
-                    });
-                }
+                response = await api.getTop5Lists();
                 break;
             }
             case ViewStorePageType.ALL: {
-                let response = await api.getTop5Lists();
-                if (response.data.success) {
-                    viewStoreReducer({
-                        type: ViewStoreActionType.SET_PAGE,
-                        payload: {
-                            page: ViewStorePageType.ALL,
-                            top5lists: response.data.top5lists
-                        }
-                    });
-                }
+                response = await api.getTop5Lists();
                 break;
             }
             default: {
@@ -122,13 +86,61 @@ function ViewStoreContextProvider(props) {
                 break;
             }
         }
+        if (response && response.data.success) {
+            let top5lists = [];
+            for (let i = 0; i < response.data.top5lists.length; i++) {
+                let top5list = response.data.top5lists[i];
+                let post = null;
+                if (top5list.postId !== null) {
+                    post = await api.getPostById(top5list.postId);
+                }
+
+                top5lists.push({ 
+                    _id: top5list._id,
+                    name: top5list.name,
+                    author: top5list.author,
+                    items: top5list.items,
+                    published: top5list.published,
+                    post: post === null ? null : post.data.post
+                });
+            }
+            console.log(top5lists);
+            viewStoreReducer({
+                type: ViewStoreActionType.SET_PAGE,
+                payload: {
+                    page: pageType,
+                    top5lists: top5lists
+                }
+            });
+        }
     }
 
     viewStore.viewPost = async function (postId) {
 
     }
 
-    viewStore.likePost = async function (postId, userName) {
+    // Handles liking a post.
+    viewStore.likePost = async function (postId) {
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            let disliked = response.data.post.dislikes.indexOf(auth.user.id);
+            if (disliked !== -1) {
+                response.data.post.dislikes.splice(disliked, 1);
+            }
+            response.data.post.likes.push(auth.user.id);
+            async function updatePost () {
+                response = await api.updatePost(postId, {
+                    likes: response.data.post.likes,
+                    dislikes: response.data.post.dislikes,
+                    views: response.data.post.views,
+                    comments: response.data.post.comments,
+                })
+                if (response.data.success) {
+                    viewStore.loadPage(viewStore.page);
+                }
+            }
+            updatePost();
+        }
         // 1.) Get the post to like
         // 2.) Check dislikes doesn't contain userName ?? - might be able to do before
         // 3.) Add like to posts likes
@@ -136,7 +148,29 @@ function ViewStoreContextProvider(props) {
         // 5.) Reload the lists... 
     }
 
-    viewStore.dislikePost = async function (postId, userName) {
+    // Handles disliking a post
+    viewStore.dislikePost = async function (postId) {
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            let liked = response.data.post.likes.indexOf(auth.user.id);
+            if (liked !== -1) {
+                response.data.post.likes.splice(liked, 1);
+            }
+            response.data.post.dislikes.push(auth.user.id);
+            async function updatePost() {
+                response = await api.updatePost(postId, {
+                    likes: response.data.post.likes,
+                    dislikes: response.data.post.dislikes,
+                    views: response.data.post.views,
+                    comments: response.data.post.comments,
+                });
+                if (response.data.success) {
+                    viewStore.loadPage(viewStore.page);
+                }
+            }
+            updatePost();
+
+        }
         // 1.) Get the post to dislike
         // 2.) Check likes doesn't contain userName ?? - might be able to do before
         // 3.) Add dislike to posts dislikes
