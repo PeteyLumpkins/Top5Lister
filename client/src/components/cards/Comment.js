@@ -1,6 +1,6 @@
 import Card from '@mui/material/Card';
 
-export default function Comment() {
+export default function Comment(props) {
 
     return (
 

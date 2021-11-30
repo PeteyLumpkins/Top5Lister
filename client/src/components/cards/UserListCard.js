@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
-import {HomeStoreContext} from '../../store/home'
-import AuthContext from '../../auth'
+import {HomeStoreContext} from '../../store/home';
+import { ViewStoreContext } from '../../store/view';
+import AuthContext from '../../auth';
 
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -36,7 +37,9 @@ const ExpandMore = styled((props) => {
 
 export default function UserListCard(props) {
   const [expanded, setExpanded] = useState(false);
+
   const { homeStore } = useContext(HomeStoreContext);
+  const { viewStore } = useContext(ViewStoreContext);
   const { auth } = useContext(AuthContext);
  
   let published = "Published"
@@ -67,6 +70,11 @@ export default function UserListCard(props) {
   }
 
   const handleExpandClick = () => {
+    // Adds a view if we open up the dropdown and the list has been published.
+    if (!expanded && props.top5list.post !== null) {
+      viewStore.viewPost(props.top5list.post._id);
+    }
+
     setExpanded(!expanded);
   };
 

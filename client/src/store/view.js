@@ -115,8 +115,23 @@ function ViewStoreContextProvider(props) {
         }
     }
 
+    // Handles adding a view to a post
     viewStore.viewPost = async function (postId) {
-
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            async function updatePost() {
+                response = await api.updatePost(postId, {
+                    likes: response.data.post.likes,
+                    dislikes: response.data.post.dislikes,
+                    comments: response.data.post.comments,
+                    views: response.data.post.views + 1,
+                });
+                if (response.data.success) {
+                    viewStore.loadPage(viewStore.page);
+                }
+            }
+            updatePost();
+        }
     }
 
     // Handles liking a post.
