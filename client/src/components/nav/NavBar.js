@@ -12,13 +12,18 @@ import { Link } from 'react-router-dom'
 
 import SearchBar from './SearchBar';
 
+import AuthContext from '../../auth';
+import { useContext } from 'react';
+
 export default function NavBar(props) {
+
+    const { auth } = useContext(AuthContext);
 
     return (
         <Box sx={{ height: "10%", flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar sx={{ background: "primary" }}>
-                    <Link to="/"> <HomeButton disabled={false}/> </Link>
+                    <HomeButton disabled={auth.user === null}/> 
                     <Link to="/alllists"> <AllListsButton disabled={false}/> </Link>
                     <Link to="/userlists"> <AllUsersButton disabled={false}/> </Link>
                     <Link to="/communitylists"> <CommunityButton disabled={false}/> </Link>

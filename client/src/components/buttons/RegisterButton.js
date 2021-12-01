@@ -1,10 +1,10 @@
 import { Button, Box } from '@mui/material/';
 import { Link } from 'react-router-dom'
 
-export default function LoginButton() {
+export default function RegisterButton() {
 
     return (
-        <Link sx={{width: '100%'}} to="/login/">
+        <Link to="/register/" sx={{width: '100%'}}>
             <Button 
                 sx={{
                     border: 1,
@@ -13,7 +13,7 @@ export default function LoginButton() {
                     textTransform: 'none',
                     width: '100%'
                 }}>
-                <Box sx={{fontSize: '175%', color: 'white'}}>Login</Box>
+                <Box sx={{fontSize: '175%', color: 'white'}}>Register</Box>
             </Button>
         </Link>
     )

@@ -5,6 +5,7 @@ export default function HomeButton(props) {
     return (
         <IconButton
             disabled={props.disabled}
+            href="/"
             sx={{
                 color: "white",
             }}

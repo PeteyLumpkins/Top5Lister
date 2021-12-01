@@ -34,7 +34,7 @@ export default function HomeScreen() {
     let statusText = "Your Top5Lists"
     if (homeStore.currentList !== null) {
         homeBody = <WorkSpace></WorkSpace>
-        statusText = homeStore.currentList.name;
+        statusText = "Top 5 " + homeStore.currentList.name + " List";
     } else if (viewStore && viewStore.top5lists) {
         homeBody = 
             <List sx={{ 

@@ -9,9 +9,7 @@ export default function HomeWrapper() {
     const { auth } = useContext(AuthContext);
 
     if (auth.loggedIn)
-        return (
-                <HomeScreen />
-        );
+        return <HomeScreen />
     else
         return <SplashScreen />
 }

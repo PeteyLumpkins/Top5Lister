@@ -211,7 +211,6 @@ function HomeStoreContextProvider(props) {
 
     // Function handles saving the current top5list
     homeStore.saveCurrentList = async function () {
-        console.log(homeStore.currentList);
         const response = await api.updateUserTop5List(homeStore.currentList._id, {
             name: homeStore.currentList.name,
             items: homeStore.currentList.items
@@ -243,7 +242,6 @@ function HomeStoreContextProvider(props) {
                     let response = await api.getCommunityTop5List(communityName);
                     if (response.data.success && !response.data.list) {
                         // Create Community List
-                        console.log("Creating community list and post")
                         async function createCommunityList (name, items) {
                             let response = await api.createPost({
                                 likes: [],
@@ -252,7 +250,6 @@ function HomeStoreContextProvider(props) {
                                 comments: []
                             });
                             if (response.data.success) {
-                                console.log("Creating community list")
                                 response = await api.createCommunityTop5List({
                                     community: name,
                                     postId: response.data.post._id,
