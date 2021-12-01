@@ -1,12 +1,14 @@
 import {ViewStoreContext} from '../../store/view'
 import {ViewStorePageType} from '../../store/view'
 import {HomeStoreContext} from '../../store/home'
+import AuthContext from '../../auth'
 
 import React, { useContext, useEffect } from 'react';
 
 import { Typography } from '@mui/material'
 import List from '@mui/material/List';
 
+import StatusBar from "../Statusbar"
 import NavBar from "../nav/NavBar"
 import UserListCard from '../cards/UserListCard';
 import WorkSpace from '../workspace/WorkSpace';
@@ -17,6 +19,7 @@ import AddListButton from '../buttons/AddListButton';
 export default function HomeScreen() {
     const { viewStore } = useContext(ViewStoreContext);
     const { homeStore } = useContext(HomeStoreContext);
+    const { auth } = useContext(AuthContext)
 
     useEffect(() => {
         viewStore.loadPage(ViewStorePageType.HOME);
@@ -28,8 +31,10 @@ export default function HomeScreen() {
     };
 
     let homeBody = "";
+    let statusText = "Your Top5Lists"
     if (homeStore.currentList !== null) {
         homeBody = <WorkSpace></WorkSpace>
+        statusText = homeStore.currentList.name;
     } else if (viewStore && viewStore.top5lists) {
         homeBody = 
             <List sx={{ 
@@ -62,6 +67,7 @@ export default function HomeScreen() {
                     <AddListButton></AddListButton>
                     <Typography variant="h5">Your Lists</Typography>
                 </div>
+                <StatusBar text={statusText}></StatusBar>
                 <DeleteListModel 
                     open={homeStore.listMarkedForDeletion !== null} 
                     listName={homeStore.listMarkedForDeletion === null ? null : homeStore.listMarkedForDeletion.name}

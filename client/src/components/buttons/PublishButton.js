@@ -15,14 +15,14 @@ export default function PublishButton(props) {
     }
 
     const isListNameUnique = () => {
-        for (let i = 0; i < viewStore.top5lists.length; i++) {
-            if (viewStore.top5lists[i].name === homeStore.currentList.name &&
-                viewStore.top5lists[i]._id !== homeStore.currentList._id) {
-                    return false;
-            }
-        }
-        return true;
+        return viewStore.top5lists.filter((list) => {
+            return list.published !== null &&
+                list.name === homeStore.currentList.name &&
+                list._id !== homeStore.currentList._id
+        }).length === 0;
     }
+
+    console.log(isListNameUnique());
 
     const allItemsUnique = () => {
         return homeStore.currentList.items.filter((e1) => {

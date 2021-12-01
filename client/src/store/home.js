@@ -151,28 +151,20 @@ function HomeStoreContextProvider(props) {
     homeStore.deleteList = async function (listToDelete) {
         if (listToDelete.published !== null) {
             let response = await api.deletePost(listToDelete.post._id);
-            console.log("Deleting top5list post");
             if (response.data.success) {
                 async function updateCommunityList() {
                     response = await api.removeFromCommunityTop5List(listToDelete.name, {items: listToDelete.items});
-                    if (response.data.success) {
-                        console.log('Removed from community list')
-                    
-                        if (!response.data.list.itemCounts) {
-                            let community = response.data.list.community;
-                            console.log("Delete community post")
-                            response = await api.deletePost(response.data.list.postId);
-                            if (response.data.success) {
-                                console.log("Delete community list")
-                                response = await api.deleteCommunityTop5List(community);
-                            }
+                    if (response.data.success && !response.data.list.itemCounts) {
+                        let community = response.data.list.community;
+                        response = await api.deletePost(response.data.list.postId);
+                        if (response.data.success) {
+                            response = await api.deleteCommunityTop5List(community);
                         }
                     }
                 }
                 updateCommunityList();
             }
         } 
-        console.log("Deleting the list")
         let response = await api.deleteUserTop5List(listToDelete._id);
         if (response.data.success) {
             viewStore.loadPage(viewStore.page);

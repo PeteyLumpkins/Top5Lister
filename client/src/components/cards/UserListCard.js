@@ -103,12 +103,11 @@ export default function UserListCard(props) {
       paddingLeft: '2%',
       paddingRight: '2%',
       paddingTop: '2%',
-
       maxHeight: '100%',
       background: 'white',
       marginBottom: '1%',
       border: 1,
-      borderColor: '#e6e6e6'
+      borderColor: 'gray'
       }}
     >
       <Box sx={{ height: '20%', width: '96%', display: 'flex'}}>

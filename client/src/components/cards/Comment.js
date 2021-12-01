@@ -4,9 +4,17 @@ export default function Comment(props) {
 
     return (
 
-        <Card sx={{p : 1, marginBottom: "2%", bgcolor: "gold", height: "20%", width: "96%"}}>
+        <Card sx={{
+            border: 1, 
+            borderColor: 'black',
+            p : 1, 
+            marginBottom: "2%", 
+            bgcolor: "#90caf9", 
+            height: "20%", 
+            width: "95%"
+        }}>
             <Box sx={{color: 'blue', fontSize: '75%' }}>{props.author}</Box>
-            <Box sx={{paddingTop: 1}}>{props.text}</Box>
+            <Box sx={{color: 'black'}}>{props.text}</Box>
         </Card>
     )
 }

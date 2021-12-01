@@ -1,5 +1,3 @@
-import { useContext } from 'react'
-import { GlobalStoreContext } from '../store'
 import { Typography } from '@mui/material'
 
 
@@ -8,14 +6,11 @@ import { Typography } from '@mui/material'
     
     @author McKilla Gorilla
 */
-function Statusbar() {
-    const { store } = useContext(GlobalStoreContext);
-    let text ="";
-    if (store.currentList)
-        text = store.currentList.name;
+function Statusbar(props) {
+    
     return (
         <div id="top5-statusbar">
-            <Typography variant="h4">My Top 5 Lists</Typography>
+            <Typography variant="h4">{props.text}</Typography>
         </div>
     );
 }
