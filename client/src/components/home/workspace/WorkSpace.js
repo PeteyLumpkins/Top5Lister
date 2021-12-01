@@ -1,7 +1,7 @@
 import {Dialog, Card, Box, List, TextField} from '@mui/material/';
 import { useContext } from 'react';
 
-import {HomeStoreContext} from '../../store/home'
+import {HomeStoreContext} from '../../../store/home'
 
 import Top5Name from './Top5Name';
 import Top5Item from './Top5Item';
@@ -12,6 +12,7 @@ export default function WorkSpace() {
 
     const { homeStore } = useContext(HomeStoreContext);
 
+    console.log(homeStore.currentList);
     return (
         <Box sx={{marginLeft: "5%", marginRight: "5%", height: "100%", width: "90%", backgroundColor: "lightblue"}}>
             <Top5Name marginLeft="5%" text={homeStore.currentList.name}></Top5Name>

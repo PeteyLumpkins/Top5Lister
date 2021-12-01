@@ -1,14 +1,12 @@
 import { createContext, useContext, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import api from '../api'
 
 import AuthContext from '../auth'
-import { ViewStoreContext } from './view'
 /*
     This is our global data store. Note that it uses the Flux design pattern,
     which makes use of things like actions and reducers. 
     
-    @author McKilla Gorilla
+    @author PeteyLumpkins
 */
 
 // THIS IS THE CONTEXT WE'LL USE TO SHARE OUR STORE
@@ -18,6 +16,9 @@ export const HomeStoreContext = createContext({});
 // DATA STORE STATE THAT CAN BE PROCESSED
 export const HomeStoreActionType = {
     SET_LISTS: "SET_LISTS",
+    SET_FILTER: "SET_FILTER",
+    SET_SORT_TYPE: "SET_SORT_TYPE",
+
     CHANGE_LIST_NAME: "CHANGE_LIST_NAME",
     SAVE_CURRENT_LIST: "CLOSE_CURRENT_LIST",
     PUBLISH_CURRENT_LIST: "PUBLISH_CURRENT_LIST",
@@ -29,13 +30,21 @@ export const HomeStoreActionType = {
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE"
 }
 
+export const HomeStoreSortType = {
+    LIKES: 'LIKES',
+    DISLIKES: 'DISLIKES',
+    VIEWS: 'VIEWS',
+    OLDEST: 'OLDEST',
+    NEWEST: 'NEWEST'
+}
+
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
 // AVAILABLE TO THE REST OF THE APPLICATION
 function HomeStoreContextProvider(props) {
     // THESE ARE ALL THE THINGS OUR DATA STORE WILL MANAGE
     const [homeStore, setHomeStore] = useState({
         top5lists: null,
-        sortBy: null,
+        sortType: null,
         filter: null,
 
         currentList: null,
@@ -43,19 +52,33 @@ function HomeStoreContextProvider(props) {
         isItemEditActive: false,
         listMarkedForDeletion: null,
     });
-    const history = useHistory();
 
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
     const { auth } = useContext(AuthContext);
-    const { viewStore } = useContext(ViewStoreContext);
 
     // HERE'S THE DATA STORE'S REDUCER, IT MUST
     // HANDLE EVERY TYPE OF STATE CHANGE
     const storeReducer = (action) => {
         const { type, payload } = action;
         switch (type) {
+            case HomeStoreActionType.SET_LISTS: {
+                return setHomeStore({
+                    top5lists: payload.top5lists,
+                    filter: homeStore.filter,
+                    sortType: homeStore.sortType,
+
+                    currentList: null,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null
+                });
+            }
             case HomeStoreActionType.CHANGE_LIST_NAME: {
                 return setHomeStore({
+                    top5lists: homeStore.top5lists,
+                    filter: homeStore.filter,
+                    sortType: homeStore.sortType,
+
                     currentList: homeStore.currentList,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -64,6 +87,10 @@ function HomeStoreContextProvider(props) {
             }
             case HomeStoreActionType.CREATE_NEW_LIST: {
                 return setHomeStore({
+                    top5lists: homeStore.top5lists,
+                    filter: homeStore.filter,
+                    sortType: homeStore.sortType,
+
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -73,6 +100,10 @@ function HomeStoreContextProvider(props) {
             // PREPARE TO DELETE A LIST
             case HomeStoreActionType.MARK_LIST_FOR_DELETION: {
                 return setHomeStore({
+                    top5lists: homeStore.top5lists,
+                    filter: homeStore.filter,
+                    sortType: homeStore.sortType,
+
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -82,6 +113,10 @@ function HomeStoreContextProvider(props) {
             // PREPARE TO DELETE A LIST
             case HomeStoreActionType.UNMARK_LIST_FOR_DELETION: {
                 return setHomeStore({
+                    top5lists: homeStore.top5lists,
+                    filter: homeStore.filter,
+                    sortType: homeStore.sortType,
+
                     currentList: null,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -91,6 +126,10 @@ function HomeStoreContextProvider(props) {
             // UPDATE A LIST
             case HomeStoreActionType.SET_CURRENT_LIST: {
                 return setHomeStore({
+                    top5lists: homeStore.top5lists,
+                    filter: homeStore.filter,
+                    sortType: homeStore.sortType,
+
                     currentList: payload.top5list,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -100,6 +139,10 @@ function HomeStoreContextProvider(props) {
             // START EDITING A LIST ITEM
             case HomeStoreActionType.SET_ITEM_EDIT_ACTIVE: {
                 return setHomeStore({
+                    top5lists: homeStore.top5lists,
+                    filter: homeStore.filter,
+                    sortType: homeStore.sortType,
+
                     currentList: homeStore.currentList,
                     isListNameEditActive: false,
                     isItemEditActive: payload.isEditing,
@@ -109,6 +152,10 @@ function HomeStoreContextProvider(props) {
             // START EDITING A LIST NAME
             case HomeStoreActionType.SET_LIST_NAME_EDIT_ACTIVE: {
                 return setHomeStore({
+                    top5lists: homeStore.top5lists,
+                    filter: homeStore.filter,
+                    sortType: homeStore.sortType,
+
                     currentList: homeStore.currentList,
                     isListNameEditActive: payload.isEditing,
                     isItemEditActive: false,
@@ -120,7 +167,188 @@ function HomeStoreContextProvider(props) {
         }
     }
 
-    // THIS FUNCTION CREATES A NEW LIST
+    // Reducer for sorting top5lists
+    const sortTop5Lists = (top5lists) => {
+        switch(homeStore.sortType) {
+
+            case HomeStoreSortType.LIKES: {
+
+            }
+            case HomeStoreSortType.DISLIKES: {
+
+            }
+            case HomeStoreSortType.VIEWS: {
+
+            }
+            case HomeStoreSortType.OLDEST: {
+
+            }
+            // Default case is by most recently published
+            default: {
+                return top5lists.sort((e1, e2) => { 
+                    if (!e1.published && !e2.published) {
+                        return 0;
+                    } else if (!e1.published) {
+                        return 1;
+                    } else if (!e2.published) {
+                        return -1;
+                    } else if (e1.published > e2.published) {
+                        return -1
+                    } else if (e1.published < e2.published) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+            }
+        }
+    }
+
+    // Loads the top5lists to be displayed
+    homeStore.loadLists = async function () {
+        let response = await api.getUserTop5Lists();
+        console.log('Loading top5lists')
+        if (response && response.data.success) {
+            let top5lists = [];
+            // Gets the top5lists
+            for (let i = 0; i < response.data.top5lists.length; i++) {
+                let top5list = response.data.top5lists[i];
+                let post = null;
+                if (top5list.postId !== null) {
+                    post = await api.getPostById(top5list.postId);
+                }
+
+                top5lists.push({ 
+                    _id: top5list._id,
+                    userId: top5list.userId,
+                    name: top5list.name,
+                    author: top5list.author,
+                    items: top5list.items,
+                    published: top5list.published,
+                    post: post === null ? null : post.data.post
+                });
+            }
+            console.log('lists assembled')
+            // Next we filter the lists. Filter === null, then accept all lists
+            top5lists = top5lists.filter((top5list) => {
+                return (homeStore.filter === null || top5list.name === homeStore.filter);
+            });
+            console.log('filteering lists')
+            // Next we sort the top5lists based on the sortType
+            top5lists = sortTop5Lists(top5lists);
+
+            console.log('sorting lists)')
+            // Set the lists
+            storeReducer({
+                type: HomeStoreActionType.SET_LISTS,
+                payload: {
+                    top5lists: top5lists,
+                }
+            })
+        }
+    }   
+
+    // Sets how the top5lists should be sorted
+    homeStore.setSortType = async function (sortType) {
+        storeReducer({
+            type: HomeStoreActionType.SET_SORT_TYPE,
+            payload: {
+                sortType: sortType
+            }
+        });
+    }
+
+    // Sets the filter for the top5lists
+    homeStore.setFilter = async function (filter) {
+        storeReducer({
+            type: HomeStoreActionType.SET_FILTER,
+            payload: {
+                filter: filter
+            }
+        });
+    }
+
+    // THESE ARE ALL THE METHODS FOR UPDATING THE POST ASSOCIATED WITH
+    // THE TOPTLISTS
+
+    // Handles updating a post
+    homeStore.updatePost = async function (postId, payload) {
+        let response = await api.updatePost(postId, payload);
+        if (response.data.success) {
+            homeStore.loadLists();
+        }
+    }
+
+    // Handles adding a view to a post
+    homeStore.viewPost = async function (postId) {
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            homeStore.updatePost(postId, {
+                likes: response.data.post.likes,
+                dislikes: response.data.post.dislikes,
+                comments: response.data.post.comments,
+                views: response.data.post.views + 1,
+            });
+        }
+    }
+
+    // Handles liking a post.
+    homeStore.likePost = async function (postId) {
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            let disliked = response.data.post.dislikes.indexOf(auth.user.id);
+            if (disliked !== -1) {
+                response.data.post.dislikes.splice(disliked, 1);
+            }
+            response.data.post.likes.push(auth.user.id);
+            homeStore.updatePost (postId, {
+                likes: response.data.post.likes,
+                dislikes: response.data.post.dislikes,
+                views: response.data.post.views,
+                comments: response.data.post.comments,
+            });   
+        }
+    }
+
+    // Handles disliking a post
+    homeStore.dislikePost = async function (postId) {
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            let liked = response.data.post.likes.indexOf(auth.user.id);
+            if (liked !== -1) {
+                response.data.post.likes.splice(liked, 1);
+            }
+            response.data.post.dislikes.push(auth.user.id);
+            homeStore.updatePost(postId, {
+                likes: response.data.post.likes,
+                dislikes: response.data.post.dislikes,
+                views: response.data.post.views,
+                comments: response.data.post.comments,
+            });
+        }
+    }
+
+    // Handles adding a comment to a post
+    homeStore.postComment = async function (postId, text) {
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            response.data.post.comments.push({
+                author: auth.user.firstName + " " + auth.user.lastName,
+                text: text
+            });
+            homeStore.updatePost(postId, {
+                likes: response.data.post.likes,
+                dislikes: response.data.post.dislikes,
+                views: response.data.post.views,
+                comments: response.data.post.comments,
+            });
+        }
+    }
+
+    // THESE ARE ALL THE CONTROLS FOR THINGS EXLUSIVE TO THE HOMESTORE
+    // CREATING NEW LISTS, EDITING A LIST, DELETING A LIST, ETC
+
+    // Creates a new list
     homeStore.createNewList = async function () {
         let payload = {
             userId: auth.user.id,
@@ -131,7 +359,7 @@ function HomeStoreContextProvider(props) {
         const response = await api.createUserTop5List(payload);
         if (response.data.success) {
             // Basically just refresh the page
-            viewStore.loadPage(viewStore.page);
+            homeStore.loadLists();
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
@@ -167,7 +395,7 @@ function HomeStoreContextProvider(props) {
         } 
         let response = await api.deleteUserTop5List(listToDelete._id);
         if (response.data.success) {
-            viewStore.loadPage(viewStore.page);
+            homeStore.loadLists();
         }
         
 
@@ -201,12 +429,27 @@ function HomeStoreContextProvider(props) {
 
     // Function handles updating the current lists items
     homeStore.updateCurrentListItem = function (index, newItem) {
-        homeStore.currentList.items[index] = newItem;
+        let currentList = homeStore.currentList;
+        currentList.items[index] = newItem;
+        storeReducer({
+            type: HomeStoreActionType.SET_CURRENT_LIST,
+            payload: {
+                top5list: currentList
+            }
+        });
     }
 
     // Function handles updating the current lists name
     homeStore.updateCurrentListName = async function (newName) {
-        homeStore.currentList.name = newName;
+        let currentList = homeStore.currentList;
+        currentList.name = newName;
+        console.log("Updating list name");
+        storeReducer({
+            type: HomeStoreActionType.SET_CURRENT_LIST,
+            payload: {
+                top5list: currentList
+            }
+        })
     }
 
     // Function handles saving the current top5list

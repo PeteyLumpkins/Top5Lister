@@ -14,6 +14,7 @@ import AllListsScreen from './components/screens/AllListsScreen';
 import {
     AppBanner,
     HomeWrapper,
+    CommunityWrapper,
     RegisterScreen,
     
     LoginScreen,
@@ -35,18 +36,16 @@ const App = () => {
         <BrowserRouter>
             <AuthContextProvider>
                 <GlobalStoreContextProvider> 
-                    <ViewStoreContextProvider>  
-                        <HomeStoreContextProvider>           
+                    <ViewStoreContextProvider>            
                         <AppBanner />
                         <Switch>
                             <Route path="/" exact component={HomeWrapper} />
                             <Route path="/alllists" exact component={AllListsScreen} />
                             <Route path="/userlists" exact component={UserListsScreen} />
-                            <Route path="/communitylists" exact component={CommunityListsScreen} />
+                            <Route path="/communitylists" exact component={CommunityWrapper} />
                             <Route path="/login/" exact component={LoginScreen} />
                             <Route path="/register/" exact component={RegisterScreen} />
                         </Switch>
-                        </HomeStoreContextProvider>
                     </ViewStoreContextProvider>
                 </GlobalStoreContextProvider>
             </AuthContextProvider>

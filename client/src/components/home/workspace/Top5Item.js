@@ -1,19 +1,18 @@
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import { TextField, Box, Fab } from '@mui/material/';
 
-import {HomeStoreContext} from '../../store/home'
+import {HomeStoreContext} from '../../../store/home'
 
 import EditIcon from '@mui/icons-material/Edit';
 
-export default function Top5Name(props) {
-
+export default function Top5Item(props) {
     const [editing, setEditing] = useState(false);
     const [text, setText] = useState(props.text);
 
     const { homeStore } = useContext(HomeStoreContext);
 
     const toggleEdit = () => {
-        homeStore.setIsListNameEditActive(!editing);
+        homeStore.setIsItemEditActive(!editing)
         setEditing(!editing);
     }
 
@@ -24,14 +23,14 @@ export default function Top5Name(props) {
     const handleKeyPress = (event) => {
         if (event.code === 'Enter') {
             toggleEdit();
-            homeStore.updateCurrentListName(text);
+            homeStore.updateCurrentListItem(props.index, text); 
         }
     }
 
-    let item = <Box sx={{ paddingLeft: "1%", background: "white", width: "45%" }}>{text}</Box>
+    let item = <Box sx={{ paddingLeft: "1%", background: "white", width: "80%" }}>{text}</Box>;
     if (editing) {
         item = <TextField sx={{ 
-            width: '45%',
+            width: '80%',
             display: 'flex', 
             fontSize: '200%',
             background: 'white',
@@ -42,23 +41,20 @@ export default function Top5Name(props) {
         >
         </TextField>
     }
-    
-    
+
     return (
-        <Box sx={{m : 1, borderRadius: 1, marginLeft: "5%", display: 'flex', alignItems: 'center', fontSize: '200%' }}>
+        <Box sx={{ m : 1, borderRadius: 1, marginLeft: "5%", display: 'flex', alignItems: 'center', fontSize: '200%' }}>
             {item}
-            <Box sx={{ p: 1 }}>
-                <Fab
-                    aria-label='edit'
-                    onClick={toggleEdit}
-                    color="primary"
-                    disabled={editing || homeStore.isListNameEditActive || homeStore.isItemEditActive}
-                    size="small"
-                >
-                    <EditIcon />
-                </Fab>
-            </Box>
+        <Box sx={{ p: 1 }}>
+            <Fab
+                aria-label='edit'
+                onClick={toggleEdit}
+                color="primary"
+                disabled={editing || homeStore.isItemEditActive || homeStore.isListNameEditActive}
+                size="small"
+            >
+                <EditIcon />
+            </Fab>
         </Box>
-    )
-    
+    </Box>)
 }

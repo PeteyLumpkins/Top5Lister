@@ -1,28 +1,20 @@
 import { useState, useContext } from 'react';
-import {HomeStoreContext} from '../../../store/home';
-import { ViewStoreContext } from '../../../store/view';
-import { ViewStorePageType } from '../../../store/view'
+import { CommunityStoreContext } from '../../../store/community';
 
 import AuthContext from '../../../auth';
 
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import CommunityDropDown from '../../community/cards/CommunityDropDown'
-import CommentSection from '../common/CommentSection'
+import CommentDropdownCard from './CommentDropdownCard';
+import CommunityDropdownCard from './CommunityDropDown';
 
-import EditButton from '../../buttons/EditButton'
-import LikeButton from '../../buttons/LikeButton'
-import DislikeButton from '../../buttons/DislikeButton'
-import DeleteButton from '../../buttons/DeleteButton'
+import LikeButton from '../buttons/LikeButton'
+import DislikeButton from '../buttons/DislikeButton'
 
 import Box from '@mui/material/Box';
 
@@ -37,10 +29,10 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function CommunityListCard(props) {
+export default function CommunityCard(props) {
   const [expanded, setExpanded] = useState(false);
 
-  const { viewStore } = useContext(ViewStoreContext);
+  const { communityStore } = useContext(CommunityStoreContext);
   const { auth } = useContext(AuthContext);
  
   let date = "Last updated: " + props.communitylist.lastUpdated;
@@ -67,17 +59,17 @@ export default function CommunityListCard(props) {
       {"Views: " + props.communitylist.post.views}
     </Box>
     comments = 
-      <CommentSection 
+      <CommentDropdownCard
         postId={props.communitylist.post._id} 
         comments={props.communitylist.post.comments}
-      ></CommentSection>
+      ></CommentDropdownCard>
    
   }
 
   const handleExpandClick = () => {
     // Adds a view if we open up the dropdown and the list has been published.
     if (!expanded && props.communitylist.post !== null) {
-      viewStore.viewPost(props.communitylist.post._id);
+      communityStore.viewPost(props.communitylist.post._id);
     }
     setExpanded(!expanded);
   };
@@ -108,7 +100,7 @@ export default function CommunityListCard(props) {
         <Collapse sx={{height: '60%'}} in={expanded} timeout="auto" unmountOnExit>
           <CardContent sx={{display: 'flex', width: '100%', height: '96%', maxHeight: '96%'}}>
               <Box sx={{paddingRight: 2, width: '50%', height: "90%"}}>
-                <CommunityDropDown items={props.communitylist.items}/>
+                <CommunityDropdownCard items={props.communitylist.items}/>
               </Box>
               <Box sx={{paddingLeft: "2%", paddingRight: '2%', width: '50%'}}>
                 {comments}

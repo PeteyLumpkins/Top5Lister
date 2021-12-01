@@ -19,11 +19,17 @@ export default function NavBar(props) {
 
     const { auth } = useContext(AuthContext);
 
+    
+    let home = <Link to='/'><HomeButton/> </Link>
+    if (auth.user === null) {
+        home = <HomeButton disabled={true}/> 
+    }
+
     return (
         <Box sx={{ height: "10%", flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar sx={{ background: "primary" }}>
-                    <HomeButton disabled={auth.user === null}/> 
+                    {home}
                     <Link to="/alllists"> <AllListsButton disabled={false}/> </Link>
                     <Link to="/userlists"> <AllUsersButton disabled={false}/> </Link>
                     <Link to="/communitylists"> <CommunityButton disabled={false}/> </Link>
