@@ -122,8 +122,25 @@ function ViewStoreContextProvider(props) {
                             post = await api.getPostById(top5list.postId);
                         }
 
+                        let items = Object.keys(top5list.itemCounts).sort((e1, e2) => {
+                            if (top5list.itemCounts[e1] > top5list.itemCounts[e2]) {
+                                
+                                return -1;
+                            } else if (top5list.itemCounts[e2] > top5list.itemCounts[e1]) {
+                                
+                                return 1;
+                            } else {
+                                
+                                return 0;
+                            }
+                        })
+                        let top5items = items.slice(0, 5).map((item) => {
+                            return { name: item, count: top5list.itemCounts[item] }
+                        });
+
                         top5lists.push({ 
                             _id: top5list._id,
+                            items: top5items,
                             community: top5list.community,
                             itemCounts: top5list.itemCounts,
                             lastUpdated: top5list.lastUpdated,

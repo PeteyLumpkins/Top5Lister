@@ -10,7 +10,7 @@ import List from '@mui/material/List';
 
 import StatusBar from "../Statusbar"
 import NavBar from "../nav/NavBar"
-import UserListCard from '../cards/UserListCard';
+import UserListCard from '../cards/top5list/UserListCard';
 import WorkSpace from '../workspace/WorkSpace';
 import DeleteListModel from '../models/DeleteListModel'
 

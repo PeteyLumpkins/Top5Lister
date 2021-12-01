@@ -1,7 +1,7 @@
 import { Fab, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
-import UserListCard from '../cards/UserListCard';
+import UserListCard from '../cards/top5list/UserListCard';
 
 import NavBar from '../nav/NavBar'
 

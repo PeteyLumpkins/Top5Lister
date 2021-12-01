@@ -4,7 +4,7 @@ import {ViewStoreContext} from '../../store/view'
 import {ViewStorePageType} from '../../store/view'
 
 import NavBar from "../nav/NavBar"
-import UserListCard from '../cards/UserListCard';
+import UserListCard from '../cards/top5list/UserListCard';
 
 import React, { useContext, useEffect } from 'react';
 

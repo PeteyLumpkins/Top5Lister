@@ -5,7 +5,7 @@ import { Fab, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
 import DeleteListModel from './models/DeleteListModel';
-import UserListCard from './cards/UserListCard';
+import UserListCard from './cards/top5list/UserListCard';
 /*
     This React component lists all the top5 lists in the UI.
     

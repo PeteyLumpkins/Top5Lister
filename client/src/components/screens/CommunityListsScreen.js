@@ -6,8 +6,10 @@ import { Fab, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
 
+
+import StatusBar from '../Statusbar'
 import NavBar from "../nav/NavBar"
-import CommunityListCard from '../cards/CommunityCard';
+import CommunityListCard from '../cards/community/CommunityCard';
 
 export default function CommunityListsScreen() {
     const { viewStore } = useContext(ViewStoreContext);
@@ -46,8 +48,8 @@ export default function CommunityListsScreen() {
                         {listCard}
                 </div>
                 <div id="list-selector-heading">
-    
                 </div>
+                <StatusBar text={"Community Lists"}></StatusBar>
             </div>
     );
 }
