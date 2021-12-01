@@ -39,61 +39,47 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function UserListCard(props) {
+export default function CommunityListCard(props) {
   const [expanded, setExpanded] = useState(false);
 
-  const { homeStore } = useContext(HomeStoreContext);
   const { viewStore } = useContext(ViewStoreContext);
   const { auth } = useContext(AuthContext);
  
-  let published = "" 
-  if (props.top5list.published === null) {
-    published = <EditButton top5list={props.top5list}></EditButton>
-  } else {
-    published = "Published: " + props.top5list.published.toString();
-  }
+  let date = "Last updated: " + props.communitylist.lastUpdated;
 
   let likes = ""
   let dislikes = ""
   let views = ""
   let comments = ""
 
-  if (props.top5list.post !== null) {
+  if (props.communitylist.post !== null) {
     likes = <Box sx={{paddingLeft: 2, paddingRight: 2}}>
       <LikeButton 
-        postId={props.top5list.post._id}
-        disabled={auth.user === null || props.top5list.post.likes.includes(auth.user.id)}
-      /> {props.top5list.post.likes.length}
+        postId={props.communitylist.post._id}
+        disabled={auth.user === null || props.communitylist.post.likes.includes(auth.user.id)}
+      /> {props.communitylist.post.likes.length}
     </Box>
     dislikes = <Box sx={{paddingLeft: 2, paddingRight: 2}}>
       <DislikeButton 
-        postId={props.top5list.post._id}
-        disabled={auth.user === null || props.top5list.post.dislikes.includes(auth.user.id)}
-      /> {props.top5list.post.dislikes.length}
+        postId={props.communitylist.post._id}
+        disabled={auth.user === null || props.communitylist.post.dislikes.includes(auth.user.id)}
+      /> {props.communitylist.post.dislikes.length}
     </Box>
     views = <Box sx={{paddingLeft: 2, paddingRight: 2}}>
-      {"Views: " + props.top5list.post.views}
+      {"Views: " + props.communitylist.post.views}
     </Box>
     comments = 
       <CommentSection 
-        postId={props.top5list.post._id} 
-        comments={props.top5list.post.comments}
+        postId={props.communitylist.post._id} 
+        comments={props.communitylist.post.comments}
       ></CommentSection>
    
   }
 
-  let deleteButton = ""
-  console.log()
-  if (viewStore.page === ViewStorePageType.HOME && auth.user && auth.user.id === props.top5list.userId) {
-    deleteButton = <Box sx={{paddingLeft: 2}}>
-      <DeleteButton top5list={props.top5list}></DeleteButton>
-    </Box>
-  }
-
   const handleExpandClick = () => {
     // Adds a view if we open up the dropdown and the list has been published.
-    if (!expanded && props.top5list.post !== null) {
-      viewStore.viewPost(props.top5list.post._id);
+    if (!expanded && props.communitylist.post !== null) {
+      viewStore.viewPost(props.communitylist.post._id);
     }
     setExpanded(!expanded);
   };
@@ -113,20 +99,18 @@ export default function UserListCard(props) {
     >
       <Box sx={{ height: '20%', width: '96%', display: 'flex'}}>
         <Box sx={{display: 'flex', width: '50%'}}>
-          <Box sx={{fontSize: '150%'}}>{props.top5list.name}
-            <Box sx={{fontSize: '50%'}}>{"By: " + props.top5list.author}</Box>
+          <Box sx={{fontSize: '150%'}}>{props.communitylist.community}
           </Box>
         </Box>
         <Box sx={{display: 'flex', width: '50%', justifyContent: 'right'}}>
           {likes} 
           {dislikes}
-          {deleteButton}
         </Box>
       </Box>
         <Collapse sx={{height: '60%'}} in={expanded} timeout="auto" unmountOnExit>
           <CardContent sx={{display: 'flex', width: '100%', height: '96%', maxHeight: '96%'}}>
               <Box sx={{paddingRight: 2, width: '50%', height: "90%"}}>
-                <ListDropDown items={props.top5list.items}/>
+                <ListDropDown items={props.communitylist.items}/>
               </Box>
               <Box sx={{paddingLeft: "2%", paddingRight: '2%', width: '50%'}}>
                 {comments}
@@ -135,7 +119,7 @@ export default function UserListCard(props) {
         </Collapse>
       <Box sx={{ display: 'flex', width: '100%', height: '20%'}}>
             <Box sx={{display: 'flex', justifyContent: 'left', alignItems: 'center'}}>
-                <Box sx={{color: 'green'}}>{published}</Box>
+                <Box sx={{color: 'green'}}>{date}</Box>
             </Box>
             <Box sx={{alignItems: 'center', display: 'flex', flexGrow: 1, justifyContent: 'right'}}>
                 {views}
@@ -153,4 +137,3 @@ export default function UserListCard(props) {
     </Card>
   );
 }
-

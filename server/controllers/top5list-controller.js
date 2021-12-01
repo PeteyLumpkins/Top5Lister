@@ -132,7 +132,7 @@ deleteUserTop5List = async (req, res) => {
         if (!list || err) {
             return res.status(404).json({ success: false, error: "Top5List not found!" });
         }
-        UserTop5List.findOneAndDelete(list.id).catch((err) => { 
+        UserTop5List.findOneAndDelete({_id: list.id}).catch((err) => { 
             return res.status(500).json({ success: false, error: err}); 
         });
         return res.status(200).json({ success: true, message: "Top5List Deleted!"})

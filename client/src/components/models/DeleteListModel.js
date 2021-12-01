@@ -4,19 +4,19 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { GlobalStoreContext } from '../../store'
+import { HomeStoreContext } from '../../store/home'
 import { useContext } from 'react'
 
 export default function DeleteListModel(props) {
 
-    const { store } = useContext(GlobalStoreContext);
+    const { homeStore } = useContext(HomeStoreContext);
 
     const handleClose = () => {
-        store.unmarkListForDeletion();
+        homeStore.unmarkListForDeletion();
     };
 
     const handleDelete = () => {
-        store.deleteMarkedList();
+        homeStore.deleteMarkedList();
         handleClose();
     }
 

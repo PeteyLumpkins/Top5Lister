@@ -17,6 +17,7 @@ export const HomeStoreContext = createContext({});
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR GLOBAL
 // DATA STORE STATE THAT CAN BE PROCESSED
 export const HomeStoreActionType = {
+    SET_LISTS: "SET_LISTS",
     CHANGE_LIST_NAME: "CHANGE_LIST_NAME",
     SAVE_CURRENT_LIST: "CLOSE_CURRENT_LIST",
     PUBLISH_CURRENT_LIST: "PUBLISH_CURRENT_LIST",
@@ -33,6 +34,10 @@ export const HomeStoreActionType = {
 function HomeStoreContextProvider(props) {
     // THESE ARE ALL THE THINGS OUR DATA STORE WILL MANAGE
     const [homeStore, setHomeStore] = useState({
+        top5lists: null,
+        sortBy: null,
+        filter: null,
+
         currentList: null,
         isListNameEditActive: false,
         isItemEditActive: false,
@@ -49,7 +54,6 @@ function HomeStoreContextProvider(props) {
     const storeReducer = (action) => {
         const { type, payload } = action;
         switch (type) {
-            // TODO changing list name happens through updating currentlist
             case HomeStoreActionType.CHANGE_LIST_NAME: {
                 return setHomeStore({
                     currentList: homeStore.currentList,
@@ -58,7 +62,6 @@ function HomeStoreContextProvider(props) {
                     listMarkedForDeletion: null
                 });
             }
-            // TODO current list in the payload
             case HomeStoreActionType.CREATE_NEW_LIST: {
                 return setHomeStore({
                     currentList: null,
@@ -117,15 +120,6 @@ function HomeStoreContextProvider(props) {
         }
     }
 
-    // TODO will save the current list
-    homeStore.closeCurrentList = function () {
-        storeReducer({
-            type: HomeStoreActionType.CLOSE_CURRENT_LIST,
-            payload: {}
-        });
-        history.push("/");
-    }
-
     // THIS FUNCTION CREATES A NEW LIST
     homeStore.createNewList = async function () {
         let payload = {
@@ -144,34 +138,55 @@ function HomeStoreContextProvider(props) {
         }
     }
 
-    // THE FOLLOWING 5 FUNCTIONS ARE FOR COORDINATING THE DELETION
-    // OF A LIST, WHICH INCLUDES USING A VERIFICATION MODAL. THE
-    // FUNCTIONS ARE markListForDeletion, deleteList, deleteMarkedList,
-    // showDeleteListModal, and hideDeleteListModal
-    homeStore.markListForDeletion = async function (id) {
-        // GET THE LIST
-        let response = await api.getTop5ListById(id);
-        if (response.data.success) {
-            let top5List = response.data.top5List;
-            storeReducer({
-                type: HomeStoreActionType.MARK_LIST_FOR_DELETION,
-                payload: top5List
-            });
-        }
+    // Sets the list marked for deletion
+    homeStore.markListForDeletion = async function (top5List) {
+        console.log(top5List)
+        storeReducer({
+            type: HomeStoreActionType.MARK_LIST_FOR_DELETION,
+            payload: top5List
+        });
     }
 
+    // Deletes the given list and the post associated with the list
     homeStore.deleteList = async function (listToDelete) {
-        let response = await api.deleteTop5ListById(listToDelete._id);
+        if (listToDelete.published !== null) {
+            let response = await api.deletePost(listToDelete.post._id);
+            console.log("Deleting top5list post");
+            if (response.data.success) {
+                async function updateCommunityList() {
+                    response = await api.removeFromCommunityTop5List(listToDelete.name, {items: listToDelete.items});
+                    if (response.data.success) {
+                        console.log('Removed from community list')
+                    
+                        if (!response.data.list.itemCounts) {
+                            let community = response.data.list.community;
+                            console.log("Delete community post")
+                            response = await api.deletePost(response.data.list.postId);
+                            if (response.data.success) {
+                                console.log("Delete community list")
+                                response = await api.deleteCommunityTop5List(community);
+                            }
+                        }
+                    }
+                }
+                updateCommunityList();
+            }
+        } 
+        console.log("Deleting the list")
+        let response = await api.deleteUserTop5List(listToDelete._id);
         if (response.data.success) {
-            homeStore.loadIdNamePairs();
-            history.push("/");
+            viewStore.loadPage(viewStore.page);
         }
+        
+
     }
 
+    // Deletes the marked list
     homeStore.deleteMarkedList = function () {
         homeStore.deleteList(homeStore.listMarkedForDeletion);
     }
 
+    // Unmarks the list to delete
     homeStore.unmarkListForDeletion = function () {
         storeReducer({
             type: HomeStoreActionType.UNMARK_LIST_FOR_DELETION,

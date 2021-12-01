@@ -10,6 +10,7 @@ import List from '@mui/material/List';
 import NavBar from "../nav/NavBar"
 import UserListCard from '../cards/UserListCard';
 import WorkSpace from '../workspace/WorkSpace';
+import DeleteListModel from '../models/DeleteListModel'
 
 import AddListButton from '../buttons/AddListButton';
 
@@ -51,7 +52,6 @@ export default function HomeScreen() {
             </List>;
     }
 
-    console.log(viewStore.top5lists)
     return (
             <div id="top5-list-selector">
                 <NavBar></NavBar>
@@ -62,6 +62,10 @@ export default function HomeScreen() {
                     <AddListButton></AddListButton>
                     <Typography variant="h5">Your Lists</Typography>
                 </div>
+                <DeleteListModel 
+                    open={homeStore.listMarkedForDeletion !== null} 
+                    listName={homeStore.listMarkedForDeletion === null ? null : homeStore.listMarkedForDeletion.name}
+                ></DeleteListModel>
             </div>
         )
 }

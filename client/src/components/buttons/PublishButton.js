@@ -25,7 +25,9 @@ export default function PublishButton(props) {
     }
 
     const allItemsUnique = () => {
-        
+        return homeStore.currentList.items.filter((e1) => {
+            return homeStore.currentList.items.filter((e2) => { return e1 === e2} ).length > 1; 
+        })
     }
 
     return (
@@ -34,7 +36,8 @@ export default function PublishButton(props) {
             onClick={handleClick}
             disabled={homeStore.isItemEditActive || 
                 homeStore.isListNameEditActive ||
-                !isListNameUnique()
+                !isListNameUnique() ||
+                allItemsUnique().length !== 0
             }
         >
             Publish

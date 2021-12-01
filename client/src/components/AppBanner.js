@@ -34,11 +34,6 @@ export default function AppBanner() {
         auth.logoutUser();
     }
 
-    // Loads the users lists
-    const handleUserLists = () => {
-        
-    }
-
     const menuId = 'primary-search-account-menu';
     const loggedOutMenu = (
         <Menu

@@ -69,7 +69,7 @@ updatePost = async (req, res) => {
  */
 deletePost = async (req, res) => {
     Post.findById(req.params.id).then(() => {
-        Post.findOneAndDelete({id: req.params.id}).then(() => {
+        Post.findOneAndDelete({_id: req.params.id}).then(() => {
             return res.status(200).json({success: true, message: "Post Deleted!"});
         }).catch((err) => {
             return res.status(500).json({success: false, message: "Post failed to delete."})

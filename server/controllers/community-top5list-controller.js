@@ -109,7 +109,7 @@ addToCommunityTop5List = async (req, res) => {
  * req.body: { items: [] of items to remove }
  */
 removeFromCommunityTop5List = async (req, res) => {
-    CommunityTop5List.findOne({community: req.params.community}, (err, list) => {
+    CommunityTop5List.findOne({community: req.params.community.toUpperCase()}, (err, list) => {
 
         if (err) {
             return res.status(404).json({ success: false, error: err });

@@ -12,7 +12,6 @@ export default function WorkSpace() {
 
     const { homeStore } = useContext(HomeStoreContext);
 
-    console.log(homeStore.isItemEditActive);
     return (
         <Box sx={{marginLeft: "5%", marginRight: "5%", height: "100%", width: "90%", backgroundColor: "lightblue"}}>
             <Top5Name marginLeft="5%" text={homeStore.currentList.name}></Top5Name>

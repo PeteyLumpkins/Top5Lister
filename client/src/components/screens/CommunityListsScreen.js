@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
 
 import NavBar from "../nav/NavBar"
-import UserListCard from '../cards/UserListCard';
+import CommunityListCard from '../cards/CommunityCard';
 
 export default function CommunityListsScreen() {
     const { viewStore } = useContext(ViewStoreContext);
@@ -30,9 +30,9 @@ export default function CommunityListsScreen() {
             >
             {
                 viewStore.top5lists.map((top5list) => (
-                    <UserListCard
+                    <CommunityListCard
                         key={top5list._id}
-                        top5list={top5list}
+                        communitylist={top5list}
                     />
                 ))
             }

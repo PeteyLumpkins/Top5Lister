@@ -42,7 +42,6 @@ export default function Top5Item(props) {
         </TextField>
     }
 
-    console.log(homeStore.isItemEditActive);
     return (
         <Box sx={{ m : 1, borderRadius: 1, marginLeft: "5%", display: 'flex', alignItems: 'center', fontSize: '200%' }}>
             {item}
