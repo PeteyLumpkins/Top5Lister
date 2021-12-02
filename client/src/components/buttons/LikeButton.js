@@ -1,7 +1,7 @@
 import { Fab } from '@mui/material'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
-import {ViewStoreContext} from '../../store/view'
+import {ViewStoreContext} from '../../stores/view'
 import { useContext } from 'react';
 
 

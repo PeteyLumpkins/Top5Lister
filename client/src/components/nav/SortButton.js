@@ -3,8 +3,8 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
-import { ViewStoreContext } from '../../store/view'
-import { ViewStoreSortType } from '../../store/view'
+import { ViewStoreContext } from '../../stores/view'
+import { ViewStoreSortType } from '../../stores/view'
 
 import { useState, useContext } from 'react';
 

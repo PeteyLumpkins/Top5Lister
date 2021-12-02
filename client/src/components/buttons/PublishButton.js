@@ -2,8 +2,8 @@ import Button from '@mui/material/Button';
 
 import { useContext } from 'react';
 
-import {ViewStoreContext} from '../../store/view'
-import {HomeStoreContext} from '../../store/home'
+import {ViewStoreContext} from '../../stores/view'
+import {HomeStoreContext} from '../../stores/HomeListsStore'
 
 export default function PublishButton(props) {
 

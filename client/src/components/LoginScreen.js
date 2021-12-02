@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import Copyright from './Copyright';
 
 import { useContext } from 'react';
-import { GlobalStoreContext } from '../store';
+import { GlobalStoreContext } from '../stores';
 import AuthContext from '../auth';
 
 import ErrorModal from './models/ErrorModal';

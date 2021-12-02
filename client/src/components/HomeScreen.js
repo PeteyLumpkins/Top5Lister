@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react'
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../stores'
 import ListCard from './ListCard.js'
 import { Fab, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
-import DeleteListModel from './home/models/DeleteListModel';
+import DeleteListModel from './home-lists/models/DeleteListModel';
 import UserListCard from './cards/top5list/UserListCard';
 /*
     This React component lists all the top5 lists in the UI.

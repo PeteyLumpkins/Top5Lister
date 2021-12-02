@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
-import {HomeStoreContext} from '../../../store/home';
-import { ViewStoreContext } from '../../../store/view';
-import { ViewStorePageType } from '../../../store/view'
+import {HomeStoreContext} from '../../../stores/HomeListsStore';
+import { ViewStoreContext } from '../../../stores/view';
+import { ViewStorePageType } from '../../../stores/view'
 
 import AuthContext from '../../../auth';
 

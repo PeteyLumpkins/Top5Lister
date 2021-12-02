@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import Top5Item from './Top5Item.js'
 import List from '@mui/material/List';
 import { Typography } from '@mui/material'
-import { GlobalStoreContext } from '../store/index.js'
+import { GlobalStoreContext } from '../stores/index.js'
 import ErrorModal from './models/ErrorModal'
 
 /*

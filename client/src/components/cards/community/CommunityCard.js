@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
-import {HomeStoreContext} from '../../../store/home';
-import { ViewStoreContext } from '../../../store/view';
-import { ViewStorePageType } from '../../../store/view'
+import {HomeStoreContext} from '../../../stores/HomeListsStore';
+import { ViewStoreContext } from '../../../stores/view';
+import { ViewStorePageType } from '../../../stores/view'
 
 import AuthContext from '../../../auth';
 
@@ -16,7 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import CommunityDropDown from '../../community/cards/CommunityDropDown'
+import CommunityDropDown from '../../community-lists/cards/CommunityDropDown'
 import CommentSection from '../common/CommentSection'
 
 import EditButton from '../../buttons/EditButton'

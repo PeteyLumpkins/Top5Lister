@@ -1,7 +1,7 @@
 import List from '@mui/material/List';
 
-import {ViewStoreContext} from '../../store/view'
-import {ViewStorePageType} from '../../store/view'
+import {ViewStoreContext} from '../../stores/view'
+import {ViewStorePageType} from '../../stores/view'
 
 import NavBar from "../nav/NavBar"
 import UserListCard from '../cards/top5list/UserListCard';

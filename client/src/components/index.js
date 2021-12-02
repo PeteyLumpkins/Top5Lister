@@ -2,8 +2,9 @@ import AppBanner from './AppBanner'
 import EditToolbar from './EditToolbar'
 import HomeScreen from './HomeScreen'
 
-import HomeWrapper from './home/HomeWrapper';
-import CommunityWrapper from './community/CommunityWrapper';
+import HomeWrapper from './home-lists/HomeWrapper';
+import CommunityWrapper from './community-lists/CommunityWrapper';
+import AllListsWrapper from './all-lists/AllListsWrapper';
 
 import ListCard from './ListCard'
 import RegisterScreen from './RegisterScreen'
@@ -25,7 +26,8 @@ export {
     HomeScreen,
     HomeWrapper,
     CommunityWrapper,
-    
+    AllListsWrapper,
+
     ListCard, 
     RegisterScreen,
     SplashScreen,

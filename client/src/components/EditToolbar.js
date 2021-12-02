@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../stores'
 import Button from '@mui/material/Button';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';

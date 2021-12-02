@@ -3,7 +3,7 @@ import ListItem from '@mui/material/ListItem';
 import Box from '@mui/material/Box';
 
 import Comment from "./Comment";
-import {ViewStoreContext} from '../../../store/view'
+import {ViewStoreContext} from '../../../stores/view'
 import { useContext } from 'react';
 
 import TextField from '@mui/material/TextField';

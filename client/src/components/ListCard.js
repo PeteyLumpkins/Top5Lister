@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../stores'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';

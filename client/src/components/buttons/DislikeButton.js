@@ -1,7 +1,7 @@
 import { Fab } from '@mui/material'
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
-import {ViewStoreContext} from '../../store/view'
+import {ViewStoreContext} from '../../stores/view'
 import { useContext, useState } from 'react';
 
 export default function DislikeButton(props) {

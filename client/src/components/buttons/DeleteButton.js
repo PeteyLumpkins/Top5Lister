@@ -1,7 +1,7 @@
 import { Fab } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import {HomeStoreContext} from '../../store/home'
+import {HomeStoreContext} from '../../stores/HomeListsStore'
 import { useContext } from 'react';
 
 export default function DeleteButton(props) {

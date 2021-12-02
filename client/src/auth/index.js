@@ -139,6 +139,7 @@ function AuthContextProvider(props) {
     }
 
     auth.registerUser = async function(userData) {
+        console.log(userData);
         try {
             const response = await api.registerUser(userData);      
             if (response.status === 200) {
