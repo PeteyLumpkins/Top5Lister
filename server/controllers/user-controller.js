@@ -65,6 +65,7 @@ getLoggedIn = async (req, res) => {
             loggedIn: true,
             user: {
                 id: loggedInUser._id,
+                userName: loggedInUser.userName,
                 firstName: loggedInUser.firstName,
                 lastName: loggedInUser.lastName,
                 email: loggedInUser.email

@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from 'react';
 import List from '@mui/material/List';
 
 import StatusBar from '../Statusbar'
-import NavBar from "../nav/NavBar"
+import NavBar from "./nav/NavBar"
 import CommunityCard from './cards/CommunityCard';
 
 export default function CommunityScreen() {

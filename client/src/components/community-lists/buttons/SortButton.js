@@ -4,13 +4,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
 import { useState, useContext } from 'react';
-import { HomeStoreContext, HomeStoreSortType } from '../../../stores/HomeListsStore';
+import { CommunityStoreContext, CommunityStoreSortType } from '../../../stores/CommunityListsStore';
 
 export default function SortButton(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    const { homeStore } = useContext(HomeStoreContext);
+    const { communityStore } = useContext(CommunityStoreContext);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -41,12 +41,12 @@ export default function SortButton(props) {
           }}
         >
           {
-          Object.keys(HomeStoreSortType).map((key) => (
-                <MenuItem onClick={() => {
-                    homeStore.loadLists(key);
+          Object.keys(CommunityStoreSortType).map((key) => (
+                <MenuItem id={CommunityStoreSortType[key]} onClick={() => {
+                    communityStore.loadLists(key);
                     handleClose();
                 }}
-                >{HomeStoreSortType[key][0].toUpperCase() + HomeStoreSortType[key].toLowerCase().slice(1)}
+                >{CommunityStoreSortType[key][0].toUpperCase() + CommunityStoreSortType[key].toLowerCase().slice(1)}
                 </MenuItem>
           ))}
         </Menu>

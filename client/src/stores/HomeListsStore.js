@@ -286,7 +286,7 @@ function HomeStoreContextProvider(props) {
             }
             // Next we filter the lists. Filter === null, then accept all lists
             top5lists = top5lists.filter((top5list) => {
-                return (filter === null || top5list.name === filter);
+                return (filter === null || filter === "" || top5list.name === filter);
             });
         
             // Next we sort the top5lists based on the sortType
@@ -304,27 +304,6 @@ function HomeStoreContextProvider(props) {
             })
         }
     }   
-
-    // Sets how the top5lists should be sorted
-    homeStore.setSortType = async function (sortType) {
-        console.log(sortType);
-        storeReducer({
-            type: HomeStoreActionType.SET_SORT_TYPE,
-            payload: {
-                sortType: sortType
-            }
-        });
-    }
-
-    // Sets the filter for the top5lists
-    homeStore.setFilter = async function (filter) {
-        storeReducer({
-            type: HomeStoreActionType.SET_FILTER,
-            payload: {
-                filter: filter
-            }
-        });
-    }
 
     // THESE ARE ALL THE METHODS FOR UPDATING THE POST ASSOCIATED WITH
     // THE TOPTLISTS

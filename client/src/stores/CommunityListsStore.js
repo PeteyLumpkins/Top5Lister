@@ -49,20 +49,6 @@ function CommunityStoreContextProvider(props) {
                     filter: communityStore.filter,
                 })
             }   
-            case CommunityStoreActionType.SET_FILTER: {
-                return setCommunityStore({
-                    top5lists: communityStore.top5lists,
-                    sortType: communityStore.sortType,
-                    filter: payload.filter,
-                })
-            }
-            case CommunityStoreActionType.SET_SORT_TYPE: {
-                return setCommunityStore({
-                    top5lists: communityStore.top5lists,
-                    sortType: payload.sortType,
-                    filter: communityStore.filter,
-                })
-            }
             default: {
                 return communityStore;
             }
@@ -70,22 +56,52 @@ function CommunityStoreContextProvider(props) {
     }
 
     // Reducer for sorting top5lists
-    const sortTop5Lists = (top5lists) => {
-        switch(communityStore.sortType) {
-
+    const sortTop5Lists = (top5lists, by = communityStore.sortType) => {
+        switch(by) {
             case CommunityStoreSortType.LIKES: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.post.likes.length > e2.post.likes.length) {
+                        return -1;
+                    } else if (e1.post.likes.length < e2.post.likes.length) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case CommunityStoreSortType.DISLIKES: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.post.dislikes.length > e2.post.dislikes.length) {
+                        return -1
+                    } else if (e1.post.dislikes.length < e2.post.dislikes.length) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case CommunityStoreSortType.VIEWS: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.post.views > e2.post.views) {
+                        return -1
+                    } else if (e1.post.views < e2.post.views) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case CommunityStoreSortType.OLDEST: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.lastUpdated > e2.lastUpdated) {
+                        return 1
+                    } else if (e1.lastUpdated < e2.lastUpdated) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
-            // Default case is by most recently published
             default: {
                 return top5lists.sort((e1, e2) => { 
                     if (e1.lastUpdated > e2.lastUpdated) {
@@ -101,7 +117,7 @@ function CommunityStoreContextProvider(props) {
     }
 
     // Loads the top5lists to be displayed
-    communityStore.loadLists = async function () {
+    communityStore.loadLists = async function (sortType = communityStore.sortType, filter = communityStore.filter) {
         let response = await api.getAllCommunityTop5Lists();
         if (response && response.data.success) {
             // Gets the top5lists
@@ -112,6 +128,7 @@ function CommunityStoreContextProvider(props) {
                 if (top5list.postId !== null) {
                     post = await api.getPostById(top5list.postId);
                 }
+
                 let items = Object.keys(top5list.itemCounts).sort((e1, e2) => {
                     if (top5list.itemCounts[e1] > top5list.itemCounts[e2]) {
                         return -1;
@@ -136,46 +153,25 @@ function CommunityStoreContextProvider(props) {
                     post: post === null ? null : post.data.post
                 });
             }
-            console.log('lists assembled')
             // Next we filter the lists. Filter === null, then accept all lists
             top5lists = top5lists.filter((top5list) => {
-                return (communityStore.filter === null || 
-                    top5list.community.toUpperCase().startsWith(communityStore.filter.toUpperCase()));
+                return (filter === null || filter === "" ||
+                    top5list.community.toUpperCase().startsWith(filter.toUpperCase()));
             });
-            console.log('filteering lists')
             // Next we sort the top5lists based on the sortType
-            top5lists = sortTop5Lists(top5lists);
+            top5lists = sortTop5Lists(top5lists, sortType);
 
-            console.log('sorting lists)')
             // Set the lists
             storeReducer({
                 type: CommunityStoreActionType.SET_LISTS,
                 payload: {
                     top5lists: top5lists,
+                    filter: filter,
+                    sortType: sortType,
                 }
             })
         }
     }   
-
-    // Sets how the top5lists should be sorted
-    communityStore.setSortType = async function (sortType) {
-        storeReducer({
-            type: CommunityStoreActionType.SET_SORT_TYPE,
-            payload: {
-                sortType: sortType
-            }
-        });
-    }
-
-    // Sets the filter for the top5lists
-    communityStore.setFilter = async function (filter) {
-        storeReducer({
-            type: CommunityStoreActionType.SET_FILTER,
-            payload: {
-                filter: filter
-            }
-        });
-    }
 
     // HANDLE UPDATING POSTS
 
