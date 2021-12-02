@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 
 import HomeScreen from './HomeScreen'
-import SplashScreen from '../screens/SplashScreen'
+import SplashScreen from '../splash/SplashScreen'
 import AuthContext from '../../auth'
 
 import { HomeStoreContextProvider } from '../../stores/HomeListsStore';

@@ -14,14 +14,12 @@ import Typography from '@mui/material/Typography';
 import Copyright from './Copyright';
 
 import { useContext } from 'react';
-import { GlobalStoreContext } from '../stores';
 import AuthContext from '../auth';
 
-import ErrorModal from './models/ErrorModal';
+import ErrorModal from './ErrorModal';
 
 export default function LoginScreen(props) {
     const { auth } = useContext(AuthContext);
-    const { store } = useContext(GlobalStoreContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -30,7 +28,7 @@ export default function LoginScreen(props) {
         auth.loginUser({
             email: data.get('email'), 
             password: data.get('password')
-        }, store)
+        })
     };
 
     return (

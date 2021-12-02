@@ -1,15 +1,15 @@
 import { Fab } from '@mui/material'
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
-import {ViewStoreContext} from '../../stores/view'
-import { useContext, useState } from 'react';
+import { UserListsStoreContext } from '../../../stores/UserListsStore'
+import { useContext } from 'react';
 
 export default function DislikeButton(props) {
 
-    const { viewStore } = useContext(ViewStoreContext);
+    const { userListsStore } = useContext(UserListsStoreContext);
 
     const handleClick = () => {
-        viewStore.dislikePost(props.postId);
+        userListsStore.dislikePost(props.postId);
     }
 
     return (

@@ -4,11 +4,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
 import { useState, useContext } from 'react';
+import { HomeStoreContext, HomeStoreSortType } from '../../../stores/HomeListsStore';
 
 export default function SortButton(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
+    const { homeStore } = useContext(HomeStoreContext);
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -38,9 +40,15 @@ export default function SortButton(props) {
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MenuItem>Likes</MenuItem>
-          <MenuItem>Dislikes</MenuItem>
-          <MenuItem>Views</MenuItem>
+          {
+          Object.keys(HomeStoreSortType).map((key) => (
+                <MenuItem onClick={() => {
+                    homeStore.loadLists(key, null);
+                    handleClose();
+                }}
+                >{HomeStoreSortType[key][0].toUpperCase() + HomeStoreSortType[key].toLowerCase().slice(1)}
+                </MenuItem>
+          ))}
         </Menu>
       </div>
     );

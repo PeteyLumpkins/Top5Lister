@@ -1,28 +1,20 @@
 import { useState, useContext } from 'react';
-import {HomeStoreContext} from '../../../stores/HomeListsStore';
-import { ViewStoreContext } from '../../../stores/view';
-import { ViewStorePageType } from '../../../stores/view'
+import { UserListsStoreContext } from '../../../stores/UserListsStore';
 
 import AuthContext from '../../../auth';
 
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import CommunityDropDown from '../../community-lists/cards/CommunityDropDown'
-import CommentSection from '../common/CommentSection'
+import ListDropDown from './ListDropdownCard'
+import CommentSection from './CommentDropdownCard';
 
-import EditButton from '../../buttons/EditButton'
-import LikeButton from '../../buttons/LikeButton'
-import DislikeButton from '../../buttons/DislikeButton'
-import DeleteButton from '../../buttons/DeleteButton'
+import LikeButton from '../buttons/LikeButton'
+import DislikeButton from '../buttons/DislikeButton'
 
 import Box from '@mui/material/Box';
 
@@ -37,47 +29,47 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function CommunityListCard(props) {
+export default function ListCard(props) {
   const [expanded, setExpanded] = useState(false);
 
-  const { viewStore } = useContext(ViewStoreContext);
+  const { userListsStore } = useContext(UserListsStoreContext);
   const { auth } = useContext(AuthContext);
  
-  let date = "Last updated: " + props.communitylist.lastUpdated;
+  let published = "Published: " + props.top5list.published.toString();
 
   let likes = ""
   let dislikes = ""
   let views = ""
   let comments = ""
 
-  if (props.communitylist.post !== null) {
+  if (props.top5list.post !== null) {
     likes = <Box sx={{paddingLeft: 2, paddingRight: 2}}>
       <LikeButton 
-        postId={props.communitylist.post._id}
-        disabled={auth.user === null || props.communitylist.post.likes.includes(auth.user.id)}
-      /> {props.communitylist.post.likes.length}
+        postId={props.top5list.post._id}
+        disabled={auth.user === null || props.top5list.post.likes.includes(auth.user.id)}
+      /> {props.top5list.post.likes.length}
     </Box>
     dislikes = <Box sx={{paddingLeft: 2, paddingRight: 2}}>
       <DislikeButton 
-        postId={props.communitylist.post._id}
-        disabled={auth.user === null || props.communitylist.post.dislikes.includes(auth.user.id)}
-      /> {props.communitylist.post.dislikes.length}
+        postId={props.top5list.post._id}
+        disabled={auth.user === null || props.top5list.post.dislikes.includes(auth.user.id)}
+      /> {props.top5list.post.dislikes.length}
     </Box>
     views = <Box sx={{paddingLeft: 2, paddingRight: 2}}>
-      {"Views: " + props.communitylist.post.views}
+      {"Views: " + props.top5list.post.views}
     </Box>
     comments = 
       <CommentSection 
-        postId={props.communitylist.post._id} 
-        comments={props.communitylist.post.comments}
+        postId={props.top5list.post._id} 
+        comments={props.top5list.post.comments}
       ></CommentSection>
    
   }
 
   const handleExpandClick = () => {
     // Adds a view if we open up the dropdown and the list has been published.
-    if (!expanded && props.communitylist.post !== null) {
-      viewStore.viewPost(props.communitylist.post._id);
+    if (!expanded && props.top5list.post !== null) {
+      userListsStore.viewPost(props.top5list.post._id);
     }
     setExpanded(!expanded);
   };
@@ -87,17 +79,17 @@ export default function CommunityListCard(props) {
       paddingLeft: '2%',
       paddingRight: '2%',
       paddingTop: '2%',
-
       maxHeight: '100%',
       background: 'white',
       marginBottom: '1%',
       border: 1,
-      borderColor: '#e6e6e6'
+      borderColor: 'gray'
       }}
     >
       <Box sx={{ height: '20%', width: '96%', display: 'flex'}}>
         <Box sx={{display: 'flex', width: '50%'}}>
-          <Box sx={{fontSize: '150%'}}>{props.communitylist.community}
+          <Box sx={{fontSize: '150%'}}>{props.top5list.name}
+            <Box sx={{fontSize: '50%'}}>{"By: " + props.top5list.author}</Box>
           </Box>
         </Box>
         <Box sx={{display: 'flex', width: '50%', justifyContent: 'right'}}>
@@ -108,7 +100,7 @@ export default function CommunityListCard(props) {
         <Collapse sx={{height: '60%'}} in={expanded} timeout="auto" unmountOnExit>
           <CardContent sx={{display: 'flex', width: '100%', height: '96%', maxHeight: '96%'}}>
               <Box sx={{paddingRight: 2, width: '50%', height: "90%"}}>
-                <CommunityDropDown items={props.communitylist.items}/>
+                <ListDropDown items={props.top5list.items}/>
               </Box>
               <Box sx={{paddingLeft: "2%", paddingRight: '2%', width: '50%'}}>
                 {comments}
@@ -117,7 +109,7 @@ export default function CommunityListCard(props) {
         </Collapse>
       <Box sx={{ display: 'flex', width: '100%', height: '20%'}}>
             <Box sx={{display: 'flex', justifyContent: 'left', alignItems: 'center'}}>
-                <Box sx={{color: 'green'}}>{date}</Box>
+                <Box sx={{color: 'green'}}>{published}</Box>
             </Box>
             <Box sx={{alignItems: 'center', display: 'flex', flexGrow: 1, justifyContent: 'right'}}>
                 {views}

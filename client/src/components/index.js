@@ -1,19 +1,14 @@
 import AppBanner from './AppBanner'
-import EditToolbar from './EditToolbar'
-import HomeScreen from './HomeScreen'
 
 import HomeWrapper from './home-lists/HomeWrapper';
 import CommunityWrapper from './community-lists/CommunityWrapper';
 import AllListsWrapper from './all-lists/AllListsWrapper';
+import UserListsWrapper from './user-lists/UserListsWrapper';
 
-import ListCard from './ListCard'
 import RegisterScreen from './RegisterScreen'
-import SplashScreen from './screens/SplashScreen'
+import SplashScreen from './splash/SplashScreen'
 import Statusbar from './Statusbar'
-import Top5Item from './Top5Item'
-import WorkspaceScreen from './WorkspaceScreen'
 import LoginScreen from './LoginScreen'
-import NavBar from './nav/NavBar'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -22,18 +17,13 @@ import NavBar from './nav/NavBar'
 */
 export { 
     AppBanner, 
-    EditToolbar, 
-    HomeScreen,
+    UserListsWrapper,
     HomeWrapper,
     CommunityWrapper,
     AllListsWrapper,
 
-    ListCard, 
     RegisterScreen,
     SplashScreen,
     Statusbar, 
-    Top5Item, 
-    WorkspaceScreen,
     LoginScreen,
-    NavBar
 }

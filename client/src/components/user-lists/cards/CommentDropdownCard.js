@@ -1,20 +1,19 @@
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import Box from '@mui/material/Box';
 
-import Comment from "./Comment";
-import {ViewStoreContext} from '../../../stores/view'
+import Comment from "./CommentCard";
+import { UserListsStoreContext } from '../../../stores/UserListsStore'
 import { useContext } from 'react';
 
 import TextField from '@mui/material/TextField';
 
-export default function CommentSection(props) {
+export default function CommentDropdownCard(props) {
 
-    const { viewStore } = useContext(ViewStoreContext);
+    const { userListsStore } = useContext(UserListsStoreContext);
 
     const handleKeyPress = (event) => {
         if (event.code === "Enter") {
-            viewStore.postComment(props.postId, event.target.value)
+            userListsStore.postComment(props.postId, event.target.value)
         }
     }
 

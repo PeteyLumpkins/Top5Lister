@@ -64,8 +64,8 @@ function HomeStoreContextProvider(props) {
             case HomeStoreActionType.SET_LISTS: {
                 return setHomeStore({
                     top5lists: payload.top5lists,
-                    filter: homeStore.filter,
-                    sortType: homeStore.sortType,
+                    filter: payload.filter,
+                    sortType: payload.sortType,
 
                     currentList: null,
                     isListNameEditActive: false,
@@ -168,20 +168,77 @@ function HomeStoreContextProvider(props) {
     }
 
     // Reducer for sorting top5lists
-    const sortTop5Lists = (top5lists) => {
-        switch(homeStore.sortType) {
+    const sortTop5Lists = (top5lists, by = homeStore.sortType) => {
+        console.log('Sorting by: ' + by);
+        switch(by) {
 
             case HomeStoreSortType.LIKES: {
-
+                return top5lists.sort((e1, e2) => { 
+                    if (!e1.published && !e2.published) {
+                        return 0;
+                    } else if (!e1.published) {
+                        return 1;
+                    } else if (!e2.published) {
+                        return -1;
+                    } else if (e1.post.likes.length > e2.post.likes.length) {
+                        return -1
+                    } else if (e1.post.likes.length < e2.post.likes.length) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case HomeStoreSortType.DISLIKES: {
-
+                return top5lists.sort((e1, e2) => { 
+                    if (!e1.published && !e2.published) {
+                        return 0;
+                    } else if (!e1.published) {
+                        return 1;
+                    } else if (!e2.published) {
+                        return -1;
+                    } else if (e1.post.dislikes.length > e2.post.dislikes.length) {
+                        return -1
+                    } else if (e1.post.dislikes.length < e2.post.dislikes.length) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case HomeStoreSortType.VIEWS: {
-
+                return top5lists.sort((e1, e2) => { 
+                    if (!e1.published && !e2.published) {
+                        return 0;
+                    } else if (!e1.published) {
+                        return 1;
+                    } else if (!e2.published) {
+                        return -1;
+                    } else if (e1.views > e2.views) {
+                        return -1
+                    } else if (e1.views < e2.views) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case HomeStoreSortType.OLDEST: {
-
+                return top5lists.sort((e1, e2) => { 
+                    if (!e1.published && !e2.published) {
+                        return 0;
+                    } else if (!e1.published) {
+                        return 1;
+                    } else if (!e2.published) {
+                        return -1;
+                    } else if (e1.published > e2.published) {
+                        return 1
+                    } else if (e1.published < e2.published) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             // Default case is by most recently published
             default: {
@@ -205,9 +262,8 @@ function HomeStoreContextProvider(props) {
     }
 
     // Loads the top5lists to be displayed
-    homeStore.loadLists = async function () {
+    homeStore.loadLists = async function (sortType = homeStore.sortType, filter = homeStore.filter) {
         let response = await api.getUserTop5Lists();
-        console.log('Loading top5lists')
         if (response && response.data.success) {
             let top5lists = [];
             // Gets the top5lists
@@ -228,21 +284,22 @@ function HomeStoreContextProvider(props) {
                     post: post === null ? null : post.data.post
                 });
             }
-            console.log('lists assembled')
             // Next we filter the lists. Filter === null, then accept all lists
             top5lists = top5lists.filter((top5list) => {
-                return (homeStore.filter === null || top5list.name === homeStore.filter);
+                return (filter === null || top5list.name === filter);
             });
-            console.log('filteering lists')
+        
             // Next we sort the top5lists based on the sortType
-            top5lists = sortTop5Lists(top5lists);
+            top5lists = sortTop5Lists(top5lists, sortType);
 
-            console.log('sorting lists)')
+            console.log(filter, sortType);
             // Set the lists
             storeReducer({
                 type: HomeStoreActionType.SET_LISTS,
                 payload: {
                     top5lists: top5lists,
+                    filter: filter,
+                    sortType: sortType,
                 }
             })
         }
@@ -250,6 +307,7 @@ function HomeStoreContextProvider(props) {
 
     // Sets how the top5lists should be sorted
     homeStore.setSortType = async function (sortType) {
+        console.log(sortType);
         storeReducer({
             type: HomeStoreActionType.SET_SORT_TYPE,
             payload: {

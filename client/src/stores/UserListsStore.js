@@ -43,21 +43,21 @@ function UserListsStoreContextProvider(props) {
         const {type, payload} = action;
         switch (type) {
             case UserListsStoreActionType.SET_LISTS: {
-                return setAllListsStore({
+                return setUserListsStore({
                     top5lists: payload.top5lists,
                     sortType: userListsStore.sortType,
                     filter: userListsStore.filter,
                 })
             }   
             case UserListsStoreActionType.SET_FILTER: {
-                return setAllListsStore({
+                return setUserListsStore({
                     top5lists: userListsStore.top5lists,
                     sortType: userListsStore.sortType,
                     filter: payload.filter,
                 })
             }
             case UserListsStoreActionType.SET_SORT_TYPE: {
-                return setAllListsStore({
+                return setUserListsStore({
                     top5lists: userListsStore.top5lists,
                     sortType: payload.sortType,
                     filter: userListsStore.filter,
@@ -126,7 +126,7 @@ function UserListsStoreContextProvider(props) {
             console.log('lists assembled')
             // Next we filter the lists. Filter === null, then accept all lists
             top5lists = top5lists.filter((top5list) => {
-                return (userListsStore.filter === null || top5list.name === userListsStore.filter);
+                return (userListsStore.filter === null || top5list.author === userListsStore.filter);
             });
             console.log('filteering lists')
             // Next we sort the top5lists based on the sortType
@@ -241,13 +241,13 @@ function UserListsStoreContextProvider(props) {
     }
 
     return (
-        <AllListsStoreContext.Provider value={{
-            allListsStore: userListsStore
+        <UserListsStoreContext.Provider value={{
+            userListsStore: userListsStore
         }}>
             {props.children}
-        </AllListsStoreContext.Provider>
+        </UserListsStoreContext.Provider>
     );
 }
 
-export default AllListsStoreContext;
-export { AllListsStoreContextProvider };
+export default UserListsStoreContext;
+export { UserListsStoreContextProvider };

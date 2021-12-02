@@ -1,16 +1,15 @@
 import { Fab } from '@mui/material'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
-import {ViewStoreContext} from '../../stores/view'
+import { UserListsStoreContext } from '../../../stores/UserListsStore'
 import { useContext } from 'react';
-
 
 export default function LikeButton(props) {
 
-    const { viewStore } = useContext(ViewStoreContext);
+    const { userListsStore } = useContext(UserListsStoreContext);
 
     const handleClick = () => {
-        viewStore.likePost(props.postId);
+        userListsStore.likePost(props.postId);
     }
 
     return (

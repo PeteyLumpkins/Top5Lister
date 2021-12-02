@@ -1,14 +1,8 @@
-import {ViewStoreContext} from '../../stores/view'
-import {ViewStorePageType} from '../../stores/view'
-
-import React, { useContext, useEffect } from 'react';
-
-
 import { Box } from '@mui/material/';
 
-import LoginButton from '../buttons/LoginButton';
-import RegisterButton from '../buttons/RegisterButton';
-import GuestButton from '../buttons/GuestButton';
+import LoginButton from './buttons/LoginButton';
+import RegisterButton from './buttons/RegisterButton';
+import GuestButton from './buttons/GuestButton';
 
 export default function SplashScreen() {
 

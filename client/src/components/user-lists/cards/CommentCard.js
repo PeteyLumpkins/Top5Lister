@@ -1,9 +1,7 @@
 import { Card, Box } from '@mui/material/';
 
-export default function Comment(props) {
-
+export default function CommentCard(props) {
     return (
-
         <Card sx={{
             border: 1, 
             borderColor: 'black',
@@ -16,5 +14,5 @@ export default function Comment(props) {
             <Box sx={{color: 'blue', fontSize: '75%' }}>{props.author}</Box>
             <Box sx={{color: 'black'}}>{props.text}</Box>
         </Card>
-    )
+    );
 }

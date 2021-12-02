@@ -1,26 +1,25 @@
-import {ViewStoreContext} from '../../stores/view'
-import {ViewStorePageType} from '../../stores/view'
+import { UserListsStoreContext } from '../../stores/UserListsStore'
+
 import React, { useContext, useEffect } from 'react';
 
-import { Fab, Typography } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add';
 import List from '@mui/material/List';
 
-
-import StatusBar from '../Statusbar'
+import StatusBar from "../Statusbar"
 import NavBar from "../nav/NavBar"
-import CommunityListCard from '../cards/community/CommunityCard';
+import ListCard from './cards/ListCard';
 
-export default function CommunityListsScreen() {
-    const { viewStore } = useContext(ViewStoreContext);
+
+export default function UserListsScreen() {
+    const { userListsStore } = useContext(UserListsStoreContext);
 
     useEffect(() => {
-        viewStore.loadPage(ViewStorePageType.COMMUNITY);
+        userListsStore.loadLists();
     }, []);
 
-    let listCard = "";
-    if (viewStore && viewStore.top5lists) {
-        listCard = 
+    let homeBody = "";
+    let statusText = "Top5Lists"
+    if (userListsStore && userListsStore.top5lists) {
+        homeBody = 
             <List sx={{ 
                 width: '90%', 
                 left: '5%', 
@@ -31,10 +30,10 @@ export default function CommunityListsScreen() {
                 }}
             >
             {
-                viewStore.top5lists.map((top5list) => (
-                    <CommunityListCard
+                userListsStore.top5lists.map((top5list) => (
+                    <ListCard
                         key={top5list._id}
-                        communitylist={top5list}
+                        top5list={top5list}
                     />
                 ))
             }
@@ -45,11 +44,11 @@ export default function CommunityListsScreen() {
             <div id="top5-list-selector">
                 <NavBar></NavBar>
                 <div id="list-selector-list">
-                        {listCard}
+                        {homeBody}
                 </div>
                 <div id="list-selector-heading">
                 </div>
-                <StatusBar text={"Community Lists"}></StatusBar>
+                <StatusBar text={statusText}></StatusBar>
             </div>
-    );
+        )
 }

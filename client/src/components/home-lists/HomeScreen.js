@@ -1,17 +1,16 @@
-import {HomeStoreContext} from '../../stores/HomeListsStore'
-
+import { HomeStoreContext } from '../../stores/HomeListsStore'
 import React, { useContext, useEffect } from 'react';
 
 import { Typography } from '@mui/material'
 import List from '@mui/material/List';
 
 import StatusBar from "../Statusbar"
-import NavBar from "../nav/NavBar"
+import NavBar from "./nav/NavBar"
 import ListCard from './cards/ListCard';
 import WorkSpace from './workspace/WorkSpace';
 import DeleteListModel from './models/DeleteListModel'
 
-import AddListButton from '../buttons/AddListButton';
+import AddListButton from './buttons/AddListButton';
 
 export default function HomeScreen() {
     const { homeStore } = useContext(HomeStoreContext);
@@ -20,6 +19,7 @@ export default function HomeScreen() {
         homeStore.loadLists();
     }, []);
 
+    console.log(homeStore.sortType);
     let homeBody = "";
     let statusText = "Your Top5Lists"
     if (homeStore.currentList !== null) {

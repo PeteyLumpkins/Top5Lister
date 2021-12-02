@@ -1,9 +1,7 @@
-import List from '@mui/material/List';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 
-export default function ListDropDown(props) {
+export default function ListDropdownCard(props) {
 
     return (
         <Card sx={{width: '100%', height: '100%', bgcolor: '#01579b' }}>

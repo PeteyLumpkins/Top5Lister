@@ -1,7 +1,5 @@
 import { Typography } from '@mui/material'
 
-
-
 /*
     Our Status bar React component goes at the bottom of our UI.
     
