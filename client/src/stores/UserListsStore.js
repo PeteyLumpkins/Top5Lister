@@ -16,8 +16,6 @@ export const UserListsStoreContext = createContext({});
 // DATA STORE STATE THAT CAN BE PROCESSED
 export const UserListsStoreActionType = {
     SET_LISTS: "SET_LISTS",
-    SET_FILTER: "SET_FILTER",
-    SET_SORT_TYPE: "SET_SORT_TYPE",
 }
 
 export const UserListsStoreSortType = {
@@ -45,24 +43,10 @@ function UserListsStoreContextProvider(props) {
             case UserListsStoreActionType.SET_LISTS: {
                 return setUserListsStore({
                     top5lists: payload.top5lists,
-                    sortType: userListsStore.sortType,
-                    filter: userListsStore.filter,
-                })
-            }   
-            case UserListsStoreActionType.SET_FILTER: {
-                return setUserListsStore({
-                    top5lists: userListsStore.top5lists,
-                    sortType: userListsStore.sortType,
+                    sortType: payload.sortType,
                     filter: payload.filter,
                 })
-            }
-            case UserListsStoreActionType.SET_SORT_TYPE: {
-                return setUserListsStore({
-                    top5lists: userListsStore.top5lists,
-                    sortType: payload.sortType,
-                    filter: userListsStore.filter,
-                })
-            }
+            }   
             default: {
                 return userListsStore;
             }
@@ -70,20 +54,51 @@ function UserListsStoreContextProvider(props) {
     }
 
     // Reducer for sorting top5lists
-    const sortTop5Lists = (top5lists) => {
-        switch(userListsStore.sortType) {
-
+    const sortTop5Lists = (top5lists, by = userListsStore.sortType) => {
+        switch(by) {
             case UserListsStoreSortType.LIKES: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.post.likes.length > e2.post.likes.length) {
+                        return -1
+                    } else if (e1.post.likes.length < e2.post.likes.length) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case UserListsStoreSortType.DISLIKES: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.post.dislikes.length > e2.post.dislikes.length) {
+                        return -1;
+                    } else if (e1.post.dislikes.length < e2.post.dislikes.length) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case UserListsStoreSortType.VIEWS: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.views > e2.views) {
+                        return -1
+                    } else if (e1.views < e2.views) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case UserListsStoreSortType.OLDEST: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.published > e2.published) {
+                        return 1;
+                    } else if (e1.published < e2.published) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             // Default case is by most recently published
             default: {
@@ -101,7 +116,7 @@ function UserListsStoreContextProvider(props) {
     }
 
     // Loads the top5lists to be displayed
-    userListsStore.loadLists = async function () {
+    userListsStore.loadLists = async function (sortType = userListsStore.sortType, filter = userListsStore.filter) {
         let response = await api.getTop5Lists();
         if (response && response.data.success) {
             // Gets the top5lists
@@ -123,45 +138,26 @@ function UserListsStoreContextProvider(props) {
                     post: post === null ? null : post.data.post
                 });
             }
-            console.log('lists assembled')
+            
             // Next we filter the lists. Filter === null, then accept all lists
             top5lists = top5lists.filter((top5list) => {
-                return (userListsStore.filter === null || top5list.author === userListsStore.filter);
+                return (filter === null || filter === "" || top5list.author === filter);
             });
-            console.log('filteering lists')
+            
             // Next we sort the top5lists based on the sortType
-            top5lists = sortTop5Lists(top5lists);
+            top5lists = sortTop5Lists(top5lists, sortType);
 
-            console.log('sorting lists)')
             // Set the lists
             storeReducer({
                 type: UserListsStoreActionType.SET_LISTS,
                 payload: {
                     top5lists: top5lists,
+                    filter: filter,
+                    sortType: sortType,
                 }
             })
         }
     }   
-
-    // Sets how the top5lists should be sorted
-    userListsStore.setSortType = async function (sortType) {
-        storeReducer({
-            type: UserListsStoreActionType.SET_SORT_TYPE,
-            payload: {
-                sortType: sortType
-            }
-        });
-    }
-
-    // Sets the filter for the top5lists
-    userListsStore.setFilter = async function (filter) {
-        storeReducer({
-            type: UserListsStoreActionType.SET_FILTER,
-            payload: {
-                filter: filter
-            }
-        });
-    }
 
     // HANDLE UPDATING POSTS
 

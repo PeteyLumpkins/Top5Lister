@@ -45,24 +45,10 @@ function AllListsStoreContextProvider(props) {
             case AllListsStoreActionType.SET_LISTS: {
                 return setAllListsStore({
                     top5lists: payload.top5lists,
-                    sortType: allListsStore.sortType,
-                    filter: allListsStore.filter,
-                })
-            }   
-            case AllListsStoreActionType.SET_FILTER: {
-                return setAllListsStore({
-                    top5lists: allListsStore.top5lists,
-                    sortType: allListsStore.sortType,
+                    sortType: payload.sortType,
                     filter: payload.filter,
                 })
-            }
-            case AllListsStoreActionType.SET_SORT_TYPE: {
-                return setAllListsStore({
-                    top5lists: allListsStore.top5lists,
-                    sortType: payload.sortType,
-                    filter: allListsStore.filter,
-                })
-            }
+            }   
             default: {
                 return allListsStore;
             }
@@ -70,20 +56,51 @@ function AllListsStoreContextProvider(props) {
     }
 
     // Reducer for sorting top5lists
-    const sortTop5Lists = (top5lists) => {
-        switch(allListsStore.sortType) {
-
+    const sortTop5Lists = (top5lists, by = allListsStore.sortType) => {
+        switch(by) {
             case AllListsStoreSortType.LIKES: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.post.likes.length > e2.post.likes.length) {
+                        return -1
+                    } else if (e1.post.likes.length < e2.post.likes.length) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case AllListsStoreSortType.DISLIKES: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.post.dislikes.length > e2.post.dislikes.length) {
+                        return -1
+                    } else if (e1.post.dislikes < e2.post.dislikes.length) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case AllListsStoreSortType.VIEWS: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.post.views > e2.post.views) {
+                        return -1
+                    } else if (e1.post.views < e2.post.views) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             case AllListsStoreSortType.OLDEST: {
-                break;
+                return top5lists.sort((e1, e2) => { 
+                    if (e1.published > e2.published) {
+                        return 1
+                    } else if (e1.published < e2.published) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
             // Default case is by most recently published
             default: {
@@ -101,7 +118,7 @@ function AllListsStoreContextProvider(props) {
     }
 
     // Loads the top5lists to be displayed
-    allListsStore.loadLists = async function () {
+    allListsStore.loadLists = async function (sortType = allListsStore.sortType, filter = allListsStore.filter) {
         let response = await api.getTop5Lists();
         if (response && response.data.success) {
             // Gets the top5lists
@@ -123,23 +140,24 @@ function AllListsStoreContextProvider(props) {
                     post: post === null ? null : post.data.post
                 });
             }
-            console.log('lists assembled')
+            
             // Next we filter the lists. Filter === null, then accept all lists
             top5lists = top5lists.filter((top5list) => {
-                return (allListsStore.filter === null || top5list.name === allListsStore.filter);
+                return (filter === null || filter === "" || top5list.name === filter);
             });
-            console.log('filteering lists')
+            
             // Next we sort the top5lists based on the sortType
-            top5lists = sortTop5Lists(top5lists);
+            top5lists = sortTop5Lists(top5lists, sortType);
 
-            console.log('sorting lists)')
             // Set the lists
             storeReducer({
                 type: AllListsStoreActionType.SET_LISTS,
                 payload: {
                     top5lists: top5lists,
+                    filter: filter,
+                    sortType: sortType,
                 }
-            })
+            });
         }
     }   
 

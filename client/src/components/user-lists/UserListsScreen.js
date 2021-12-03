@@ -5,7 +5,7 @@ import React, { useContext, useEffect } from 'react';
 import List from '@mui/material/List';
 
 import StatusBar from "../Statusbar"
-import NavBar from "../nav/NavBar"
+import NavBar from "./nav/NavBar"
 import ListCard from './cards/ListCard';
 
 
