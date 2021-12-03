@@ -1,7 +1,8 @@
-import { Fab } from '@mui/material'
+import { IconButton } from '@mui/material'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 
-import {CommunityStoreContext} from '../../../stores/CommunityListsStore'
+import { CommunityStoreContext } from '../../../stores/CommunityListsStore'
 import { useContext } from 'react';
 
 export default function LikeButton(props) {
@@ -9,17 +10,24 @@ export default function LikeButton(props) {
     const { communityStore } = useContext(CommunityStoreContext);
 
     const handleClick = () => {
-        communityStore.likePost(props.postId);
+        if (props.liked) {
+            communityStore.unLikePost(props.postId);
+        } else {
+            communityStore.likePost(props.postId);
+        }
     }
 
+    let color = props.liked ? "#4caf50" : "gray"
     return (
-        <Fab
-            onClick={handleClick}
+        <IconButton
+            size="medium"
             disabled={props.disabled}
-            color="primary"
-            size="small"
+            onClick={handleClick}
         >
-            <ThumbUpIcon></ThumbUpIcon>
-        </Fab>
-    )
+           {props.liked ? 
+            <ThumbUpIcon sx={{color: color}}></ThumbUpIcon> :
+            <ThumbUpOffAltIcon sx={{color: color}}></ThumbUpOffAltIcon>
+           }
+        </IconButton>
+    );
 }

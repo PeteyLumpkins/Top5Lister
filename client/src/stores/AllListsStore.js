@@ -16,8 +16,6 @@ export const AllListsStoreContext = createContext({});
 // DATA STORE STATE THAT CAN BE PROCESSED
 export const AllListsStoreActionType = {
     SET_LISTS: "SET_LISTS",
-    SET_FILTER: "SET_FILTER",
-    SET_SORT_TYPE: "SET_SORT_TYPE",
 }
 
 export const AllListsStoreSortType = {
@@ -161,26 +159,6 @@ function AllListsStoreContextProvider(props) {
         }
     }   
 
-    // Sets how the top5lists should be sorted
-    allListsStore.setSortType = async function (sortType) {
-        storeReducer({
-            type: AllListsStoreActionType.SET_SORT_TYPE,
-            payload: {
-                sortType: sortType
-            }
-        });
-    }
-
-    // Sets the filter for the top5lists
-    allListsStore.setFilter = async function (filter) {
-        storeReducer({
-            type: AllListsStoreActionType.SET_FILTER,
-            payload: {
-                filter: filter
-            }
-        });
-    }
-
     // HANDLE UPDATING POSTS
 
     // Handles updating a post
@@ -223,6 +201,22 @@ function AllListsStoreContextProvider(props) {
         }
     }
 
+    allListsStore.unLikePost = async function (postId) {
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            let liked = response.data.post.likes.indexOf(auth.user.id);
+            if (liked !== -1) {
+                response.data.post.likes.splice(liked, 1)
+                allListsStore.updatePost(postId, {
+                    likes: response.data.post.likes,
+                    dislikes: response.data.post.dislikes,
+                    views: response.data.post.views,
+                    comments: response.data.post.comments,
+                });
+            }
+        }
+    }
+
     // Handles disliking a post
     allListsStore.dislikePost = async function (postId) {
         let response = await api.getPostById(postId);
@@ -238,6 +232,23 @@ function AllListsStoreContextProvider(props) {
                 views: response.data.post.views,
                 comments: response.data.post.comments,
             });
+        }
+    }
+
+    allListsStore.unDislikePost = async function (postId) {
+        console.log("Undislike")
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            let disliked = response.data.post.dislikes.indexOf(auth.user.id);
+            if (disliked !== -1) {
+                response.data.post.dislikes.splice(disliked, 1)
+                allListsStore.updatePost(postId, {
+                    likes: response.data.post.likes,
+                    dislikes: response.data.post.dislikes,
+                    views: response.data.post.views,
+                    comments: response.data.post.comments,
+                });
+            }
         }
     }
 

@@ -16,8 +16,12 @@ export default function UserListsScreen() {
         userListsStore.loadLists();
     }, []);
 
+    let statusText = "All Users Top 5 Lists";
+    if (userListsStore.filter) {
+        statusText = userListsStore.filter + "'s Top 5 Lists";
+    }
+
     let homeBody = "";
-    let statusText = "Top5Lists"
     if (userListsStore && userListsStore.top5lists) {
         homeBody = 
             <List sx={{ 

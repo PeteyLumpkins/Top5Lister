@@ -2,6 +2,7 @@ import SortIcon from '@mui/icons-material/Sort';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import Box from '@mui/material/Box';
 
 import { useState, useContext } from 'react';
 import { AllListsStoreContext, AllListsStoreSortType } from '../../../stores/AllListsStore';
@@ -21,15 +22,15 @@ export default function SortButton(props) {
     };
   
     return (
-      <div>
+        <Box sx={{display: 'flex', width: '50%', justifyContent: 'right'}}>
         <Button
-          sx={{color: "white"}}
+          sx={{color: "white", width: '100%', display: 'flex', justifyContent: 'space-around'}}
           aria-controls="basic-menu"
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >
-          Sort By <SortIcon></SortIcon>
+          <Box>Sort By</Box> <SortIcon fontSize='large'></SortIcon>
         </Button>
         <Menu
           id="basic-menu"
@@ -42,7 +43,7 @@ export default function SortButton(props) {
         >
           {
           Object.keys(AllListsStoreSortType).map((key) => (
-                <MenuItem id={AllListsStoreSortType[key]} onClick={() => {
+                <MenuItem onClick={() => {
                     allListsStore.loadLists(key);
                     handleClose();
                 }}
@@ -50,6 +51,6 @@ export default function SortButton(props) {
                 </MenuItem>
           ))}
         </Menu>
-      </div>
+      </Box>
     );
 }

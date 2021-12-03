@@ -8,6 +8,7 @@ export default function CommuntiyButton(props) {
             sx={{color: "white"}}
         >
             <FunctionsIcon
+                sx={{color: "lightgreen"}}
                 fontSize="large"
             >
             </FunctionsIcon>

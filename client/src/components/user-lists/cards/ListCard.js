@@ -46,13 +46,15 @@ export default function ListCard(props) {
     likes = <Box sx={{paddingLeft: 2, paddingRight: 2}}>
       <LikeButton 
         postId={props.top5list.post._id}
-        disabled={auth.user === null || props.top5list.post.likes.includes(auth.user.id)}
+        disabled={auth.user === null}
+        liked={auth.user !== null && props.top5list.post.likes.includes(auth.user.id)}
       /> {props.top5list.post.likes.length}
     </Box>
     dislikes = <Box sx={{paddingLeft: 2, paddingRight: 2}}>
       <DislikeButton 
         postId={props.top5list.post._id}
-        disabled={auth.user === null || props.top5list.post.dislikes.includes(auth.user.id)}
+        disabled={auth.user === null}
+        disliked={auth.user !== null && props.top5list.post.dislikes.includes(auth.user.id)}
       /> {props.top5list.post.dislikes.length}
     </Box>
     views = <Box sx={{paddingLeft: 2, paddingRight: 2}}>

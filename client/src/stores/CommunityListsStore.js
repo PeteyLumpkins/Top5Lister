@@ -45,8 +45,8 @@ function CommunityStoreContextProvider(props) {
             case CommunityStoreActionType.SET_LISTS: {
                 return setCommunityStore({
                     top5lists: payload.top5lists,
-                    sortType: communityStore.sortType,
-                    filter: communityStore.filter,
+                    sortType: payload.sortType,
+                    filter: payload.filter,
                 })
             }   
             default: {
@@ -215,6 +215,23 @@ function CommunityStoreContextProvider(props) {
         }
     }
 
+    // Handles unliking a post
+    communityStore.unLikePost = async function (postId) {
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            let liked = response.data.post.likes.indexOf(auth.user.id);
+            if (liked !== -1) {
+                response.data.post.likes.splice(liked, 1)
+                communityStore.updatePost(postId, {
+                    likes: response.data.post.likes,
+                    dislikes: response.data.post.dislikes,
+                    views: response.data.post.views,
+                    comments: response.data.post.comments,
+                });
+            }
+        }
+    }
+
     // Handles disliking a post
     communityStore.dislikePost = async function (postId) {
         let response = await api.getPostById(postId);
@@ -230,6 +247,23 @@ function CommunityStoreContextProvider(props) {
                 views: response.data.post.views,
                 comments: response.data.post.comments,
             });
+        }
+    }
+
+    // Handles unDisliking a post
+    communityStore.unDislikePost = async function (postId) {
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            let disliked = response.data.post.dislikes.indexOf(auth.user.id);
+            if (disliked !== -1) {
+                response.data.post.dislikes.splice(disliked, 1)
+                communityStore.updatePost(postId, {
+                    likes: response.data.post.likes,
+                    dislikes: response.data.post.dislikes,
+                    views: response.data.post.views,
+                    comments: response.data.post.comments,
+                });
+            }
         }
     }
 

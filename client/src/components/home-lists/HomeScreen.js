@@ -19,7 +19,6 @@ export default function HomeScreen() {
         homeStore.loadLists();
     }, []);
 
-    console.log(homeStore.sortType);
     let homeBody = "";
     let statusText = "Your Top5Lists"
     if (homeStore.currentList !== null) {
@@ -55,7 +54,7 @@ export default function HomeScreen() {
                 </div>
                 <div id="list-selector-heading">
                     <AddListButton></AddListButton>
-                    <Typography variant="h5">Your Lists</Typography>
+                    <Typography variant="h5"></Typography>
                 </div>
                 <StatusBar text={statusText}></StatusBar>
                 <DeleteListModel 

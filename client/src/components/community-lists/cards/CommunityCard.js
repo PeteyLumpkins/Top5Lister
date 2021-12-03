@@ -46,13 +46,15 @@ export default function CommunityCard(props) {
     likes = <Box sx={{paddingLeft: 2, paddingRight: 2}}>
       <LikeButton 
         postId={props.communitylist.post._id}
-        disabled={auth.user === null || props.communitylist.post.likes.includes(auth.user.id)}
+        disabled={auth.user === null}
+        liked={auth.user !== null && props.communitylist.post.likes.includes(auth.user.id)}
       /> {props.communitylist.post.likes.length}
     </Box>
     dislikes = <Box sx={{paddingLeft: 2, paddingRight: 2}}>
       <DislikeButton 
         postId={props.communitylist.post._id}
-        disabled={auth.user === null || props.communitylist.post.dislikes.includes(auth.user.id)}
+        disabled={auth.user === null}
+        disliked={auth.user !== null && props.communitylist.post.dislikes.includes(auth.user.id)}
       /> {props.communitylist.post.dislikes.length}
     </Box>
     views = <Box sx={{paddingLeft: 2, paddingRight: 2}}>

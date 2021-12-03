@@ -16,8 +16,6 @@ export const HomeStoreContext = createContext({});
 // DATA STORE STATE THAT CAN BE PROCESSED
 export const HomeStoreActionType = {
     SET_LISTS: "SET_LISTS",
-    SET_FILTER: "SET_FILTER",
-    SET_SORT_TYPE: "SET_SORT_TYPE",
 
     CHANGE_LIST_NAME: "CHANGE_LIST_NAME",
     SAVE_CURRENT_LIST: "CLOSE_CURRENT_LIST",
@@ -347,6 +345,23 @@ function HomeStoreContextProvider(props) {
         }
     }
 
+    // Handles unLiking a post.
+    homeStore.unLikePost = async function (postId) {
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            let liked = response.data.post.likes.indexOf(auth.user.id);
+            if (liked !== -1) {
+                response.data.post.likes.splice(liked, 1)
+                homeStore.updatePost(postId, {
+                    likes: response.data.post.likes,
+                    dislikes: response.data.post.dislikes,
+                    views: response.data.post.views,
+                    comments: response.data.post.comments,
+                });
+            }
+        }
+    }
+
     // Handles disliking a post
     homeStore.dislikePost = async function (postId) {
         let response = await api.getPostById(postId);
@@ -362,6 +377,23 @@ function HomeStoreContextProvider(props) {
                 views: response.data.post.views,
                 comments: response.data.post.comments,
             });
+        }
+    }
+
+    // Handles undisliking a post
+    homeStore.unDislikePost = async function (postId) {
+        let response = await api.getPostById(postId);
+        if (response.data.success) {
+            let disliked = response.data.post.dislikes.indexOf(auth.user.id);
+            if (disliked !== -1) {
+                response.data.post.dislikes.splice(disliked, 1)
+                homeStore.updatePost(postId, {
+                    likes: response.data.post.likes,
+                    dislikes: response.data.post.dislikes,
+                    views: response.data.post.views,
+                    comments: response.data.post.comments,
+                });
+            }
         }
     }
 

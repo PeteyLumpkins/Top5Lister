@@ -8,6 +8,7 @@ export default function UserListsButton(props) {
             disabled={props.disabled}
         >
             <PersonIcon
+                sx={{color: 'lightgreen'}}
                 fontSize="large"
             >
             </PersonIcon>

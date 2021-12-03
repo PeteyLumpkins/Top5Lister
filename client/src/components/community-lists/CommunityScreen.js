@@ -14,6 +14,12 @@ export default function CommunityScreen() {
         communityStore.loadLists();
     }, []);
 
+    let statusText = "Community Top 5 Lists";
+    console.log(communityStore.filter);
+    if (communityStore.filter) {
+        statusText = "Community " + communityStore.filter + " Top 5 Lists";
+    }
+
     let listCard = "";
     if (communityStore && communityStore.top5lists) {
         listCard = 
@@ -45,7 +51,7 @@ export default function CommunityScreen() {
                 </div>
                 <div id="list-selector-heading">
                 </div>
-                <StatusBar text={"Community Lists"}></StatusBar>
+                <StatusBar text={statusText}></StatusBar>
             </div>
     );
 }

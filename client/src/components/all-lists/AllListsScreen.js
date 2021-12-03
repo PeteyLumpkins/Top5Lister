@@ -15,8 +15,12 @@ export default function AllListsScreen() {
         allListsStore.loadLists();
     }, []);
 
+    let statusText = "All Top 5 Lists"
+    if (allListsStore.filter) {
+        statusText = "Top 5 " + allListsStore.filter + " Lists";
+    }
+
     let homeBody = "";
-    let statusText = "Top5Lists"
     if (allListsStore && allListsStore.top5lists) {
         homeBody = 
             <List sx={{ 

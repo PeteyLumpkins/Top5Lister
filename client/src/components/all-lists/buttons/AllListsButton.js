@@ -8,6 +8,7 @@ export default function AllListsButton(props) {
             disabled={props.disabled}
         >
             <GroupsIcon
+                sx={{color: 'lightgreen'}}
                 fontSize="large"
             >
             </GroupsIcon>
