@@ -92,6 +92,7 @@ addToCommunityTop5List = async (req, res) => {
                 itemCounts[req.body.items[i]] = 5 - i
             }
         }
+        list.lastUpdated = Date.now();
         list.itemCounts = itemCounts;
         list.save().then(() => {
             return res.status(200).json({success: true, message: "Community Top5List Updated!", list: list})
@@ -127,6 +128,8 @@ removeFromCommunityTop5List = async (req, res) => {
                 }
             }  
         }
+        
+        list.lastUpdated = Date.now();
         list.itemCounts = itemCounts;
 
         list.save().then(() => {

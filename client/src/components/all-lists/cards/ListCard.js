@@ -35,7 +35,7 @@ export default function ListCard(props) {
   const { allListsStore } = useContext(AllListsStoreContext);
   const { auth } = useContext(AuthContext);
  
-  let published = "Published: " + props.top5list.published.toString();
+  let published = "Published: " + new Date(props.top5list.published).toLocaleString('en-US', {month: 'short', year: 'numeric', day: 'numeric'});
 
   let likes = ""
   let dislikes = ""
@@ -82,7 +82,7 @@ export default function ListCard(props) {
       paddingRight: '2%',
       paddingTop: '2%',
       maxHeight: '100%',
-      background: 'white',
+      background: '#e0e0e0',
       marginBottom: '1%',
       border: 1,
       borderColor: 'gray'

@@ -19,11 +19,11 @@ export const AllListsStoreActionType = {
 }
 
 export const AllListsStoreSortType = {
+    NEWEST: 'NEWEST',
+    OLDEST: 'OLDEST',
+    VIEWS: 'VIEWS',
     LIKES: 'LIKES',
     DISLIKES: 'DISLIKES',
-    VIEWS: 'VIEWS',
-    OLDEST: 'OLDEST',
-    NEWEST: 'NEWEST'
 }
 
 function AllListsStoreContextProvider(props) {
@@ -257,7 +257,7 @@ function AllListsStoreContextProvider(props) {
         let response = await api.getPostById(postId);
         if (response.data.success) {
             response.data.post.comments.push({
-                author: auth.user.firstName + " " + auth.user.lastName,
+                author: auth.user.userName,
                 text: text
             });
             allListsStore.updatePost(postId, {

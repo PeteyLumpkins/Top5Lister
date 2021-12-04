@@ -17,7 +17,6 @@ publishTop5List = async (req, res) => {
         if (err || !list) {
             return res.status(404).json({success: false, error: "Top5List not found!"});
         }
-        console.log(req.body.postId);
         list.published = Date.now();
         list.postId = req.body.postId;
         list.save().then(() => {

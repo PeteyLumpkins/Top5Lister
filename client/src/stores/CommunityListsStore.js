@@ -16,8 +16,6 @@ export const CommunityStoreContext = createContext({});
 // DATA STORE STATE THAT CAN BE PROCESSED
 export const CommunityStoreActionType = {
     SET_LISTS: "SET_LISTS",
-    SET_FILTER: "SET_FILTER",
-    SET_SORT_TYPE: "SET_SORT_TYPE",
 }
 
 export const CommunityStoreSortType = {
@@ -272,7 +270,7 @@ function CommunityStoreContextProvider(props) {
         let response = await api.getPostById(postId);
         if (response.data.success) {
             response.data.post.comments.push({
-                author: auth.user.firstName + " " + auth.user.lastName,
+                author: auth.user.userName,
                 text: text
             });
             communityStore.updatePost(postId, {

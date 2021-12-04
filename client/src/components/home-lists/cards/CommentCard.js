@@ -8,9 +8,9 @@ export default function CommentCard(props) {
             borderColor: 'black',
             p : 1, 
             marginBottom: "2%", 
-            bgcolor: "#90caf9", 
+            bgcolor: "#ffc107", 
             height: "20%", 
-            width: "95%"
+            width: "95%",
         }}>
             <Box sx={{color: 'blue', fontSize: '75%' }}>{props.author}</Box>
             <Box sx={{color: 'black'}}>{props.text}</Box>

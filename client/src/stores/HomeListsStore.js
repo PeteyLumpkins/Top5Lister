@@ -29,11 +29,11 @@ export const HomeStoreActionType = {
 }
 
 export const HomeStoreSortType = {
-    LIKES: 'LIKES',
-    DISLIKES: 'DISLIKES',
-    VIEWS: 'VIEWS',
+    NEWEST: 'NEWEST',
     OLDEST: 'OLDEST',
-    NEWEST: 'NEWEST'
+    VIEWS: 'VIEWS',
+    LIKES: 'LIKES',
+    DISLIKES: 'DISLIKES'
 }
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
@@ -168,8 +168,8 @@ function HomeStoreContextProvider(props) {
     // Reducer for sorting top5lists
     const sortTop5Lists = (top5lists, by = homeStore.sortType) => {
         console.log('Sorting by: ' + by);
+        console.log(by === HomeStoreSortType.OLDEST);
         switch(by) {
-
             case HomeStoreSortType.LIKES: {
                 return top5lists.sort((e1, e2) => { 
                     if (!e1.published && !e2.published) {
@@ -212,9 +212,9 @@ function HomeStoreContextProvider(props) {
                         return 1;
                     } else if (!e2.published) {
                         return -1;
-                    } else if (e1.views > e2.views) {
+                    } else if (e1.post.views > e2.post.views) {
                         return -1
-                    } else if (e1.views < e2.views) {
+                    } else if (e1.post.views < e2.post.views) {
                         return 1;
                     } else {
                         return 0;
@@ -222,6 +222,7 @@ function HomeStoreContextProvider(props) {
                 });
             }
             case HomeStoreSortType.OLDEST: {
+                console.log("Oldest?")
                 return top5lists.sort((e1, e2) => { 
                     if (!e1.published && !e2.published) {
                         return 0;
@@ -286,11 +287,12 @@ function HomeStoreContextProvider(props) {
             top5lists = top5lists.filter((top5list) => {
                 return (filter === null || filter === "" || top5list.name === filter);
             });
-        
+            
+            console.log(sortType)
+            console.log(sortType === HomeStoreSortType.OLDEST);
             // Next we sort the top5lists based on the sortType
             top5lists = sortTop5Lists(top5lists, sortType);
 
-            console.log(filter, sortType);
             // Set the lists
             storeReducer({
                 type: HomeStoreActionType.SET_LISTS,
@@ -402,7 +404,7 @@ function HomeStoreContextProvider(props) {
         let response = await api.getPostById(postId);
         if (response.data.success) {
             response.data.post.comments.push({
-                author: auth.user.firstName + " " + auth.user.lastName,
+                author: auth.user.userName,
                 text: text
             });
             homeStore.updatePost(postId, {
@@ -528,12 +530,7 @@ function HomeStoreContextProvider(props) {
             items: homeStore.currentList.items
         });
         if (response.data.success) {
-            storeReducer({
-                type: HomeStoreActionType.SET_CURRENT_LIST,
-                payload: {
-                    top5list: null
-                }
-            });
+            homeStore.loadLists();
         }
     }
 

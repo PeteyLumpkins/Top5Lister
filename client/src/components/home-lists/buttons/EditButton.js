@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import {HomeStoreContext} from '../../../stores/HomeListsStore'
+import EditIcon from '@mui/icons-material/Edit';
 
-import Button from '@mui/material/Button'
+import { Button, Box } from '@mui/material/';
 
 export default function EditButton(props) {
 
@@ -14,10 +15,10 @@ export default function EditButton(props) {
     return (
         <Button 
             background='primary' 
-            sx={{color: 'red'}}
+            sx={{display: 'flex', justifyContent: 'space-between', color: 'red', textTransform: 'none', align: 'center'}}
             onClick={handleClick}
         >
-            Edit
+            <Box>Edit</Box> <EditIcon fontSize='small' sx={{alignItems: 'top'}}></EditIcon>
         </Button>
     )
 }

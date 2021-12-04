@@ -8,7 +8,7 @@ export default function CommentCard(props) {
             borderColor: 'black',
             p : 1, 
             marginBottom: "2%", 
-            bgcolor: "#90caf9", 
+            bgcolor: "#ffc107", 
             height: "20%", 
             width: "95%"
         }}>

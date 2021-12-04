@@ -35,7 +35,7 @@ export default function CommunityCard(props) {
   const { communityStore } = useContext(CommunityStoreContext);
   const { auth } = useContext(AuthContext);
  
-  let date = "Last updated: " + props.communitylist.lastUpdated;
+  let date = "Last updated: " + new Date(props.communitylist.lastUpdated).toLocaleString('en-US', {month: 'short', year: 'numeric', day: 'numeric'})
 
   let likes = ""
   let dislikes = ""
@@ -83,7 +83,7 @@ export default function CommunityCard(props) {
       paddingTop: '2%',
 
       maxHeight: '100%',
-      background: 'white',
+      background: '#e0e0e0',
       marginBottom: '1%',
       border: 1,
       borderColor: '#e6e6e6'
@@ -91,7 +91,7 @@ export default function CommunityCard(props) {
     >
       <Box sx={{ height: '20%', width: '96%', display: 'flex'}}>
         <Box sx={{display: 'flex', width: '50%'}}>
-          <Box sx={{fontSize: '150%'}}>{props.communitylist.community}
+          <Box sx={{fontSize: '150%'}}>{props.communitylist.community[0].toUpperCase() + props.communitylist.community.slice(1).toLowerCase()}
           </Box>
         </Box>
         <Box sx={{display: 'flex', width: '50%', justifyContent: 'right'}}>

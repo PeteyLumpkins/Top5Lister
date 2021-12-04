@@ -41,7 +41,7 @@ export default function ListCard(props) {
   if (props.top5list.published === null) {
     published = <EditButton top5list={props.top5list}></EditButton>
   } else {
-    published = "Published: " + props.top5list.published.toString();
+    published = "Published: " + new Date(props.top5list.published).toLocaleString('en-US', {month: 'short', year: 'numeric', day: 'numeric'});
   }
 
   let likes = ""
@@ -97,7 +97,7 @@ export default function ListCard(props) {
       paddingRight: '2%',
       paddingTop: '2%',
       maxHeight: '100%',
-      background: 'white',
+      background: props.top5list.published !== null ? '#e0e0e0' : 'white',
       marginBottom: '1%',
       border: 1,
       borderColor: 'gray'
