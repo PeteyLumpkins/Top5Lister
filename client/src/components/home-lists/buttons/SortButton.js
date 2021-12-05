@@ -27,6 +27,7 @@ export default function SortButton(props) {
           sx={{color: "white", width: '100%', display: 'flex', justifyContent: 'space-around'}}
           aria-controls="basic-menu"
           aria-haspopup="true"
+          disabled={props.disabled}
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >

@@ -71,7 +71,7 @@ function AllListsStoreContextProvider(props) {
                 return top5lists.sort((e1, e2) => { 
                     if (e1.post.dislikes.length > e2.post.dislikes.length) {
                         return -1
-                    } else if (e1.post.dislikes < e2.post.dislikes.length) {
+                    } else if (e1.post.dislikes.length < e2.post.dislikes.length) {
                         return 1;
                     } else {
                         return 0;

@@ -8,7 +8,7 @@ export default function HomeListsButton(props) {
             sx={{color: 'white'}}
          >
             <HomeIcon
-                sx={{color: 'lightgreen'}}
+                sx={{color: !props.disabled ? 'lightgreen' : ""}}
                 fontSize="large"
             >
             </HomeIcon>
