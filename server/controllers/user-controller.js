@@ -12,10 +12,12 @@ loginUser = async (req, res) => {
         }
 
         let user = await User.findOne({email: email});
-        
         // Does the user exist?
         if (!user) {
-            return res.status(400).json({errorMessage: "Invalid username or password"});
+            user = await User.findOne({userName: email});
+            if (!user) {
+                return res.status(400).json({errorMessage: "Invalid username/email or password"});
+            }
         }
 
         const passwordCorrect = await bcrypt.compare(password, user.passwordHash);

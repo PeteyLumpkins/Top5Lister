@@ -70,7 +70,7 @@ export default function LoginScreen(props) {
                     required
                     fullWidth
                     id="email"
-                    label="Email Address"
+                    label="Username or Email Address"
                     name="email"
                     autoComplete="email"
                     autoFocus

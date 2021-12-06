@@ -11,7 +11,7 @@ import {
     AllListsWrapper,
     UserListsWrapper,
     RegisterScreen,
-    LoginScreen,
+    Login,
 } from './components'
 
 /*
@@ -30,7 +30,7 @@ const App = () => {
                     <Route path="/alllists" exact component={AllListsWrapper} />
                     <Route path="/userlists" exact component={UserListsWrapper} />
                     <Route path="/communitylists" exact component={CommunityWrapper} />
-                    <Route path="/login/" exact component={LoginScreen} />
+                    <Route path="/login/" exact component={Login} />
                     <Route path="/register/" exact component={RegisterScreen} />
                 </Switch>
             </AuthContextProvider>
