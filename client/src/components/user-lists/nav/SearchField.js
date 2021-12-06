@@ -3,6 +3,14 @@ import TextField from '@mui/material/TextField';
 import { useContext } from 'react';
 import { UserListsStoreContext } from '../../../stores/UserListsStore';
 
+/**
+ * The searchfield for the UserListsScreen. Searches for lists by usernames 
+ * (case-insensitive) starting with the given text. 
+ * 
+ * @author PeteyLumpkins
+ * 
+ * @param {*} props.disabled - whether the search field should be disabled or not
+ */
 export default function SearchField(props) {
 
     const { userListsStore } = useContext(UserListsStoreContext)

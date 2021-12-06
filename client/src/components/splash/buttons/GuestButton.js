@@ -1,6 +1,10 @@
 import { Button, Box } from '@mui/material/';
 import { Link } from 'react-router-dom'
 
+/**
+ * Button for the SplashScreen. Links guests to the AllListsScreen to start viewing lists!
+ * @author PeteyLumpkins
+ */
 export default function GuestButton() {
 
     return (

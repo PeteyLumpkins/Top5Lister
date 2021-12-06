@@ -5,6 +5,13 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import {HomeStoreContext} from '../../../stores/HomeListsStore'
 import { useContext } from 'react';
 
+/**
+ * Button for disliking a top5list on the user's HomeListsScreen
+ * @author PeteyLumpkins
+ * 
+ * @param {boolean} props.disliked - whether the user has disliked the top5list or not
+ * @param {boolean} props.disabled - whether the button should be disabled or not
+ */
 export default function DislikeButton(props) {
 
     const { homeStore } = useContext(HomeStoreContext);

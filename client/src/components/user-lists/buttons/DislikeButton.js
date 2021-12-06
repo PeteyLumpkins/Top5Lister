@@ -5,6 +5,14 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import { UserListsStoreContext } from '../../../stores/UserListsStore'
 import { useContext } from 'react';
 
+/**
+ * Button for disliking a list on the UserListsPage
+ * 
+ * @author PeteyLumpkins
+ * 
+ * @param {disliked} props.disliked - whether the current user disliked the list
+ * @param {disabled} props.disabled - whether the button should be disabled or not
+ */
 export default function DislikeButton(props) {
 
     const { userListsStore } = useContext(UserListsStoreContext);

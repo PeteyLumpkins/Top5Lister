@@ -3,21 +3,20 @@ import api from '../api'
 
 import AuthContext from '../auth'
 /*
-    This is our global data store. Note that it uses the Flux design pattern,
-    which makes use of things like actions and reducers. 
+    This is the data store for the All Lists Screen.
     
     @author PeteyLumpkins
 */
 
-// THIS IS THE CONTEXT WE'LL USE TO SHARE OUR STORE
+// Context for the store
 export const AllListsStoreContext = createContext({});
 
-// THESE ARE ALL THE TYPES OF UPDATES TO OUR GLOBAL
-// DATA STORE STATE THAT CAN BE PROCESSED
+// All ways to update the all lists store
 export const AllListsStoreActionType = {
     SET_LISTS: "SET_LISTS",
 }
 
+// All ways to sort the top5lists on the all lists store
 export const AllListsStoreSortType = {
     NEWEST: 'NEWEST',
     OLDEST: 'OLDEST',
@@ -53,7 +52,7 @@ function AllListsStoreContextProvider(props) {
         }
     }
 
-    // Reducer for sorting top5lists
+    // Basically a reducer for sorting top5lists
     const sortTop5Lists = (top5lists, by = allListsStore.sortType) => {
         switch(by) {
             case AllListsStoreSortType.LIKES: {

@@ -1,10 +1,12 @@
 import { Typography } from '@mui/material'
 
-/*
-    Our Status bar React component goes at the bottom of our UI.
-    
-    @author McKilla Gorilla
-*/
+/**
+ * Status bar for displaying the current list or set of lists being viewed
+ * 
+ * @author PeteyLumpkins
+ * 
+ * @param {String} props.text - the message for the status bar to display
+ */
 function Statusbar(props) {
     
     return (

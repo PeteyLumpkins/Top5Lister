@@ -9,6 +9,13 @@ import { useContext, useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 
+/**
+ * CommentDropdown card for a top5list on the HomeListsScreen
+ * @author PeteyLumpkins
+ * 
+ * @param {String} props.postId - the id of the post associated with the dropdowns top5list
+ * @param {[Object]} props.comments - an array of comment objects to display in the comment section
+ */
 export default function CommentDropdownCard(props) {
 
     const [text, setText] = useState("");

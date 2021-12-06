@@ -1,6 +1,12 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 
+/**
+ * The HomeListScreens list dropdown for displaying the items associated with a top5list. 
+ * @author PeteyLumpkins
+ * 
+ * @param {[String]} props.items - array of the listcards top5lists items
+ */
 export default function ListDropdownCard(props) {
 
     return (

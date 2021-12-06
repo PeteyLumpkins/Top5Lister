@@ -5,6 +5,13 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { AllListsStoreContext } from '../../../stores/AllListsStore'
 import { useContext } from 'react';
 
+/**
+ * Button that handles liking a list on the all-lists screen
+ * @author PeteyLumpkins
+ * 
+ * @param {boolean} props.liked - whether the current user has liked the list or not
+ * @param {boolean} props.disabled - whether the button should be disabled or not
+ */
 export default function LikeButton(props) {
 
     const { allListsStore } = useContext(AllListsStoreContext);

@@ -29,6 +29,13 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
+/**
+ * ListCard for a top5list on the UserListsPage
+ * 
+ * @author PeteyLumpkins
+ * 
+ * @param {Object} props.top5list - the top5list associated with this card
+ */
 export default function ListCard(props) {
   const [expanded, setExpanded] = useState(false);
 

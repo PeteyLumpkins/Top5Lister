@@ -5,6 +5,14 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { UserListsStoreContext } from '../../../stores/UserListsStore'
 import { useContext } from 'react';
 
+/**
+ * Button for liking a top5list on the UserListsPage
+ * 
+ * @author PeteyLumpkins
+ * 
+ * @param {boolean} props.liked - whether the current user has liked this list
+ * @param {disabled} props.disabled - whether the button should be disabled or not
+ */
 export default function LikeButton(props) {
 
     const { userListsStore } = useContext(UserListsStoreContext);

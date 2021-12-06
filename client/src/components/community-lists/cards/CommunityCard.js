@@ -29,6 +29,12 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
+/**
+ * ListCard for a community list
+ * @author PeteyLumpkins
+ * 
+ * @param {Object} props.communitylist - the community list associated with the list card
+ */
 export default function CommunityCard(props) {
   const [expanded, setExpanded] = useState(false);
 

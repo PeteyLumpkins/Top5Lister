@@ -4,7 +4,11 @@ import { HomeStoreContext } from '../../../stores/HomeListsStore';
 import { Fab } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 
-export default function AddListButton(props) {
+/**
+ * Button for creating and adding a new top5list to the current user's HomeListsScreen
+ * @author PeteyLumpkins
+ */
+export default function AddListButton() {
 
     const { homeStore } = useContext(HomeStoreContext);
 

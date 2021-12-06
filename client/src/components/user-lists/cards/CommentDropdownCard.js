@@ -8,6 +8,17 @@ import { useContext, useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 
+/**
+ * Comment dropdown card/container for a post associated with a top5list
+ * 
+ * @author PeteyLumpkins
+ * 
+ * @param {String} props.postId - the id of the post associated with this comment dropdown
+ * @param {[Object]} props.comments - the array of comments associated with the post. Each comment
+ * contains the name of the author and text associated with the post
+ * 
+
+ */
 export default function CommentDropdownCard(props) {
 
     const { userListsStore } = useContext(UserListsStoreContext);

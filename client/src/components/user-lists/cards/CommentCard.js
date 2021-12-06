@@ -1,5 +1,13 @@
 import { Card, Box } from '@mui/material/';
 
+/**
+ * Comment Card for the UserListsScreen
+ * 
+ * @author PeteyLumpkins
+ * 
+ * @param {String} props.text - the comments text
+ * @param {String} props.author - the comments authors username
+ */
 export default function CommentCard(props) {
     return (
         <Card sx={{

@@ -6,6 +6,10 @@ import AuthContext from '../../auth'
 
 import { HomeStoreContextProvider } from '../../stores/HomeListsStore';
 
+/**
+ * Wrapper for the HomeListsScreen.
+ * @author PeteyLumpkins
+ */
 export default function HomeWrapper() {
     const { auth } = useContext(AuthContext);
 

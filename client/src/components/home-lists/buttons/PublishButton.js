@@ -2,7 +2,11 @@ import Button from '@mui/material/Button';
 import { useContext } from 'react';
 import {HomeStoreContext} from '../../../stores/HomeListsStore'
 
-export default function PublishButton(props) {
+/**
+ * Button for publishing a top5list in the workspace on the current users HomeListsScreen
+ * @author PeteyLumpkins
+ */
+export default function PublishButton() {
 
     const { homeStore } = useContext(HomeStoreContext);
 

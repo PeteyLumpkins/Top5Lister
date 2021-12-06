@@ -1,7 +1,11 @@
 import CommunityScreen from './CommunityScreen';
 import { CommunityStoreContextProvider } from '../../stores/CommunityListsStore'
 
-export default function CommunityWrapper(props) {
+/**
+ * Providees a wrapper for the community lists screen and context.
+ * @author PeteyLumpkins
+ */
+export default function CommunityWrapper() {
 
     return (
         <CommunityStoreContextProvider>

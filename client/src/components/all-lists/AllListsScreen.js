@@ -8,6 +8,11 @@ import StatusBar from "../Statusbar"
 import NavBar from "./nav/NavBar"
 import ListCard from './cards/ListCard';
 
+/**
+ * The AllListsScreen of our application. Handles the display and interaction of users and guests
+ * with all of the published top5lists.
+ * @author PeteyLumpkins
+ */
 export default function AllListsScreen() {
     const { allListsStore } = useContext(AllListsStoreContext);
 

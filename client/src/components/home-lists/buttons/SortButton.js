@@ -7,6 +7,12 @@ import Box from '@mui/material/Box';
 import { useState, useContext } from 'react';
 import { HomeStoreContext, HomeStoreSortType } from '../../../stores/HomeListsStore';
 
+/**
+ * Menu/Dropdown that displays the options for sorting the top5lists on the users HomeListsScreen
+ * @author PeteyLumpkins
+ * 
+ * @param {boolean} props.disabled - whether the button should be disabled or not
+ */
 export default function SortButton(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);

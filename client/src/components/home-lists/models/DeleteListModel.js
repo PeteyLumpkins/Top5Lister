@@ -7,6 +7,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { HomeStoreContext } from '../../../stores/HomeListsStore'
 import { useContext } from 'react'
 
+/**
+ * Delete modal for deleting one of the current user's top5lists via the HomeListsScreen.
+ * @author PeteyLumpkins
+ * 
+ * @param {boolean} props.open - whether the modal should be displayed or not
+ * @param {String} props.listName - the name of the list marked for deletion
+ */
 export default function DeleteListModel(props) {
 
     const { homeStore } = useContext(HomeStoreContext);

@@ -9,6 +9,13 @@ import { useContext, useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 
+/**
+ * The comment dropdown section that displays the comments for a top5list on the all-lists screen
+ * @author PeteyLumpkins
+ * 
+ * @param {String} props.postId - the id of the post associated with this top5list 
+ * @param {[Object]} props.comments - an array of comment objects to be displayed
+ */
 export default function CommentDropdownCard(props) {
 
     const { allListsStore } = useContext(AllListsStoreContext);

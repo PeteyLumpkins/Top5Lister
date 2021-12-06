@@ -5,6 +5,13 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import {CommunityStoreContext} from '../../../stores/CommunityListsStore'
 import { useContext } from 'react';
 
+/**
+ * Button for disliking a CommunityTop5List
+ * @author PeteyLumpkins
+ * 
+ * @param {boolean} props.disliked - whether the current user has disliked the list or not
+ * @param {boolean} props.disabled - whether the button should be disabled or not
+ */
 export default function DislikeButton(props) {
 
     const { communityStore } = useContext(CommunityStoreContext);

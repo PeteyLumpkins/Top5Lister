@@ -16,7 +16,12 @@ import AuthContext from '../../../auth';
 import { HomeStoreContext } from '../../../stores/HomeListsStore';
 import { useContext } from 'react';
 
-export default function NavBar(props) {
+/**
+ * Navbar for the HomeListsPage. Provides linkes to other pages, a button for sorting the top5lists
+ * and a search bar that searches the current users top5lists.
+ * @author PeteyLumpkins
+ */
+export default function NavBar() {
 
     const { homeStore } = useContext(HomeStoreContext);
     const { auth } = useContext(AuthContext);

@@ -12,6 +12,10 @@ import DeleteListModel from './models/DeleteListModel'
 
 import AddListButton from './buttons/AddListButton';
 
+/**
+ * Returns the HomeListsScreeen for our application
+ * @author PeteyLumpkins
+ */
 export default function HomeScreen() {
     const { homeStore } = useContext(HomeStoreContext);
 

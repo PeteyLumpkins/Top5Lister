@@ -1,6 +1,12 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 
+/**
+ * Dropdown card that displays the items associated with a top5list on the all-lists screen
+ * @author PeteyLumpkins
+ * 
+ * @param {[String]} props.items - an array the items associated with the top5list
+ */
 export default function ListDropdownCard(props) {
 
     return (

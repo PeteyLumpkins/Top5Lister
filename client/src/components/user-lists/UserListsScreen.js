@@ -9,6 +9,12 @@ import NavBar from "./nav/NavBar"
 import ListCard from './cards/ListCard';
 
 
+/**
+ * The screen or page that displays all users top 5 lists. Functions almost the same
+ * as the all lists screen, except searches will look for users instead of lists.
+ * 
+ * @author PeteyLumpkins
+ */
 export default function UserListsScreen() {
     const { userListsStore } = useContext(UserListsStoreContext);
 

@@ -8,6 +8,11 @@ import Top5Item from './Top5Item';
 import SaveButton from '../buttons/SaveButton'
 import PublishButton from '../buttons/PublishButton'
 
+/**
+ * The Workspace where a user is able to edit the name and items of one of their 
+ * top5lists.
+ * @author PeteyLumpkins
+ */
 export default function WorkSpace() {
 
     const { homeStore } = useContext(HomeStoreContext);

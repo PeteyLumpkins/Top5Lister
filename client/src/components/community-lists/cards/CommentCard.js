@@ -1,5 +1,12 @@
 import { Card, Box } from '@mui/material/';
 
+/**
+ * A card representing a comment associated with a community list
+ * @author PeteyLumpkins
+ * 
+ * @param {String} props.author - the username of the author of the comment
+ * @param {String} props.text - the text associated with the comment
+ */
 export default function Comment(props) {
 
     return (

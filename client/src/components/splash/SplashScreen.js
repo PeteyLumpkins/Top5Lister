@@ -4,10 +4,15 @@ import LoginButton from './buttons/LoginButton';
 import RegisterButton from './buttons/RegisterButton';
 import GuestButton from './buttons/GuestButton';
 
+/**
+ * The SplashScreen for our application. This is the first screen users see when
+ * they visit the website.
+ * 
+ * @author PeteyLumpkins
+ */
 export default function SplashScreen() {
 
-    return (
-        
+    return (    
         <Box id="splash" sx={{height: "100%", width: "100%"}}>
             <Box sx={{
                 display: 'flex', 
@@ -51,7 +56,6 @@ export default function SplashScreen() {
                 <Box sx={{width: '25%'}}><RegisterButton></RegisterButton></Box>
                 <Box sx={{width: '25%'}}><GuestButton></GuestButton></Box>
             </Box>
-        </Box>
-            
-    )
+        </Box>           
+    );
 }

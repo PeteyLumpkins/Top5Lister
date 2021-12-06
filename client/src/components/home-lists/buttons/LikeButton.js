@@ -5,7 +5,13 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { HomeStoreContext } from '../../../stores/HomeListsStore'
 import { useContext } from 'react';
 
-
+/**
+ * Button for liking a given list on the users HomeListsScreen
+ * @author PeteyLumpkins
+ * 
+ * @param {boolean} props.liked - whether the user has liked the list or not
+ * @param {boolean} props.disabled - whether the button should be disabled or not
+ */
 export default function LikeButton(props) {
 
     const { homeStore } = useContext(HomeStoreContext);

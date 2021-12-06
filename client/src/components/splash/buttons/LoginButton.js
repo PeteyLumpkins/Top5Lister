@@ -1,6 +1,10 @@
 import { Button, Box } from '@mui/material/';
 import { Link } from 'react-router-dom'
 
+/**
+ * Button for the SplashScreen. Links a guest to the login screen.
+ * @author PeteyLumpkins
+ */
 export default function LoginButton() {
 
     return (

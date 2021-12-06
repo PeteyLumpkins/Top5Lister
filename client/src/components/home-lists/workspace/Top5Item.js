@@ -5,6 +5,13 @@ import {HomeStoreContext} from '../../../stores/HomeListsStore'
 
 import EditIcon from '@mui/icons-material/Edit';
 
+/**
+ * Represents an item in a top5list that may be edited.
+ * @author PeteyLumpkins
+ * 
+ * @param {String} props.text - the text of the top5-item 
+ * @param {Integer} props.index - the index of the item in the top5list
+ */
 export default function Top5Item(props) {
     const [editing, setEditing] = useState(false);
     const [text, setText] = useState(props.text);

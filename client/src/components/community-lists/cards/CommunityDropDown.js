@@ -1,6 +1,12 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 
+/**
+ * The dropdown card to display the top5items in a community list
+ * @author PeteyLumpkins
+ * 
+ * @param {[String]} props.items - array of the top5lists items
+ */
 export default function CommunityDropdownCard(props) {
 
     return (

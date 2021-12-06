@@ -7,6 +7,10 @@ import Box from '@mui/material/Box';
 import { useState, useContext } from 'react';
 import { AllListsStoreContext, AllListsStoreSortType } from '../../../stores/AllListsStore';
 
+/**
+ * Menu/Dropdown that displays the options for sorting the top5lists on the AllListsScreen
+ * @author PeteyLumpkins
+ */
 export default function SortButton(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);

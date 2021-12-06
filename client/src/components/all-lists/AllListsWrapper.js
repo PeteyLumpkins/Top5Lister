@@ -1,7 +1,11 @@
 import AllListsScreen from './AllListsScreen';
 import { AllListsStoreContextProvider } from '../../stores/AllListsStore'
 
-export default function AllListsWrapper(props) {
+/**
+ * A wrapper for the AllListsScreen and AllListsContext
+ * @author PeteyLumpkins
+ */
+export default function AllListsWrapper() {
 
     return (
         <AllListsStoreContextProvider>

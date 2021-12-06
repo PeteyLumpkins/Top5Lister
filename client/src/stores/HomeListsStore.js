@@ -3,17 +3,16 @@ import api from '../api'
 
 import AuthContext from '../auth'
 /*
-    This is our global data store. Note that it uses the Flux design pattern,
-    which makes use of things like actions and reducers. 
+    This is the store for the home/users lists page. It manages all state associated with
+    the home lists page for a user.
     
     @author PeteyLumpkins
 */
 
-// THIS IS THE CONTEXT WE'LL USE TO SHARE OUR STORE
+// Context for sharing the home lists store
 export const HomeStoreContext = createContext({});
 
-// THESE ARE ALL THE TYPES OF UPDATES TO OUR GLOBAL
-// DATA STORE STATE THAT CAN BE PROCESSED
+// All actions that update the state of the home lists data store
 export const HomeStoreActionType = {
     SET_LISTS: "SET_LISTS",
 
@@ -28,6 +27,7 @@ export const HomeStoreActionType = {
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE"
 }
 
+// All ways to sort the top5lists in the home lists store
 export const HomeStoreSortType = {
     NEWEST: 'NEWEST',
     OLDEST: 'OLDEST',
@@ -36,10 +36,8 @@ export const HomeStoreSortType = {
     DISLIKES: 'DISLIKES'
 }
 
-// WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
-// AVAILABLE TO THE REST OF THE APPLICATION
 function HomeStoreContextProvider(props) {
-    // THESE ARE ALL THE THINGS OUR DATA STORE WILL MANAGE
+    // Initial state of the home lists store for a user
     const [homeStore, setHomeStore] = useState({
         top5lists: null,
         sortType: null,
@@ -51,11 +49,9 @@ function HomeStoreContextProvider(props) {
         listMarkedForDeletion: null,
     });
 
-    // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
     const { auth } = useContext(AuthContext);
 
-    // HERE'S THE DATA STORE'S REDUCER, IT MUST
-    // HANDLE EVERY TYPE OF STATE CHANGE
+    // HomeStore Reducer -> manages all updates to the state of the store
     const storeReducer = (action) => {
         const { type, payload } = action;
         switch (type) {

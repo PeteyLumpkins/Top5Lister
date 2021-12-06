@@ -7,7 +7,13 @@ import Box from '@mui/material/Box';
 import { useState, useContext } from 'react';
 import { UserListsStoreContext, UserListsStoreSortType } from '../../../stores/UserListsStore';
 
-export default function SortButton(props) {
+/**
+ * SortMenu/Dropdown for the UserListsPage. Provides the options for sorting the top5lists 
+ * displayed on the UserListsPage.
+ * 
+ * @author PeteyLumpkins
+ */
+export default function SortButton() {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 

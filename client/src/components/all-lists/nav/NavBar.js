@@ -15,7 +15,11 @@ import SearchField from './SearchField';
 import AuthContext from '../../../auth';
 import { useContext } from 'react';
 
-export default function NavBar(props) {
+/**
+ * Navbar for the all-lists screen
+ * @author PeteyLumpkins
+ */
+export default function NavBar() {
 
     const { auth } = useContext(AuthContext);
 

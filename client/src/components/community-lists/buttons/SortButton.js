@@ -7,7 +7,11 @@ import Box from '@mui/material/Box';
 import { useState, useContext } from 'react';
 import { CommunityStoreContext, CommunityStoreSortType } from '../../../stores/CommunityListsStore';
 
-export default function SortButton(props) {
+/**
+ * Menu/Dropdown that displays the options for sorting the top5lists on the CommunityListsScreen
+ * @author PeteyLumpkins
+ */
+export default function SortButton() {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 

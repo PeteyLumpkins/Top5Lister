@@ -3,21 +3,21 @@ import api from '../api'
 
 import AuthContext from '../auth'
 /*
-    This is our global data store. Note that it uses the Flux design pattern,
-    which makes use of things like actions and reducers. 
+    This is the user lists store. It manages all of the state associated with
+    the user lists page.
     
     @author PeteyLumpkins
 */
 
-// THIS IS THE CONTEXT WE'LL USE TO SHARE OUR STORE
+// Context for sharing the user lists store
 export const UserListsStoreContext = createContext({});
 
-// THESE ARE ALL THE TYPES OF UPDATES TO OUR GLOBAL
-// DATA STORE STATE THAT CAN BE PROCESSED
+// All ways to update the state of the user lists store
 export const UserListsStoreActionType = {
     SET_LISTS: "SET_LISTS",
 }
 
+// All ways to sort the top5lists on the user lists page
 export const UserListsStoreSortType = {
     NEWEST: 'NEWEST',
     OLDEST: 'OLDEST',

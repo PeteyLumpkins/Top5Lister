@@ -1,6 +1,12 @@
 import PersonIcon from '@mui/icons-material/Person';
 import IconButton from '@mui/material/IconButton';
 
+/**
+ * Button for linking to the UserListsScreen from the CommunityListsScreen
+ * @author PeteyLumpkins
+ * 
+ * @param {boolean} props.disabled - whether the button should be disabled or not
+ */
 export default function UserListsButton(props) {
     return (
         <IconButton

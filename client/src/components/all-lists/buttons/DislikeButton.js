@@ -5,6 +5,13 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import { AllListsStoreContext } from '../../../stores/AllListsStore'
 import { useContext } from 'react';
 
+/**
+ * Button that handles disliking a top5list on the all-lists screen.
+ * @author PeteyLumpkins
+ * 
+ * @param {boolean} props.disliked - whether the current user disliked the list or not
+ * @param {boolean} props.disabled - whether the button should be disabled or not
+ */
 export default function DislikeButton(props) {
 
     const { allListsStore } = useContext(AllListsStoreContext);

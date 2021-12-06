@@ -3,21 +3,21 @@ import api from '../api'
 
 import AuthContext from '../auth'
 /*
-    This is our global data store. Note that it uses the Flux design pattern,
-    which makes use of things like actions and reducers. 
+    This is the community lists store. It manages all state associated with the
+    community top5lists page.
     
     @author PeteyLumpkins
 */
 
-// THIS IS THE CONTEXT WE'LL USE TO SHARE OUR STORE
+// Context for sharing the community lists store
 export const CommunityStoreContext = createContext({});
 
-// THESE ARE ALL THE TYPES OF UPDATES TO OUR GLOBAL
-// DATA STORE STATE THAT CAN BE PROCESSED
+// All ways to update the state of the community lists store
 export const CommunityStoreActionType = {
     SET_LISTS: "SET_LISTS",
 }
 
+// All ways we can sort the community stores top5lists
 export const CommunityStoreSortType = {
     LIKES: 'LIKES',
     DISLIKES: 'DISLIKES',

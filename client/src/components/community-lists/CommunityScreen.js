@@ -7,6 +7,12 @@ import StatusBar from '../Statusbar'
 import NavBar from "./nav/NavBar"
 import CommunityCard from './cards/CommunityCard';
 
+/**
+ * The CommunityListsScreen of our application. Handles the display and interaction of users
+ * and guests with the community top5lists.
+ * 
+ * @author PeteyLumpkins
+ */
 export default function CommunityScreen() {
     const { communityStore } = useContext(CommunityStoreContext);
 
