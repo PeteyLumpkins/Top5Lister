@@ -94,8 +94,6 @@ updateUserTop5List = async (req, res) => {
 // Gets the current users top5lists
 // TODO should be for current users lists -> req.userId
 getUserTop5Lists = async (req, res) => {
-    console.log("Getting users lists");
-    console.log(req.user);
     UserTop5List.find({userId: req.userId}, (err, lists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err });
