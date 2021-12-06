@@ -12,12 +12,26 @@ export default function WorkSpace() {
 
     const { homeStore } = useContext(HomeStoreContext);
 
-    console.log(homeStore.currentList);
     return (
-        <Box sx={{marginLeft: "5%", marginRight: "5%", height: "100%", width: "90%", backgroundColor: "lightblue"}}>
-            <Top5Name marginLeft="5%" text={homeStore.currentList.name}></Top5Name>
-                <List sx={{marginLeft: "5%", height: "75%", width: "100%"}}>
+        <Card sx={{
+            marginLeft: "5%", 
+            marginRight: "5%", 
+            overflow: 'scroll',
+            maxHeight: '100%',
+            height: "100%", 
+            width: "90%", 
+            backgroundColor: "#e0e0e0",
+            border: 1,
+            borderColor: 'black'
+        }}>
+            <Top5Name text={homeStore.currentList.name}></Top5Name>
+                <Card sx={{
 
+                    marginLeft: '5%', 
+                    marginRight: '5%',
+                    height: "70%", width: "90%", 
+                    background: "#0277bd"
+                }}>
                     {
                     homeStore.currentList.items.map((item, index) => (
                         <Top5Item 
@@ -27,13 +41,13 @@ export default function WorkSpace() {
                         />
                     ))
                     }
-                </List>
+                </Card>
             <Box sx={{width: '100%', display: 'flex', justifyContent: 'right'}}>
-                <Box sx={{width: "25%", justifyContent: 'space-around', alignItems: 'center', display: 'flex'}}> 
+                <Box sx={{m : 2, width: "40%", justifyContent: 'space-around', alignItems: 'center', display: 'flex'}}> 
                     <SaveButton></SaveButton> 
                     <PublishButton></PublishButton>
                 </Box>
             </Box>
-        </Box>
+        </Card>
     )
 }

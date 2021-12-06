@@ -285,11 +285,10 @@ function HomeStoreContextProvider(props) {
             }
             // Next we filter the lists. Filter === null, then accept all lists
             top5lists = top5lists.filter((top5list) => {
-                return (filter === null || filter === "" || top5list.name === filter);
+                return (filter === null || filter === "" || 
+                    top5list.name.toUpperCase().startsWith(filter.toUpperCase()));
             });
             
-            console.log(sortType)
-            console.log(sortType === HomeStoreSortType.OLDEST);
             // Next we sort the top5lists based on the sortType
             top5lists = sortTop5Lists(top5lists, sortType);
 

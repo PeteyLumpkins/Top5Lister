@@ -24,15 +24,22 @@ export default function PublishButton(props) {
         })
     }
 
-    return (
-        <Button
-            color="primary"
-            onClick={handleClick}
-            disabled={homeStore.isItemEditActive || 
+    let disabled = homeStore.isItemEditActive || 
                 homeStore.isListNameEditActive ||
                 !isListNameUnique() ||
                 allItemsUnique().length !== 0
-            }
+
+    return (
+        <Button
+            sx={{
+                border: 1, borderColor: disabled ? 'lightgrey' : 'black',
+                color: disabled ? 'lightgray' : 'black',
+                background: disabled ? "" : "",
+                textTransform: 'none', fontWeight: 'bold', 
+                width: "40%"
+            }}
+            onClick={handleClick}
+            disabled={disabled}
         >
             Publish
         </Button>

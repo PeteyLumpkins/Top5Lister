@@ -27,7 +27,18 @@ export default function SplashScreen() {
                 fontSize: '125%', 
                 color: 'gold'
                 }}
-            >Where you can create, like, dislike, and comment on all your favorite Top5Lists!</Box>
+            >Where you can create, like, dislike, and comment on all your favorite Top5Lists!
+            </Box>
+            <Box sx={{
+                display: 'flex',
+                height: '10%',
+                width: '100%', 
+                justifyContent: 'center', 
+                fontSize: '150%',
+                color: 'gold'
+            }}>
+                By Peter Walsh!
+            </Box>
             <Box sx={{
                 display: 'flex', 
                 height: "50%", 

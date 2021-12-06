@@ -21,6 +21,7 @@ export default function HomeScreen() {
 
     let homeBody = "";
     let statusText = "Your Top5Lists"
+
     if (homeStore.currentList !== null) {
         homeBody = <WorkSpace></WorkSpace>
         statusText = "Top 5 " + homeStore.currentList.name + " List";
@@ -54,7 +55,6 @@ export default function HomeScreen() {
                 </div>
                 <div id="list-selector-heading">
                     <AddListButton></AddListButton>
-                    <Typography variant="h5"></Typography>
                 </div>
                 <StatusBar text={statusText}></StatusBar>
                 <DeleteListModel 

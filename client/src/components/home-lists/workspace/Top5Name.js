@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { TextField, Box, Fab } from '@mui/material/';
+import { TextField, Box, Fab, Card } from '@mui/material/';
 
 import {HomeStoreContext} from '../../../stores/HomeListsStore'
 
@@ -28,7 +28,7 @@ export default function Top5Name(props) {
         }
     }
 
-    let item = <Box sx={{ paddingLeft: "1%", background: "white", width: "45%" }}>{text}</Box>
+    let item = <Card sx={{p : '1%', height: '100%', background: "white", width: "45%" }}>{text}</Card>
     if (editing) {
         item = <TextField sx={{ 
             width: '45%',
@@ -45,7 +45,7 @@ export default function Top5Name(props) {
     
     
     return (
-        <Box sx={{m : 1, borderRadius: 1, marginLeft: "5%", display: 'flex', alignItems: 'center', fontSize: '200%' }}>
+        <Box sx={{marginTop: 1, marginBottom: 1, borderRadius: 1, marginLeft: "5%", display: 'flex', alignItems: 'center', fontSize: '200%' }}>
             {item}
             <Box sx={{ p: 1 }}>
                 <Fab

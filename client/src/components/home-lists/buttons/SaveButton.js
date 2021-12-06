@@ -11,10 +11,17 @@ export default function SaveButton() {
         homeStore.saveCurrentList();
     }
 
+    let disabled = homeStore.isItemEditActive || homeStore.isListNameEditActive
+
     return (
         <Button
-            color="primary"
-            disabled={homeStore.isItemEditActive || homeStore.isListNameEditActive}
+            sx={{
+                border: 1, borderColor: disabled ? 'lightgray' : 'black',
+                color: disabled ? 'lightgray' : 'black', fontWeight: 'bold',
+                textTransform: 'none', width: "40%"
+            
+            }}
+            disabled={disabled}
             onClick={handleClick}
         >
             Save
