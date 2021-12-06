@@ -18,7 +18,11 @@ export default function Top5Name(props) {
     }
 
     const handleEditText = (event) => {
-        setText(event.target.value);
+        if (event.target.value.trim() === "") {
+            setText("Untitled")
+        } else {
+            setText(event.target.value);
+        }
     }
 
     const handleKeyPress = (event) => {

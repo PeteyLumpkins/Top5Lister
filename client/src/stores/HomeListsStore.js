@@ -424,7 +424,7 @@ function HomeStoreContextProvider(props) {
             userId: auth.user.id,
             author: auth.user.userName,
             name: "Untitled",
-            items: ["?", "?", "?", "?", "?"],
+            items: ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"],
         };
         const response = await api.createUserTop5List(payload);
         if (response.data.success) {
@@ -486,21 +486,21 @@ function HomeStoreContextProvider(props) {
 
     // Setting the current list
     homeStore.setCurrentList = function (top5list) {
-        console.log("Settiing current lsit");
-        console.log(top5list)
         storeReducer({
             type: HomeStoreActionType.SET_CURRENT_LIST,
             payload: {
                 top5list: top5list
             }
         });
-        console.log(homeStore.currentList);
     }
 
     // Function handles updating the current lists items
     homeStore.updateCurrentListItem = function (index, newItem) {
         let currentList = homeStore.currentList;
-        currentList.items[index] = newItem;
+        if (!newItem.trim()) {
+            newItem = "Item " + (index + 1);
+        }
+        currentList.items[index] = newItem.trim();
         storeReducer({
             type: HomeStoreActionType.SET_CURRENT_LIST,
             payload: {
@@ -512,8 +512,10 @@ function HomeStoreContextProvider(props) {
     // Function handles updating the current lists name
     homeStore.updateCurrentListName = async function (newName) {
         let currentList = homeStore.currentList;
-        currentList.name = newName;
-        console.log("Updating list name");
+        if (newName.trim() === "") {
+            newName = "Untitled";
+        }
+        currentList.name = newName.trim();
         storeReducer({
             type: HomeStoreActionType.SET_CURRENT_LIST,
             payload: {
