@@ -1,0 +1,81 @@
+[{
+  "_id": {
+    "$oid": "61ad65cbb4c3eb484f3be041"
+  },
+  "firstName": "Peter",
+  "lastName": "Walsh",
+  "userName": "PeteyLumpkins",
+  "email": "peter.t.walsh@stonybrook.edu",
+  "passwordHash": "$2a$10$9.uEEj6m0X2dNL9ateh4huD15CU.VqV48M91Ut3WwbsByE4N5tlMS",
+  "createdAt": {
+    "$date": "2021-12-06T01:22:19.605Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T01:22:19.605Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad66a0b4c3eb484f3be059"
+  },
+  "firstName": "Lucas",
+  "lastName": "Staats",
+  "userName": "LittleLukey123",
+  "email": "lucas.staats@stonybrook.edu",
+  "passwordHash": "$2a$10$wuPkBcMG.RbCPrRsjlT9KO78OkNC22D9hErmG1OMNWlaT35bfsl3.",
+  "createdAt": {
+    "$date": "2021-12-06T01:25:52.344Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T01:25:52.344Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad66feb4c3eb484f3be066"
+  },
+  "firstName": "Joseph",
+  "lastName": "Duval",
+  "userName": "pumpkinpielover",
+  "email": "joseph.duval@stonybrook.edu",
+  "passwordHash": "$2a$10$1aniEHVuIF/NM6lsyiymp.E3cEF9HtTMfKHw/yLQJlkLJPGycI22a",
+  "createdAt": {
+    "$date": "2021-12-06T01:27:26.923Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T01:27:26.923Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad673ab4c3eb484f3be070"
+  },
+  "firstName": "Peyton",
+  "lastName": "Horst",
+  "userName": "peyfist01",
+  "email": "peyton.horst@stonybrook.edu",
+  "passwordHash": "$2a$10$U/b5S0N0PvZkwwWY7Ic1qeaPoV2jVbTSeQ2kgEqpxSROVy/lPeeHu",
+  "createdAt": {
+    "$date": "2021-12-06T01:28:26.849Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T01:28:26.849Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad675eb4c3eb484f3be076"
+  },
+  "firstName": "Nick",
+  "lastName": "Urbin",
+  "userName": "EPICNSU",
+  "email": "nick.urbin@stonybrook.edu",
+  "passwordHash": "$2a$10$4ROC9jud/hVxrnY5bqveD.ocTn5R0UTUpX2x/PSE1ewK.pm0AUYAm",
+  "createdAt": {
+    "$date": "2021-12-06T01:29:02.660Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T01:29:02.660Z"
+  },
+  "__v": 0
+}]

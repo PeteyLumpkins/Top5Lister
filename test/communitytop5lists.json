@@ -1,0 +1,169 @@
+[{
+  "_id": {
+    "$oid": "61ad6806b4c3eb484f3be0a2"
+  },
+  "postId": "61ad6806b4c3eb484f3be0a0",
+  "community": "GAMES",
+  "lastUpdated": {
+    "$date": "2021-12-06T01:59:06.898Z"
+  },
+  "itemCounts": {
+    "G1": 15,
+    "G2": 15,
+    "G3": 13,
+    "G4": 7,
+    "G5": 4,
+    "G7": 1,
+    "G11": 3,
+    "B4": 2
+  },
+  "createdAt": {
+    "$date": "2021-12-06T01:31:50.779Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T01:59:06.898Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad6844b4c3eb484f3be0cd"
+  },
+  "postId": "61ad6844b4c3eb484f3be0cb",
+  "community": "MOVIES",
+  "lastUpdated": {
+    "$date": "2021-12-06T01:51:53.754Z"
+  },
+  "itemCounts": {
+    "M5": 8,
+    "M4": 10,
+    "M3": 9,
+    "M2": 11,
+    "M1": 7
+  },
+  "createdAt": {
+    "$date": "2021-12-06T01:32:52.785Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T01:51:53.755Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad687db4c3eb484f3be0e9"
+  },
+  "postId": "61ad687db4c3eb484f3be0e7",
+  "community": "PROGRAMMING LANGUAGES",
+  "lastUpdated": {
+    "$date": "2021-12-06T02:00:05.488Z"
+  },
+  "itemCounts": {
+    "L1": 14,
+    "L2": 11,
+    "L3": 11,
+    "L4": 6,
+    "L5": 3
+  },
+  "createdAt": {
+    "$date": "2021-12-06T01:33:49.822Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T02:00:05.489Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad68a6b4c3eb484f3be101"
+  },
+  "postId": "61ad68a6b4c3eb484f3be0ff",
+  "community": "BEER",
+  "lastUpdated": {
+    "$date": "2021-12-06T01:58:39.939Z"
+  },
+  "itemCounts": {
+    "B2": 13,
+    "B3": 10,
+    "B4": 7,
+    "B5": 4,
+    "B1": 11
+  },
+  "createdAt": {
+    "$date": "2021-12-06T01:34:30.948Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T01:58:39.940Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad68f8b4c3eb484f3be11b"
+  },
+  "postId": "61ad68f8b4c3eb484f3be119",
+  "community": "COOKIES",
+  "lastUpdated": {
+    "$date": "2021-12-06T01:59:30.327Z"
+  },
+  "itemCounts": {
+    "C1": 16,
+    "C4": 9,
+    "C5": 4,
+    "C3": 9,
+    "C2": 9,
+    "C11": 5,
+    "C9": 4,
+    "C10": 2,
+    "C19": 2
+  },
+  "createdAt": {
+    "$date": "2021-12-06T01:35:52.285Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T01:59:30.327Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad6ea9b4c3eb484f3be7dd"
+  },
+  "postId": "61ad6ea9b4c3eb484f3be7db",
+  "community": " MOVIES",
+  "lastUpdated": {
+    "$date": "2021-12-06T02:00:09.081Z"
+  },
+  "itemCounts": {
+    "M1": 5,
+    "M5": 4,
+    "M4": 3,
+    "M3": 2,
+    "M2": 1
+  },
+  "createdAt": {
+    "$date": "2021-12-06T02:00:09.082Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T02:00:09.082Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "61ad744ab4c3eb484f3bed15"
+  },
+  "postId": "61ad744ab4c3eb484f3bed13",
+  "community": "UNTITLED",
+  "lastUpdated": {
+    "$date": "2021-12-06T02:24:10.642Z"
+  },
+  "itemCounts": {
+    "Item 1": 5,
+    "Item 2": 4,
+    "Item 3": 3,
+    "Item 4": 2,
+    "Item 5": 1
+  },
+  "createdAt": {
+    "$date": "2021-12-06T02:24:10.645Z"
+  },
+  "updatedAt": {
+    "$date": "2021-12-06T02:24:10.645Z"
+  },
+  "__v": 0
+}]
