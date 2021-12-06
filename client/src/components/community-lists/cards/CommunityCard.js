@@ -88,11 +88,12 @@ export default function CommunityCard(props) {
       paddingRight: '2%',
       paddingTop: '2%',
 
+      border: 1,
+      borderColor: 'gray',
+
       maxHeight: '100%',
       background: '#e0e0e0',
       marginBottom: '1%',
-      border: 1,
-      borderColor: '#e6e6e6'
       }}
     >
       <Box sx={{ height: '20%', width: '96%', display: 'flex'}}>
