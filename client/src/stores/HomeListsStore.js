@@ -167,8 +167,6 @@ function HomeStoreContextProvider(props) {
 
     // Reducer for sorting top5lists
     const sortTop5Lists = (top5lists, by = homeStore.sortType) => {
-        console.log('Sorting by: ' + by);
-        console.log(by === HomeStoreSortType.OLDEST);
         switch(by) {
             case HomeStoreSortType.LIKES: {
                 return top5lists.sort((e1, e2) => { 
@@ -222,7 +220,6 @@ function HomeStoreContextProvider(props) {
                 });
             }
             case HomeStoreSortType.OLDEST: {
-                console.log("Oldest?")
                 return top5lists.sort((e1, e2) => { 
                     if (!e1.published && !e2.published) {
                         return 0;
@@ -262,6 +259,7 @@ function HomeStoreContextProvider(props) {
 
     // Loads the top5lists to be displayed
     homeStore.loadLists = async function (sortType = homeStore.sortType, filter = homeStore.filter) {
+        console.log('Loading home lists');
         let response = await api.getUserTop5Lists();
         if (response && response.data.success) {
             let top5lists = [];

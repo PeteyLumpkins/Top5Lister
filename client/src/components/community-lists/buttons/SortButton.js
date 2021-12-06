@@ -47,6 +47,7 @@ export default function SortButton(props) {
                     communityStore.loadLists(key);
                     handleClose();
                 }}
+                key={key}
                 >{CommunityStoreSortType[key][0].toUpperCase() + CommunityStoreSortType[key].toLowerCase().slice(1)}
                 </MenuItem>
           ))}

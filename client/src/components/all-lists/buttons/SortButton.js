@@ -47,6 +47,7 @@ export default function SortButton(props) {
                     allListsStore.loadLists(key);
                     handleClose();
                 }}
+                key={key}
                 >{AllListsStoreSortType[key][0].toUpperCase() + AllListsStoreSortType[key].toLowerCase().slice(1)}
                 </MenuItem>
           ))}

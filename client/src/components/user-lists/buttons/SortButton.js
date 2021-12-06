@@ -47,6 +47,7 @@ export default function SortButton(props) {
                     userListsStore.loadLists(key);
                     handleClose();
                 }}
+                key={key}
                 >{UserListsStoreSortType[key][0].toUpperCase() + UserListsStoreSortType[key].toLowerCase().slice(1)}
                 </MenuItem>
           ))}

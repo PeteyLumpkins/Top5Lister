@@ -142,7 +142,7 @@ function AllListsStoreContextProvider(props) {
             // Next we filter the lists. Filter === null, then accept all lists
             top5lists = top5lists.filter((top5list) => {
                 return (filter === null || filter === "" || 
-                    top5list.name.toUpperCase() === filter.toUpperCase());
+                    top5list.name.toUpperCase().startsWith(filter.toUpperCase()));
             });
             
             // Next we sort the top5lists based on the sortType
