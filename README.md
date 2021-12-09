@@ -1,5 +1,6 @@
 # The Top5Lister
-Welcome to my Top5Lister application. Besides being my final project for my fundamentals of software engineering course, The Top5Lister is my first attempt at designing and implementing a full-stack web application using React, Express, Node, and MongoDB. It's far from perfect, but it's mine. 
+Welcome to my Top5Lister application. Besides being my final project for my fundamentals of software engineering course, The Top5Lister is my first attempt at designing and implementing a full-stack web application using React, Express, Node, and MongoDB. It's far from perfect, but it's mine. There are actually some bits and pieces of code from our professor in here, but roughly 95% of the code is mine.
+
 
 ### About
 The Top5Lister is, more or less, a social media application (with a few gimmicks). The app essentially allows for users to create and share lists of top-5-items with other users. 
